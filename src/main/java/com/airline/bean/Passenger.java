@@ -7,13 +7,11 @@ public class Passenger {
 
     private String address;
 
-    private String email;
-
     private Integer age;
 
     private String phone;
 
-    private String password;
+    private Integer userid;
 
     public Integer getPassengerid() {
         return passengerid;
@@ -39,14 +37,6 @@ public class Passenger {
         this.address = address == null ? null : address.trim();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
     public Integer getAge() {
         return age;
     }
@@ -63,11 +53,11 @@ public class Passenger {
         this.phone = phone == null ? null : phone.trim();
     }
 
-    public String getPassword() {
-        return password;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+    public void setUserid(Integer userid) {
+        this.userid = userid;
     }
 }
