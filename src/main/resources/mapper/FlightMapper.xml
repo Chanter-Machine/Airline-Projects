@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.airline.dao.FlightandorderMapper">
-  <resultMap id="BaseResultMap" type="com.airline.bean.Flightandorder">
-    <id column="flightAndOrderId" jdbcType="INTEGER" property="flightandorderid" />
-    <result column="flightId" jdbcType="INTEGER" property="flightid" />
-    <result column="orderId" jdbcType="INTEGER" property="orderid" />
-    <result column="seatType" jdbcType="VARCHAR" property="seattype" />
-    <result column="seatNum" jdbcType="INTEGER" property="seatnum" />
+<mapper namespace="com.airline.dao.FlightMapper">
+  <resultMap id="BaseResultMap" type="com.airline.bean.Flight">
+    <id column="flightId" jdbcType="INTEGER" property="flightid" />
+    <result column="dst" jdbcType="INTEGER" property="dst" />
+    <result column="ori" jdbcType="INTEGER" property="ori" />
+    <result column="planeId" jdbcType="INTEGER" property="planeid" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="price" jdbcType="INTEGER" property="price" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    flightAndOrderId, flightId, orderId, seatType, seatNum
+    flightId, dst, ori, planeId, date, price
   </sql>
-  <select id="selectByExample" parameterType="com.airline.bean.FlightandorderExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.airline.bean.FlightExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from flightandorder
+    from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -86,85 +87,94 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from flightandorder
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    from flight
+    where flightId = #{flightid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from flightandorder
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    delete from flight
+    where flightId = #{flightid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.airline.bean.FlightandorderExample">
-    delete from flightandorder
+  <delete id="deleteByExample" parameterType="com.airline.bean.FlightExample">
+    delete from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.Flightandorder">
-    insert into flightandorder (flightAndOrderId, flightId, orderId, 
-      seatType, seatNum)
-    values (#{flightandorderid,jdbcType=INTEGER}, #{flightid,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, 
-      #{seattype,jdbcType=VARCHAR}, #{seatnum,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.airline.bean.Flight">
+    insert into flight (flightId, dst, ori, 
+      planeId, date, price)
+    values (#{flightid,jdbcType=INTEGER}, #{dst,jdbcType=INTEGER}, #{ori,jdbcType=INTEGER}, 
+      #{planeid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{price,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.airline.bean.Flightandorder">
-    insert into flightandorder
+  <insert id="insertSelective" parameterType="com.airline.bean.Flight">
+    insert into flight
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="flightandorderid != null">
-        flightAndOrderId,
-      </if>
       <if test="flightid != null">
         flightId,
       </if>
-      <if test="orderid != null">
-        orderId,
+      <if test="dst != null">
+        dst,
       </if>
-      <if test="seattype != null">
-        seatType,
+      <if test="ori != null">
+        ori,
       </if>
-      <if test="seatnum != null">
-        seatNum,
+      <if test="planeid != null">
+        planeId,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="price != null">
+        price,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="flightandorderid != null">
-        #{flightandorderid,jdbcType=INTEGER},
-      </if>
       <if test="flightid != null">
         #{flightid,jdbcType=INTEGER},
       </if>
-      <if test="orderid != null">
-        #{orderid,jdbcType=INTEGER},
+      <if test="dst != null">
+        #{dst,jdbcType=INTEGER},
       </if>
-      <if test="seattype != null">
-        #{seattype,jdbcType=VARCHAR},
+      <if test="ori != null">
+        #{ori,jdbcType=INTEGER},
       </if>
-      <if test="seatnum != null">
-        #{seatnum,jdbcType=INTEGER},
+      <if test="planeid != null">
+        #{planeid,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.airline.bean.FlightandorderExample" resultType="java.lang.Long">
-    select count(*) from flightandorder
+  <select id="countByExample" parameterType="com.airline.bean.FlightExample" resultType="java.lang.Long">
+    select count(*) from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update flightandorder
+    update flight
     <set>
-      <if test="record.flightandorderid != null">
-        flightAndOrderId = #{record.flightandorderid,jdbcType=INTEGER},
-      </if>
       <if test="record.flightid != null">
         flightId = #{record.flightid,jdbcType=INTEGER},
       </if>
-      <if test="record.orderid != null">
-        orderId = #{record.orderid,jdbcType=INTEGER},
+      <if test="record.dst != null">
+        dst = #{record.dst,jdbcType=INTEGER},
       </if>
-      <if test="record.seattype != null">
-        seatType = #{record.seattype,jdbcType=VARCHAR},
+      <if test="record.ori != null">
+        ori = #{record.ori,jdbcType=INTEGER},
       </if>
-      <if test="record.seatnum != null">
-        seatNum = #{record.seatnum,jdbcType=INTEGER},
+      <if test="record.planeid != null">
+        planeId = #{record.planeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -172,48 +182,54 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update flightandorder
-    set flightAndOrderId = #{record.flightandorderid,jdbcType=INTEGER},
-      flightId = #{record.flightid,jdbcType=INTEGER},
-      orderId = #{record.orderid,jdbcType=INTEGER},
-      seatType = #{record.seattype,jdbcType=VARCHAR},
-      seatNum = #{record.seatnum,jdbcType=INTEGER}
+    update flight
+    set flightId = #{record.flightid,jdbcType=INTEGER},
+      dst = #{record.dst,jdbcType=INTEGER},
+      ori = #{record.ori,jdbcType=INTEGER},
+      planeId = #{record.planeid,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      price = #{record.price,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Flightandorder">
-    update flightandorder
+  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Flight">
+    update flight
     <set>
-      <if test="flightid != null">
-        flightId = #{flightid,jdbcType=INTEGER},
+      <if test="dst != null">
+        dst = #{dst,jdbcType=INTEGER},
       </if>
-      <if test="orderid != null">
-        orderId = #{orderid,jdbcType=INTEGER},
+      <if test="ori != null">
+        ori = #{ori,jdbcType=INTEGER},
       </if>
-      <if test="seattype != null">
-        seatType = #{seattype,jdbcType=VARCHAR},
+      <if test="planeid != null">
+        planeId = #{planeid,jdbcType=INTEGER},
       </if>
-      <if test="seatnum != null">
-        seatNum = #{seatnum,jdbcType=INTEGER},
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
       </if>
     </set>
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    where flightId = #{flightid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.airline.bean.Flightandorder">
-    update flightandorder
-    set flightId = #{flightid,jdbcType=INTEGER},
-      orderId = #{orderid,jdbcType=INTEGER},
-      seatType = #{seattype,jdbcType=VARCHAR},
-      seatNum = #{seatnum,jdbcType=INTEGER}
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.airline.bean.Flight">
+    update flight
+    set dst = #{dst,jdbcType=INTEGER},
+      ori = #{ori,jdbcType=INTEGER},
+      planeId = #{planeid,jdbcType=INTEGER},
+      date = #{date,jdbcType=DATE},
+      price = #{price,jdbcType=INTEGER}
+    where flightId = #{flightid,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="com.airline.bean.Flightandorder">
-    <id column="flightAndOrderId" jdbcType="INTEGER" property="flightandorderid" />
-    <result column="flightId" jdbcType="INTEGER" property="flightid" />
-    <result column="orderId" jdbcType="INTEGER" property="orderid" />
-    <result column="seatType" jdbcType="VARCHAR" property="seattype" />
-    <result column="seatNum" jdbcType="INTEGER" property="seatnum" />
+  <resultMap id="BaseResultMap" type="com.airline.bean.Flight">
+    <id column="flightId" jdbcType="INTEGER" property="flightid" />
+    <result column="dst" jdbcType="INTEGER" property="dst" />
+    <result column="ori" jdbcType="INTEGER" property="ori" />
+    <result column="planeId" jdbcType="INTEGER" property="planeid" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="price" jdbcType="INTEGER" property="price" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -274,15 +290,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    flightAndOrderId, flightId, orderId, seatType, seatNum
+    flightId, dst, ori, planeId, date, price
   </sql>
-  <select id="selectByExample" parameterType="com.airline.bean.FlightandorderExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.airline.bean.FlightExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from flightandorder
+    from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -293,85 +309,94 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from flightandorder
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    from flight
+    where flightId = #{flightid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from flightandorder
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    delete from flight
+    where flightId = #{flightid,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.airline.bean.FlightandorderExample">
-    delete from flightandorder
+  <delete id="deleteByExample" parameterType="com.airline.bean.FlightExample">
+    delete from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.Flightandorder">
-    insert into flightandorder (flightAndOrderId, flightId, orderId, 
-      seatType, seatNum)
-    values (#{flightandorderid,jdbcType=INTEGER}, #{flightid,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, 
-      #{seattype,jdbcType=VARCHAR}, #{seatnum,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.airline.bean.Flight">
+    insert into flight (flightId, dst, ori, 
+      planeId, date, price)
+    values (#{flightid,jdbcType=INTEGER}, #{dst,jdbcType=INTEGER}, #{ori,jdbcType=INTEGER}, 
+      #{planeid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{price,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.airline.bean.Flightandorder">
-    insert into flightandorder
+  <insert id="insertSelective" parameterType="com.airline.bean.Flight">
+    insert into flight
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="flightandorderid != null">
-        flightAndOrderId,
-      </if>
       <if test="flightid != null">
         flightId,
       </if>
-      <if test="orderid != null">
-        orderId,
+      <if test="dst != null">
+        dst,
       </if>
-      <if test="seattype != null">
-        seatType,
+      <if test="ori != null">
+        ori,
       </if>
-      <if test="seatnum != null">
-        seatNum,
+      <if test="planeid != null">
+        planeId,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="price != null">
+        price,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="flightandorderid != null">
-        #{flightandorderid,jdbcType=INTEGER},
-      </if>
       <if test="flightid != null">
         #{flightid,jdbcType=INTEGER},
       </if>
-      <if test="orderid != null">
-        #{orderid,jdbcType=INTEGER},
+      <if test="dst != null">
+        #{dst,jdbcType=INTEGER},
       </if>
-      <if test="seattype != null">
-        #{seattype,jdbcType=VARCHAR},
+      <if test="ori != null">
+        #{ori,jdbcType=INTEGER},
       </if>
-      <if test="seatnum != null">
-        #{seatnum,jdbcType=INTEGER},
+      <if test="planeid != null">
+        #{planeid,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.airline.bean.FlightandorderExample" resultType="java.lang.Long">
-    select count(*) from flightandorder
+  <select id="countByExample" parameterType="com.airline.bean.FlightExample" resultType="java.lang.Long">
+    select count(*) from flight
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update flightandorder
+    update flight
     <set>
-      <if test="record.flightandorderid != null">
-        flightAndOrderId = #{record.flightandorderid,jdbcType=INTEGER},
-      </if>
       <if test="record.flightid != null">
         flightId = #{record.flightid,jdbcType=INTEGER},
       </if>
-      <if test="record.orderid != null">
-        orderId = #{record.orderid,jdbcType=INTEGER},
+      <if test="record.dst != null">
+        dst = #{record.dst,jdbcType=INTEGER},
       </if>
-      <if test="record.seattype != null">
-        seatType = #{record.seattype,jdbcType=VARCHAR},
+      <if test="record.ori != null">
+        ori = #{record.ori,jdbcType=INTEGER},
       </if>
-      <if test="record.seatnum != null">
-        seatNum = #{record.seatnum,jdbcType=INTEGER},
+      <if test="record.planeid != null">
+        planeId = #{record.planeid,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -379,40 +404,45 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update flightandorder
-    set flightAndOrderId = #{record.flightandorderid,jdbcType=INTEGER},
-      flightId = #{record.flightid,jdbcType=INTEGER},
-      orderId = #{record.orderid,jdbcType=INTEGER},
-      seatType = #{record.seattype,jdbcType=VARCHAR},
-      seatNum = #{record.seatnum,jdbcType=INTEGER}
+    update flight
+    set flightId = #{record.flightid,jdbcType=INTEGER},
+      dst = #{record.dst,jdbcType=INTEGER},
+      ori = #{record.ori,jdbcType=INTEGER},
+      planeId = #{record.planeid,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      price = #{record.price,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Flightandorder">
-    update flightandorder
+  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Flight">
+    update flight
     <set>
-      <if test="flightid != null">
-        flightId = #{flightid,jdbcType=INTEGER},
+      <if test="dst != null">
+        dst = #{dst,jdbcType=INTEGER},
       </if>
-      <if test="orderid != null">
-        orderId = #{orderid,jdbcType=INTEGER},
+      <if test="ori != null">
+        ori = #{ori,jdbcType=INTEGER},
       </if>
-      <if test="seattype != null">
-        seatType = #{seattype,jdbcType=VARCHAR},
+      <if test="planeid != null">
+        planeId = #{planeid,jdbcType=INTEGER},
       </if>
-      <if test="seatnum != null">
-        seatNum = #{seatnum,jdbcType=INTEGER},
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
       </if>
     </set>
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+    where flightId = #{flightid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.airline.bean.Flightandorder">
-    update flightandorder
-    set flightId = #{flightid,jdbcType=INTEGER},
-      orderId = #{orderid,jdbcType=INTEGER},
-      seatType = #{seattype,jdbcType=VARCHAR},
-      seatNum = #{seatnum,jdbcType=INTEGER}
-    where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.airline.bean.Flight">
+    update flight
+    set dst = #{dst,jdbcType=INTEGER},
+      ori = #{ori,jdbcType=INTEGER},
+      planeId = #{planeid,jdbcType=INTEGER},
+      date = #{date,jdbcType=DATE},
+      price = #{price,jdbcType=INTEGER}
+    where flightId = #{flightid,jdbcType=INTEGER}
   </update>
 </mapper>
