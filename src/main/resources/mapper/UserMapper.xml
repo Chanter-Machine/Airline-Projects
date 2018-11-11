@@ -98,13 +98,19 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.User">
+  <insert id="insert" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
     insert into user (userId, password, role, 
       email)
     values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.airline.bean.User">
+  <insert id="insertAndGetId" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userid">
+    insert into user (userId, password, role,
+                      email)
+    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userid != null">
