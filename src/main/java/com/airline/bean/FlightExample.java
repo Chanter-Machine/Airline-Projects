@@ -106,30 +106,30 @@ public class FlightExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+        protected void addCriterionForJDBCTime(String condition, Date value, String property) {
             if (value == null) {
                 throw new RuntimeException("Value for " + property + " cannot be null");
             }
-            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+            addCriterion(condition, new java.sql.Time(value.getTime()), property);
         }
 
-        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+        protected void addCriterionForJDBCTime(String condition, List<Date> values, String property) {
             if (values == null || values.size() == 0) {
                 throw new RuntimeException("Value list for " + property + " cannot be null or empty");
             }
-            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            List<java.sql.Time> timeList = new ArrayList<java.sql.Time>();
             Iterator<Date> iter = values.iterator();
             while (iter.hasNext()) {
-                dateList.add(new java.sql.Date(iter.next().getTime()));
+                timeList.add(new java.sql.Time(iter.next().getTime()));
             }
-            addCriterion(condition, dateList, property);
+            addCriterion(condition, timeList, property);
         }
 
-        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+        protected void addCriterionForJDBCTime(String condition, Date value1, Date value2, String property) {
             if (value1 == null || value2 == null) {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
-            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
+            addCriterion(condition, new java.sql.Time(value1.getTime()), new java.sql.Time(value2.getTime()), property);
         }
 
         public Criteria andFlightidIsNull() {
@@ -189,66 +189,6 @@ public class FlightExample {
 
         public Criteria andFlightidNotBetween(Integer value1, Integer value2) {
             addCriterion("flightId not between", value1, value2, "flightid");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstIsNull() {
-            addCriterion("dst is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstIsNotNull() {
-            addCriterion("dst is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstEqualTo(Integer value) {
-            addCriterion("dst =", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstNotEqualTo(Integer value) {
-            addCriterion("dst <>", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstGreaterThan(Integer value) {
-            addCriterion("dst >", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstGreaterThanOrEqualTo(Integer value) {
-            addCriterion("dst >=", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstLessThan(Integer value) {
-            addCriterion("dst <", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstLessThanOrEqualTo(Integer value) {
-            addCriterion("dst <=", value, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstIn(List<Integer> values) {
-            addCriterion("dst in", values, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstNotIn(List<Integer> values) {
-            addCriterion("dst not in", values, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstBetween(Integer value1, Integer value2) {
-            addCriterion("dst between", value1, value2, "dst");
-            return (Criteria) this;
-        }
-
-        public Criteria andDstNotBetween(Integer value1, Integer value2) {
-            addCriterion("dst not between", value1, value2, "dst");
             return (Criteria) this;
         }
 
@@ -312,6 +252,66 @@ public class FlightExample {
             return (Criteria) this;
         }
 
+        public Criteria andDstIsNull() {
+            addCriterion("dst is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstIsNotNull() {
+            addCriterion("dst is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstEqualTo(Integer value) {
+            addCriterion("dst =", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstNotEqualTo(Integer value) {
+            addCriterion("dst <>", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstGreaterThan(Integer value) {
+            addCriterion("dst >", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstGreaterThanOrEqualTo(Integer value) {
+            addCriterion("dst >=", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstLessThan(Integer value) {
+            addCriterion("dst <", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstLessThanOrEqualTo(Integer value) {
+            addCriterion("dst <=", value, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstIn(List<Integer> values) {
+            addCriterion("dst in", values, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstNotIn(List<Integer> values) {
+            addCriterion("dst not in", values, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstBetween(Integer value1, Integer value2) {
+            addCriterion("dst between", value1, value2, "dst");
+            return (Criteria) this;
+        }
+
+        public Criteria andDstNotBetween(Integer value1, Integer value2) {
+            addCriterion("dst not between", value1, value2, "dst");
+            return (Criteria) this;
+        }
+
         public Criteria andPlaneidIsNull() {
             addCriterion("planeId is null");
             return (Criteria) this;
@@ -372,63 +372,123 @@ public class FlightExample {
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNull() {
-            addCriterion("date is null");
+        public Criteria andTakeofftimeIsNull() {
+            addCriterion("takeOffTIme is null");
             return (Criteria) this;
         }
 
-        public Criteria andDateIsNotNull() {
-            addCriterion("date is not null");
+        public Criteria andTakeofftimeIsNotNull() {
+            addCriterion("takeOffTIme is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDateEqualTo(Date value) {
-            addCriterionForJDBCDate("date =", value, "date");
+        public Criteria andTakeofftimeEqualTo(Date value) {
+            addCriterionForJDBCTime("takeOffTIme =", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotEqualTo(Date value) {
-            addCriterionForJDBCDate("date <>", value, "date");
+        public Criteria andTakeofftimeNotEqualTo(Date value) {
+            addCriterionForJDBCTime("takeOffTIme <>", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThan(Date value) {
-            addCriterionForJDBCDate("date >", value, "date");
+        public Criteria andTakeofftimeGreaterThan(Date value) {
+            addCriterionForJDBCTime("takeOffTIme >", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateGreaterThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("date >=", value, "date");
+        public Criteria andTakeofftimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCTime("takeOffTIme >=", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThan(Date value) {
-            addCriterionForJDBCDate("date <", value, "date");
+        public Criteria andTakeofftimeLessThan(Date value) {
+            addCriterionForJDBCTime("takeOffTIme <", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateLessThanOrEqualTo(Date value) {
-            addCriterionForJDBCDate("date <=", value, "date");
+        public Criteria andTakeofftimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCTime("takeOffTIme <=", value, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateIn(List<Date> values) {
-            addCriterionForJDBCDate("date in", values, "date");
+        public Criteria andTakeofftimeIn(List<Date> values) {
+            addCriterionForJDBCTime("takeOffTIme in", values, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotIn(List<Date> values) {
-            addCriterionForJDBCDate("date not in", values, "date");
+        public Criteria andTakeofftimeNotIn(List<Date> values) {
+            addCriterionForJDBCTime("takeOffTIme not in", values, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("date between", value1, value2, "date");
+        public Criteria andTakeofftimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCTime("takeOffTIme between", value1, value2, "takeofftime");
             return (Criteria) this;
         }
 
-        public Criteria andDateNotBetween(Date value1, Date value2) {
-            addCriterionForJDBCDate("date not between", value1, value2, "date");
+        public Criteria andTakeofftimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCTime("takeOffTIme not between", value1, value2, "takeofftime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeIsNull() {
+            addCriterion("arriveTIme is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeIsNotNull() {
+            addCriterion("arriveTIme is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeEqualTo(Date value) {
+            addCriterionForJDBCTime("arriveTIme =", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeNotEqualTo(Date value) {
+            addCriterionForJDBCTime("arriveTIme <>", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeGreaterThan(Date value) {
+            addCriterionForJDBCTime("arriveTIme >", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCTime("arriveTIme >=", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeLessThan(Date value) {
+            addCriterionForJDBCTime("arriveTIme <", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCTime("arriveTIme <=", value, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeIn(List<Date> values) {
+            addCriterionForJDBCTime("arriveTIme in", values, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeNotIn(List<Date> values) {
+            addCriterionForJDBCTime("arriveTIme not in", values, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeBetween(Date value1, Date value2) {
+            addCriterionForJDBCTime("arriveTIme between", value1, value2, "arrivetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andArrivetimeNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCTime("arriveTIme not between", value1, value2, "arrivetime");
             return (Criteria) this;
         }
 

@@ -104,6 +104,18 @@
     values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR})
   </insert>
+  
+  <insert id="insertUserAndGetId" parameterType="com.airline.bean.User" >
+    insert into user (userId, password, role, 
+      email)
+    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR})
+      
+  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userid">
+		SELECT LAST_INSERT_ID() AS userid
+	</selectKey>
+  </insert>
+  
   <insert id="insertSelective" parameterType="com.airline.bean.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">

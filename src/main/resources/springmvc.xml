@@ -34,13 +34,14 @@
 		 -->
 		<mvc:default-servlet-handler/>
 		<!-- TO support advanced configuration of spring MVC (JSR303 validation, ajax, mapping dynamic request) -->
-		<mvc:annotation-driven></mvc:annotation-driven>
 		
+		<mvc:annotation-driven conversion-service="conversionService"/>
+		<bean id="myDataConverter" class="com.airline.converter.MyDataConverter"/>
 		<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
- 		<property name="converters">
- 				<set>
- 					<ref bean="myDataConverter"/>
- 				</set>
- 		</property>
- 	</bean>
+	 		<property name="converters">
+	 				<set>
+	 					<ref bean="myDataConverter"/>
+	 				</set>
+ 			</property>
+ 		</bean>
 </beans>

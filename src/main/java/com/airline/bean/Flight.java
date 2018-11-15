@@ -5,13 +5,15 @@ import java.util.Date;
 public class Flight {
     private Integer flightid;
 
-    private Integer dst;
-
     private Integer ori;
+
+    private Integer dst;
 
     private Integer planeid;
 
-    private Date date;
+    private Date takeofftime;
+
+    private Date arrivetime;
 
     private Integer price;
 
@@ -23,20 +25,20 @@ public class Flight {
         this.flightid = flightid;
     }
 
-    public Integer getDst() {
-        return dst;
-    }
-
-    public void setDst(Integer dst) {
-        this.dst = dst;
-    }
-
     public Integer getOri() {
         return ori;
     }
 
     public void setOri(Integer ori) {
         this.ori = ori;
+    }
+
+    public Integer getDst() {
+        return dst;
+    }
+
+    public void setDst(Integer dst) {
+        this.dst = dst;
     }
 
     public Integer getPlaneid() {
@@ -47,12 +49,20 @@ public class Flight {
         this.planeid = planeid;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTakeofftime() {
+        return takeofftime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTakeofftime(Date takeofftime) {
+        this.takeofftime = takeofftime;
+    }
+
+    public Date getArrivetime() {
+        return arrivetime;
+    }
+
+    public void setArrivetime(Date arrivetime) {
+        this.arrivetime = arrivetime;
     }
 
     public Integer getPrice() {

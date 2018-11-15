@@ -3,10 +3,11 @@
 <mapper namespace="com.airline.dao.FlightMapper">
   <resultMap id="BaseResultMap" type="com.airline.bean.Flight">
     <id column="flightId" jdbcType="INTEGER" property="flightid" />
-    <result column="dst" jdbcType="INTEGER" property="dst" />
     <result column="ori" jdbcType="INTEGER" property="ori" />
+    <result column="dst" jdbcType="INTEGER" property="dst" />
     <result column="planeId" jdbcType="INTEGER" property="planeid" />
-    <result column="date" jdbcType="DATE" property="date" />
+    <result column="takeOffTIme" jdbcType="TIME" property="takeofftime" />
+    <result column="arriveTIme" jdbcType="TIME" property="arrivetime" />
     <result column="price" jdbcType="INTEGER" property="price" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    flightId, dst, ori, planeId, date, price
+    flightId, ori, dst, planeId, takeOffTIme, arriveTIme, price
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.FlightExample" resultMap="BaseResultMap">
     select
@@ -101,10 +102,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.airline.bean.Flight">
-    insert into flight (flightId, dst, ori, 
-      planeId, date, price)
-    values (#{flightid,jdbcType=INTEGER}, #{dst,jdbcType=INTEGER}, #{ori,jdbcType=INTEGER}, 
-      #{planeid,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{price,jdbcType=INTEGER})
+    insert into flight (flightId, ori, dst, 
+      planeId, takeOffTIme, arriveTIme, 
+      price)
+    values (#{flightid,jdbcType=INTEGER}, #{ori,jdbcType=INTEGER}, #{dst,jdbcType=INTEGER}, 
+      #{planeid,jdbcType=INTEGER}, #{takeofftime,jdbcType=TIME}, #{arrivetime,jdbcType=TIME}, 
+      #{price,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.Flight">
     insert into flight
@@ -112,17 +115,20 @@
       <if test="flightid != null">
         flightId,
       </if>
-      <if test="dst != null">
-        dst,
-      </if>
       <if test="ori != null">
         ori,
+      </if>
+      <if test="dst != null">
+        dst,
       </if>
       <if test="planeid != null">
         planeId,
       </if>
-      <if test="date != null">
-        date,
+      <if test="takeofftime != null">
+        takeOffTIme,
+      </if>
+      <if test="arrivetime != null">
+        arriveTIme,
       </if>
       <if test="price != null">
         price,
@@ -132,17 +138,20 @@
       <if test="flightid != null">
         #{flightid,jdbcType=INTEGER},
       </if>
-      <if test="dst != null">
-        #{dst,jdbcType=INTEGER},
-      </if>
       <if test="ori != null">
         #{ori,jdbcType=INTEGER},
+      </if>
+      <if test="dst != null">
+        #{dst,jdbcType=INTEGER},
       </if>
       <if test="planeid != null">
         #{planeid,jdbcType=INTEGER},
       </if>
-      <if test="date != null">
-        #{date,jdbcType=DATE},
+      <if test="takeofftime != null">
+        #{takeofftime,jdbcType=TIME},
+      </if>
+      <if test="arrivetime != null">
+        #{arrivetime,jdbcType=TIME},
       </if>
       <if test="price != null">
         #{price,jdbcType=INTEGER},
@@ -161,17 +170,20 @@
       <if test="record.flightid != null">
         flightId = #{record.flightid,jdbcType=INTEGER},
       </if>
-      <if test="record.dst != null">
-        dst = #{record.dst,jdbcType=INTEGER},
-      </if>
       <if test="record.ori != null">
         ori = #{record.ori,jdbcType=INTEGER},
+      </if>
+      <if test="record.dst != null">
+        dst = #{record.dst,jdbcType=INTEGER},
       </if>
       <if test="record.planeid != null">
         planeId = #{record.planeid,jdbcType=INTEGER},
       </if>
-      <if test="record.date != null">
-        date = #{record.date,jdbcType=DATE},
+      <if test="record.takeofftime != null">
+        takeOffTIme = #{record.takeofftime,jdbcType=TIME},
+      </if>
+      <if test="record.arrivetime != null">
+        arriveTIme = #{record.arrivetime,jdbcType=TIME},
       </if>
       <if test="record.price != null">
         price = #{record.price,jdbcType=INTEGER},
@@ -184,10 +196,11 @@
   <update id="updateByExample" parameterType="map">
     update flight
     set flightId = #{record.flightid,jdbcType=INTEGER},
-      dst = #{record.dst,jdbcType=INTEGER},
       ori = #{record.ori,jdbcType=INTEGER},
+      dst = #{record.dst,jdbcType=INTEGER},
       planeId = #{record.planeid,jdbcType=INTEGER},
-      date = #{record.date,jdbcType=DATE},
+      takeOffTIme = #{record.takeofftime,jdbcType=TIME},
+      arriveTIme = #{record.arrivetime,jdbcType=TIME},
       price = #{record.price,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -196,17 +209,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Flight">
     update flight
     <set>
-      <if test="dst != null">
-        dst = #{dst,jdbcType=INTEGER},
-      </if>
       <if test="ori != null">
         ori = #{ori,jdbcType=INTEGER},
+      </if>
+      <if test="dst != null">
+        dst = #{dst,jdbcType=INTEGER},
       </if>
       <if test="planeid != null">
         planeId = #{planeid,jdbcType=INTEGER},
       </if>
-      <if test="date != null">
-        date = #{date,jdbcType=DATE},
+      <if test="takeofftime != null">
+        takeOffTIme = #{takeofftime,jdbcType=TIME},
+      </if>
+      <if test="arrivetime != null">
+        arriveTIme = #{arrivetime,jdbcType=TIME},
       </if>
       <if test="price != null">
         price = #{price,jdbcType=INTEGER},
@@ -216,12 +232,12 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.airline.bean.Flight">
     update flight
-    set dst = #{dst,jdbcType=INTEGER},
-      ori = #{ori,jdbcType=INTEGER},
+    set ori = #{ori,jdbcType=INTEGER},
+      dst = #{dst,jdbcType=INTEGER},
       planeId = #{planeid,jdbcType=INTEGER},
-      date = #{date,jdbcType=DATE},
+      takeOffTIme = #{takeofftime,jdbcType=TIME},
+      arriveTIme = #{arrivetime,jdbcType=TIME},
       price = #{price,jdbcType=INTEGER}
     where flightId = #{flightid,jdbcType=INTEGER}
   </update>
- 
 </mapper>
