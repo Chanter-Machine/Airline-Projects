@@ -154,17 +154,7 @@
 							</div>
 							<div class="search_item">
 								<div><i class="fa fa-calendar"></i> Travel Date</div>
-								
-								<div class="control-group">
-					                <div class="controls input-append date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-					                    <input size="16" type="text" value="" readonly>
-					                    <span class="add-on"><i class="icon-remove"></i></span>
-										<span class="add-on"><i class="icon-th"></i></span>
-					                </div>
-									<input type="hidden" id="dtp_input2" value="" /><br/>
-					            </div>
-								
-								
+                                <input name="traveldate" class="form-control contact_form_name date form_date" size="16" type="text" value="" placeholder="yyyy/mm/dd">
 							</div>
 							<div class="search_item">
 								<div>Seat Preference</div>
@@ -449,7 +439,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	
 	
 
-<script src="static/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
 <script src="static/js/jquery-3.2.1.min.js"></script>
 <script src="static/styles/bootstrap4/popper.js"></script>
 <script src="static/styles/bootstrap4/bootstrap.min.js"></script>
@@ -462,7 +451,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="static/plugins/jquery-circle-progress-1.2.2/circle-progress.js"></script>
 <script src="static/plugins/parallax-js-master/parallax.min.js"></script>
 <script src="static/js/elements_custom.js"></script>
-<script src="static/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script src="static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
 <script>
 	// After page finish loading, query available city
@@ -486,19 +474,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				}
 			});
 		}
-	
-	
-	
-	$('.form_date').datetimepicker({
-        language:  'fr',
+
+
+
+    $('.form_date').datetimepicker({
         weekStart: 1,
         todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        format: 'yyyy/mm/dd'
     });
+
 
 	</script>
 

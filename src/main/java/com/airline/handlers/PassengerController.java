@@ -22,7 +22,7 @@ public class PassengerController {
 
 	@Autowired
 	IPassengerService passengerService;
-	
+
 	@RequestMapping("/login.do")
 	public ModelAndView loginCheck(User u) {
 
@@ -70,5 +70,5 @@ public class PassengerController {
 		return mv;
 
 	}
-	
+
 }

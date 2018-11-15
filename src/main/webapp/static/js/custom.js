@@ -175,9 +175,9 @@ $(document).ready(function()
 			// Fired before current slide change
 			homeSlider.on('change.owl.carousel', function(event)
 			{
-				var $currentItem = $('.home_slider_item', homeSlider).eq(event.item.index);
+				/*var $currentItem = $('.home_slider_item', homeSlider).eq(event.item.index);
 				var $elemsToanim = $currentItem.find("[data-animation-out]");
-				setAnimation ($elemsToanim, 'out');
+				setAnimation ($elemsToanim, 'out');*/
 			});
 
 			// Fired after current slide has been changed

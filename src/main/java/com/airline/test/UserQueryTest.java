@@ -1,5 +1,6 @@
 package com.airline.test;
 
+import com.airline.services.IPassengerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.CORBA.PUBLIC_MEMBER;
@@ -16,8 +17,12 @@ public class UserQueryTest {
 
 	@Autowired
 	IUserService userService;
-	
-//	@Test
+
+	@Autowired
+    IPassengerService passengerService;
+
+
+	@Test
 	public void queryUser() {
 		User user=userService.queryUser("123@test.com", "123456");
 		if(user!=null) {
@@ -27,17 +32,22 @@ public class UserQueryTest {
 			System.out.println("hehe");
 		}
 	}
-	
+
 	@Test
-	public void addUser() {
-//		User user = new User();
-//		user.setEmail("test2@Ul.com");
-//		user.setPassword("123456");
-//		user.setRole("Passenger");
-//		userService.createUser(user);
-		userService.createUser();
-//		System.out.println(user.getUserid());
-		
-		
+	public void addUser(){
+		User user = new User();
+		user.setEmail("freshlypressed@email.com");
+		user.setPassword("new password");
+		user.setRole("passenger");
+		//userService.addUser(user);
+
+        passengerService.createPassengerAccount(user);
+
+        if (user.getUserid()==null){
+            System.out.println("Unable to insert new user.");
+        } else {
+
+            System.out.println("New user inserted with ID: " + user.getUserid());
+        }
 	}
 }

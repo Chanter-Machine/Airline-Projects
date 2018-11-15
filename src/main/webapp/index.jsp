@@ -168,9 +168,20 @@
 
 					<div class="home_slider_content text-center">
 						<div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
-							<h1>discover</h1>
-							<h1>the world</h1>
-							<div class="button home_slider_button"><div class="button_bcg"></div><a href="#">register<span></span><span></span><span></span></a></div>
+							<div class="contact_form_container">
+								<div class="contact_title text-center">new user sign up</div>
+								<form action="${APP_PATH}/register.do" id="register_form" method="post" class="contact_form text-center">
+									<input type="text" id="register_form_name" name="passengername" class="contact_form_name input_field" placeholder="Name" required="required" data-error="Name is required.">
+									<input type="text" id="register_form_email" name="email" class="contact_form_email input_field" placeholder="E-mail" required="required" data-error="Email is required.">
+									<input type="text" id="register_form_phone" name="phone" class="contact_form_name input_field" placeholder="Phone Number" required="required" data-error="Phone number is required.">
+									<input type="text" id="register_form_age" name="age" class="contact_form_email input_field" placeholder="Age" required="required" data-error="Age is required.">
+									<textarea id="register_form_address" class="text_field contact_form_message" name="address" rows="2" placeholder="Address" required="required" data-error="Please, provide a valid address"></textarea>
+									<input type="password" id="register_form_password" name="password" class="contact_form_name input_field" placeholder="Password" required="required" data-error="Password is required.">
+									<input type="password" id="register_form_cpassword" class="contact_form_email input_field" placeholder="Confirm Password" required="required" data-error="Password confirmation is required.">
+
+									<button type="button" id="form_submit_register" class="form_submit_button button trans_200">register<span></span><span></span><span></span></button>
+								</form>
+							</div>
 						</div>
 					</div>
 					<a style="z-index:999999; position: absolute; bottom:0; right:0; background-color:black;color:white;text-decoration:none;padding:4px 6px;font-family:-apple-system, BlinkMacSystemFont, &quot;San Francisco&quot;, &quot;Helvetica Neue&quot;, Helvetica, Ubuntu, Roboto, Noto, &quot;Segoe UI&quot;, Arial, sans-serif;font-size:12px;font-weight:bold;line-height:1.2;display:inline-block;border-radius:3px" href="https://unsplash.com/@randomlies?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge" target="_blank" rel="noopener noreferrer" title="Download free do whatever you want high-resolution photos from Ashim D’Silva"><span style="display:inline-block;padding:2px 3px"><svg xmlns="http://www.w3.org/2000/svg" style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white" viewBox="0 0 32 32"><title>unsplash-logo</title><path d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"></path></svg></span><span style="display:inline-block;padding:2px 3px">Ashim D’Silva</span></a>
@@ -257,7 +268,38 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		password:<input type="password" name="password"/></br>
 		<input value="Submit" id="user_login"/>
 	</form>  -->
-	
+	<script>
+		$('#form_submit_register').click( function() {
+            var form = $(this).parents('form');
+			/*var data = {
+                    passengerInfo: {passengername: form.find('#register_form_name').val(), address: form.find('#register_form_address').val(),age:form.find('#register_form_age').val(), phone:form.find('#register_form_phone').val()},
+                    userInfo: {email:form.find('#register_form_email').val(), password:form.find('#register_form_password').val()}
+                };*/
+		    if (form.find('#register_form_cpassword').val()==form.find('#register_form_password').val()){
+		        form.submit();
+                /*$.ajax({
+                    url:"${APP_PATH}/register.do",
+                    data:JSON.stringify(data),
+                    type:"POST",
+                    dataType: "html",
+                    contentType: 'application/json',
+                    mimeType: 'application/json',
+                    success:function(result){
+                        if(result.code==200){
+                            console.log(result);
+                            alert("success");
+                        }
+                        else{
+                            alert("interesting");
+                        }
+                    }
+                });*/
+			} else
+			{
+			    alert("Passwords do not match.\nPlease check that you have entered the correct password in the spaces provided.");
+			}
+		});
+	</script>
 	
 </body>
 
