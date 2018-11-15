@@ -1,8 +1,10 @@
 package com.airline.services;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 
 import com.airline.bean.User;
@@ -29,6 +31,7 @@ public class UserServiceImp implements IUserService {
 	
 	}
 
+
 	public void addUser(User user){
 
 		List<User> users = getUserByEmail(user.getEmail());
@@ -46,5 +49,6 @@ public class UserServiceImp implements IUserService {
 		List<User> userList = userMapper.selectByExample(userExample);
 
 		return userList;
+
 	}
 }

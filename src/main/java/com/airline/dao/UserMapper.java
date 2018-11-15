@@ -15,6 +15,8 @@ public interface UserMapper {
     int insert(User record);
 
     int insertSelective(User record);
+    
+    int insertUserAndGetId(User record);
 
     int insertAndGetId(User record);
 

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.airline.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.airline.bean.User">
-    <id column="userId" jdbcType="INTEGER" property="userid" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role" jdbcType="VARCHAR" property="role" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
+<mapper namespace="com.airline.dao.FlightRecordMapper">
+  <resultMap id="BaseResultMap" type="com.airline.bean.FlightRecord">
+    <id column="fligthRecord" jdbcType="INTEGER" property="fligthrecord" />
+    <result column="flightId" jdbcType="INTEGER" property="flightid" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    userId, password, role, email
+    fligthRecord, flightId, status, date, description
   </sql>
-  <select id="selectByExample" parameterType="com.airline.bean.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.airline.bean.FlightRecordExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from user
+    from flightrecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -85,84 +86,85 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
-    where userId = #{userid,jdbcType=INTEGER}
+    from flightrecord
+    where fligthRecord = #{fligthrecord,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
-    where userId = #{userid,jdbcType=INTEGER}
+    delete from flightrecord
+    where fligthRecord = #{fligthrecord,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.airline.bean.UserExample">
-    delete from user
+  <delete id="deleteByExample" parameterType="com.airline.bean.FlightRecordExample">
+    delete from flightrecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
-    insert into user (userId, password, role, 
-      email)
-    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.airline.bean.FlightRecord">
+    insert into flightrecord (fligthRecord, flightId, status, 
+      date, description)
+    values (#{fligthrecord,jdbcType=INTEGER}, #{flightid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{description,jdbcType=VARCHAR})
   </insert>
-
-  <insert id="insertAndGetId" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userid">
-    insert into user (userId, password, role,
-                      email)
-    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
-            #{email,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
-
-    insert into user
+  <insert id="insertSelective" parameterType="com.airline.bean.FlightRecord">
+    insert into flightrecord
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userid != null">
-        userId,
+      <if test="fligthrecord != null">
+        fligthRecord,
       </if>
-      <if test="password != null">
-        password,
+      <if test="flightid != null">
+        flightId,
       </if>
-      <if test="role != null">
-        role,
+      <if test="status != null">
+        status,
       </if>
-      <if test="email != null">
-        email,
+      <if test="date != null">
+        date,
+      </if>
+      <if test="description != null">
+        description,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="fligthrecord != null">
+        #{fligthrecord,jdbcType=INTEGER},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="flightid != null">
+        #{flightid,jdbcType=INTEGER},
       </if>
-      <if test="role != null">
-        #{role,jdbcType=VARCHAR},
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.airline.bean.UserExample" resultType="java.lang.Long">
-    select count(*) from user
+  <select id="countByExample" parameterType="com.airline.bean.FlightRecordExample" resultType="java.lang.Long">
+    select count(*) from flightrecord
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update user
+    update flightrecord
     <set>
-      <if test="record.userid != null">
-        userId = #{record.userid,jdbcType=INTEGER},
+      <if test="record.fligthrecord != null">
+        fligthRecord = #{record.fligthrecord,jdbcType=INTEGER},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.flightid != null">
+        flightId = #{record.flightid,jdbcType=INTEGER},
       </if>
-      <if test="record.role != null">
-        role = #{record.role,jdbcType=VARCHAR},
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -170,35 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update user
-    set userId = #{record.userid,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR},
-      role = #{record.role,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
+    update flightrecord
+    set fligthRecord = #{record.fligthrecord,jdbcType=INTEGER},
+      flightId = #{record.flightid,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=DATE},
+      description = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.User">
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.FlightRecord">
+    update flightrecord
     <set>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="flightid != null">
+        flightId = #{flightid,jdbcType=INTEGER},
       </if>
-      <if test="role != null">
-        role = #{role,jdbcType=VARCHAR},
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
       </if>
     </set>
-    where userId = #{userid,jdbcType=INTEGER}
+    where fligthRecord = #{fligthrecord,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.airline.bean.User">
-    update user
-    set password = #{password,jdbcType=VARCHAR},
-      role = #{role,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR}
-    where userId = #{userid,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.airline.bean.FlightRecord">
+    update flightrecord
+    set flightId = #{flightid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      description = #{description,jdbcType=VARCHAR}
+    where fligthRecord = #{fligthrecord,jdbcType=INTEGER}
   </update>
 </mapper>
