@@ -1,9 +1,9 @@
 package com.airline.services;
 
-import com.airline.bean.City;
-
 import java.util.List;
 
+import com.airline.bean.City;
+
 public interface ICityService {
-    List<City> getCities();
+	public List<City> findAllCityies();
 }

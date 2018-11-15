@@ -208,5 +208,5 @@
       seatNum = #{seatnum,jdbcType=INTEGER}
     where flightAndOrderId = #{flightandorderid,jdbcType=INTEGER}
   </update>
-  
+ 
 </mapper>
