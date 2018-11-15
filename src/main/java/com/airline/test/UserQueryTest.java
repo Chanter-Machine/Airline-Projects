@@ -3,6 +3,7 @@ package com.airline.test;
 import com.airline.services.IPassengerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,7 +21,7 @@ public class UserQueryTest {
 	@Autowired
     IPassengerService passengerService;
 
-	
+
 	@Test
 	public void queryUser() {
 		User user=userService.queryUser("123@test.com", "123456");
@@ -50,4 +51,3 @@ public class UserQueryTest {
         }
 	}
 }
-

@@ -27,12 +27,9 @@ public class FlightSearchTest {
 			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
 		}
 
-		List<List<String>> results = flightService.serchFlight(graph, "5", "1");
-		for(int i=0;i<results.size();i++) {
-			for(int j=0;j<results.get(i).size();j++) {
-				System.out.print(results.get(i).get(j)+" ");
-			}
-			System.out.println("");
+		List<Flight> results = flightService.searchFlight(graph, "5", "1");
+		for (Flight flight: results){
+			System.out.println(flight.getFlightid());
 		}
 	}
 }

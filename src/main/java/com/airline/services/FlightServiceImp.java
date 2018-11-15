@@ -18,27 +18,40 @@ public class FlightServiceImp implements IFlightService {
 	@Autowired
 	FlightMapper flightMapper;
 	FlightExample flightExample;
+    List<Flight> flights ;
 	
 	public List<Flight> getFlightsByDate(String takeOffDate) {
 		
 		flightExample = new FlightExample();
 		Criteria criteria = flightExample.createCriteria();
 //		criteria.andTakeoffdateEqualTo(java.sql.Date.valueOf(takeOffDate));
-		List<Flight> flights = flightMapper.selectByExample(flightExample);
+		flights = flightMapper.selectByExample(flightExample);
 		for (int i = 0; i < flights.size(); i++) {
 			System.out.println("time = " +flights.get(i).getArrivetime());
 		}
 		return flights;
 	}
 
-	public List<List<String>> serchFlight(Graph graph, String start, String end) {
+	public List<Flight> searchFlight(Graph graph, String start, String end) {
 	    LinkedList<String> visited = new LinkedList();
 	    List<List<String>> results = new LinkedList<List<String>>();
         visited.add(start);
         //Find all available routine.
 	    depthFirst(graph, visited, end, results);
+        List<Flight> mappedFlights = new ArrayList<Flight>();
+
 	    //Remove the canceled.
-	    return results;
+
+        //get flights
+        for (List<String> f: results){
+            for (int i = 0; i<(f.size()-1); i++) {
+                    int origin = Integer.parseInt(f.get(i));
+                    int destination = Integer.parseInt(f.get(i + 1));
+                    Flight flight = flights.stream().filter(o -> o.getOri() == origin && o.getDst() == destination).findAny().orElse(null);
+                    mappedFlights.add(flight);
+            }
+        }
+	    return mappedFlights;
 	}
 	
 	private void depthFirst(Graph graph, LinkedList<String> visited, String end, List<List<String>> results) {
