@@ -9,7 +9,9 @@ public class Paymentrecord {
 
     private String status;
 
-    private Date data;
+    private Date date;
+
+    private Integer typeid;
 
     public Integer getPaymentid() {
         return paymentid;
@@ -35,11 +37,19 @@ public class Paymentrecord {
         this.status = status == null ? null : status.trim();
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Integer getTypeid() {
+        return typeid;
+    }
+
+    public void setTypeid(Integer typeid) {
+        this.typeid = typeid;
     }
 }
