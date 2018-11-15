@@ -100,7 +100,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.Passenger">
+  <insert id="insert" parameterType="com.airline.bean.Passenger" useGeneratedKeys="true" keyProperty="passengerid">
     insert into passenger (passengerId, passengerName, address, 
       age, phone, userId)
     values (#{passengerid,jdbcType=INTEGER}, #{passengername,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 

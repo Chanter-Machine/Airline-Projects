@@ -18,33 +18,37 @@ public class UserServiceImp implements IUserService {
 	@Autowired
 	UserMapper userMapper;
 	
-	UserExample userExample;
+	UserExample userExample = new UserExample();
 	
 	public User queryUser(String email, String password) {
-		userExample = new UserExample();
 		Criteria criteria = userExample.createCriteria();
 		criteria.andEmailEqualTo(email);
 		criteria.andPasswordEqualTo(password);
 		
 		List<User> userList = userMapper.selectByExample(userExample);
-		
+
 		return userList.size()==1?userList.get(0):null;
 	
 	}
 
-	public User createUser(User user) {
-		userMapper.insertUserAndGetId(user);
-		System.out.println("get user id here"+ user.getUserid());
-		return null;
+
+	public void addUser(User user){
+
+		List<User> users = getUserByEmail(user.getEmail());
+		if (users.size()==0) {
+
+			userMapper.insertAndGetId(user);
+		}
 	}
 
-	public User createUser() {
-		User user = new User();
-		user.setEmail("test2@Ul.com");
-		user.setPassword("123456");
-		user.setRole("Passenger");
-		userMapper.insertUserAndGetId(user);
-		System.out.println("get user id here "+ user.getUserid());
-		return null;
+
+	public List<User> getUserByEmail(String email) {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andEmailEqualTo(email);
+
+		List<User> userList = userMapper.selectByExample(userExample);
+
+		return userList;
+
 	}
 }
