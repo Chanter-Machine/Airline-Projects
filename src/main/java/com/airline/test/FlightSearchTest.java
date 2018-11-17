@@ -21,16 +21,16 @@ public class FlightSearchTest {
 	public void searchByDate() {
 		Graph graph = new Graph();
 		String startDate = "2010-02-01";
-//		String arriveDate = "2010-02-02";
 		List<Flight> flights = flightService.getFlightsByDate(startDate);
 		for(Flight flight: flights) {
 			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
 		}
 
-		List<List<String>> results = flightService.serchFlight(graph, "5", "1");
-		for(int i=0;i<results.size();i++) {
-			for(int j=0;j<results.get(i).size();j++) {
-				System.out.print(results.get(i).get(j)+" ");
+		List<List<Flight>> results = flightService.searchFlight(graph, "5", "1");
+
+		for(List<Flight> list: results) {
+			for(Flight flight: list) {
+				System.out.print(flight.getArrivetime().getTime()+" ");
 			}
 			System.out.println("");
 		}

@@ -18,29 +18,61 @@ public class FlightServiceImp implements IFlightService {
 	@Autowired
 	FlightMapper flightMapper;
 	FlightExample flightExample;
+    List<Flight> flights ;
 	
 	public List<Flight> getFlightsByDate(String takeOffDate) {
 		
 		flightExample = new FlightExample();
 		Criteria criteria = flightExample.createCriteria();
 //		criteria.andTakeoffdateEqualTo(java.sql.Date.valueOf(takeOffDate));
-		List<Flight> flights = flightMapper.selectByExample(flightExample);
+		flights = flightMapper.selectByExample(flightExample);
 		for (int i = 0; i < flights.size(); i++) {
 			System.out.println("time = " +flights.get(i).getArrivetime());
 		}
 		return flights;
 	}
 
-	public List<List<String>> serchFlight(Graph graph, String start, String end) {
+	public List<List<Flight>> searchFlight(Graph graph, String start, String end) {
 	    LinkedList<String> visited = new LinkedList();
 	    List<List<String>> results = new LinkedList<List<String>>();
         visited.add(start);
         //Find all available routine.
 	    depthFirst(graph, visited, end, results);
+        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();
+
 	    //Remove the canceled.
-	    return results;
+
+        //get flights
+        return convertNodes2Flight(results, mappedFlights);
 	}
 	
+	/**
+	 * Encapsulated nodes of each flight to flight objects.
+	 * @param results Result from depthFirst
+	 * @param mappedFlights Result of encapsulated nodes
+	 * @return
+	 */
+	public List<List<Flight>> convertNodes2Flight(List<List<String>> results, List<List<Flight>> mappedFlights) {
+		for (List<String> f: results){
+			List<Flight> list = new ArrayList<>();
+			for (int i = 0; i<(f.size()-1); i++) {
+				int origin = Integer.parseInt(f.get(i));
+				int destination = Integer.parseInt(f.get(i + 1));
+				Flight flight = flights.stream().filter(o -> o.getOri() == origin && o.getDst() == destination).findAny().orElse(null);
+				list.add(flight);
+			}
+			mappedFlights.add(list);
+		}
+		return mappedFlights;
+	}
+	
+	/**
+	 * Algorithms that find each path from flight table.
+	 * @param graph
+	 * @param visited
+	 * @param end
+	 * @param results
+	 */
 	private void depthFirst(Graph graph, LinkedList<String> visited, String end, List<List<String>> results) {
         LinkedList<String> nodes = graph.adjacentNodes(visited.getLast());
         // examine adjacent nodes
