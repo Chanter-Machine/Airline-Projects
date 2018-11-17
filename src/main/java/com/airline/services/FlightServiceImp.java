@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.airline.bean.Flight;
 import com.airline.bean.FlightExample;
+import com.airline.bean.SearchData;
 import com.airline.bean.FlightExample.Criteria;
 import com.airline.dao.FlightMapper;
 @Service
@@ -20,19 +21,12 @@ public class FlightServiceImp implements IFlightService {
 	FlightExample flightExample;
     List<Flight> flights ;
 	
-	public List<Flight> getFlightsByDate(String takeOffDate) {
-		
-		flightExample = new FlightExample();
-		Criteria criteria = flightExample.createCriteria();
-//		criteria.andTakeoffdateEqualTo(java.sql.Date.valueOf(takeOffDate));
+	public List<Flight> getFlightsFromDB() {
 		flights = flightMapper.selectByExample(flightExample);
-		for (int i = 0; i < flights.size(); i++) {
-			System.out.println("time = " +flights.get(i).getArrivetime());
-		}
 		return flights;
 	}
 
-	public List<List<Flight>> searchFlight(Graph graph, String start, String end) {
+	public List<List<Flight>> searchPath(Graph graph, String start, String end) {
 	    LinkedList<String> visited = new LinkedList();
 	    List<List<String>> results = new LinkedList<List<String>>();
         visited.add(start);
@@ -64,6 +58,16 @@ public class FlightServiceImp implements IFlightService {
 			mappedFlights.add(list);
 		}
 		return mappedFlights;
+	}
+	
+	public List<List<Flight>> searchFlights(SearchData searchData){
+		Graph graph = new Graph();
+		List<Flight> flights = getFlightsFromDB();
+		for(Flight flight: flights) {
+			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
+		}
+		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
+		return results;
 	}
 	
 	/**

@@ -165,7 +165,7 @@
                                     </select>
 							</div>
 							<p>&nbsp;</p>
-							<button id="btn_submit"  class="button button_color_1 trans_200">search<span></span><span></span><span></span></a></button>
+							<button id="btn_submit" type="button" class="button button_color_1 trans_200">search<span></span><span></span><span></span></a></button>
 						</form>
 						
 					</div>
@@ -493,7 +493,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 		//3.发送ajax请求到服务器，保存数据
 		$.ajax({
-			url:"${APP_PATH}/search.do",
+			url:"${APP_PATH}/search2.do",
 			type:"POST",
 			/* 提取要提交的数据 */
 			data:$("#search_form_1").serialize(),
