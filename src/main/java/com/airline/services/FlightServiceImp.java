@@ -32,28 +32,47 @@ public class FlightServiceImp implements IFlightService {
 		return flights;
 	}
 
-	public List<Flight> searchFlight(Graph graph, String start, String end) {
+	public List<List<Flight>> searchFlight(Graph graph, String start, String end) {
 	    LinkedList<String> visited = new LinkedList();
 	    List<List<String>> results = new LinkedList<List<String>>();
         visited.add(start);
         //Find all available routine.
 	    depthFirst(graph, visited, end, results);
-        List<Flight> mappedFlights = new ArrayList<Flight>();
+        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();
 
 	    //Remove the canceled.
 
         //get flights
-        for (List<String> f: results){
-            for (int i = 0; i<(f.size()-1); i++) {
-                    int origin = Integer.parseInt(f.get(i));
-                    int destination = Integer.parseInt(f.get(i + 1));
-                    Flight flight = flights.stream().filter(o -> o.getOri() == origin && o.getDst() == destination).findAny().orElse(null);
-                    mappedFlights.add(flight);
-            }
-        }
-	    return mappedFlights;
+        return convertNodes2Flight(results, mappedFlights);
 	}
 	
+	/**
+	 * Encapsulated nodes of each flight to flight objects.
+	 * @param results Result from depthFirst
+	 * @param mappedFlights Result of encapsulated nodes
+	 * @return
+	 */
+	public List<List<Flight>> convertNodes2Flight(List<List<String>> results, List<List<Flight>> mappedFlights) {
+		for (List<String> f: results){
+			List<Flight> list = new ArrayList<>();
+			for (int i = 0; i<(f.size()-1); i++) {
+				int origin = Integer.parseInt(f.get(i));
+				int destination = Integer.parseInt(f.get(i + 1));
+				Flight flight = flights.stream().filter(o -> o.getOri() == origin && o.getDst() == destination).findAny().orElse(null);
+				list.add(flight);
+			}
+			mappedFlights.add(list);
+		}
+		return mappedFlights;
+	}
+	
+	/**
+	 * Algorithms that find each path from flight table.
+	 * @param graph
+	 * @param visited
+	 * @param end
+	 * @param results
+	 */
 	private void depthFirst(Graph graph, LinkedList<String> visited, String end, List<List<String>> results) {
         LinkedList<String> nodes = graph.adjacentNodes(visited.getLast());
         // examine adjacent nodes

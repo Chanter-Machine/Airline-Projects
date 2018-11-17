@@ -108,7 +108,7 @@
                    <hr size=1 />
                     <p>Please provide details of your flight and let us find the best options for you.</p>
 					<div class="search_panel">
-						<form action="result.html" method="post" id="search_form_1" class="form-group">
+						<form   id="search_form_1" class="form-group">
 						    <div class="search_item">
 						        <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                   <label class="btn btn-agile active">
@@ -158,14 +158,14 @@
 							</div>
 							<div class="search_item">
 								<div>Seat Preference</div>
-                                    <select name="origin" id="origin" class="form-control custom-select custom-select-lg mb-3">
+                                    <select name="seat" id="origin" class="form-control custom-select custom-select-lg mb-3">
                                         <option>Economy Class</option>
                                         <option>Business Class</option>
                                         <option>First Class</option>
                                     </select>
 							</div>
 							<p>&nbsp;</p>
-							<button type="submit" class="button button_color_1 trans_200"><a href="#">search<span></span><span></span><span></span></a></button>
+							<button id="btn_submit"  class="button button_color_1 trans_200">search<span></span><span></span><span></span></a></button>
 						</form>
 						
 					</div>
@@ -489,6 +489,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     });
 
 
+    $("#btn_submit").click(function(){
+
+		//3.发送ajax请求到服务器，保存数据
+		$.ajax({
+			url:"${APP_PATH}/search.do",
+			type:"POST",
+			/* 提取要提交的数据 */
+			data:$("#search_form_1").serialize(),
+			success:function(result){
+				
+			}
+		});
+		/* alert($("#add_emp_form").serialize()); */
+	});
 	</script>
 
 </body>
