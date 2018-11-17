@@ -60,6 +60,9 @@ public class FlightServiceImp implements IFlightService {
 		return mappedFlights;
 	}
 	
+	/**
+	 * Invoked by Controller, the result contains available path.
+	 */
 	public List<List<Flight>> searchFlights(SearchData searchData){
 		Graph graph = new Graph();
 		List<Flight> flights = getFlightsFromDB();
@@ -67,6 +70,9 @@ public class FlightServiceImp implements IFlightService {
 			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
+		
+		checkFlightRecord(searchData.getTraveldate(), results);
+		
 		return results;
 	}
 	
@@ -116,8 +122,17 @@ public class FlightServiceImp implements IFlightService {
      * check record in Table flightRecord, find if there is a flight is canceled
      * in schedule. 
      */
-    public void checkFlightRecord() {
+    public void checkFlightRecord(Date startDate, List<List<Flight>> path) {
     	
+    }
+    
+    /**
+     * Query all flight records from database
+     */
+    @Override
+    public List<Flight> getFlightsWithCityFromDB() {
+    	
+    	return flightMapper.selectWIthCity();
     }
 
     public void calculateCost() {
@@ -131,6 +146,7 @@ public class FlightServiceImp implements IFlightService {
     public void calculteWaitTime() {
     	
     }
+
     
     
 }
