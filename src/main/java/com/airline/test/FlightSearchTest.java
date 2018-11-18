@@ -44,4 +44,8 @@ public class FlightSearchTest {
 			System.out.println("");
 		}
 	}
+	
+	@Test
+	public void testDaysOfLongestPath(){
+	}
 }

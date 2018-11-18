@@ -2,6 +2,7 @@ package com.airline.services;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.airline.bean.FlightExample;
 import com.airline.bean.SearchData;
 import com.airline.bean.FlightExample.Criteria;
 import com.airline.dao.FlightMapper;
+import com.airline.services.Utils.DateUtil;
 @Service
 public class FlightServiceImp implements IFlightService {
 
@@ -122,8 +124,32 @@ public class FlightServiceImp implements IFlightService {
      * check record in Table flightRecord, find if there is a flight is canceled
      * in schedule. 
      */
-    public void checkFlightRecord(Date startDate, List<List<Flight>> path) {
+    public void checkFlightRecord(java.util.Date date, List<List<Flight>> path) {
+    	int span = getFlightsTimeSpan(path);
+//    	System.out.println(getFlightsTimeSpan(path));
+    	try {
+			System.out.println(DateUtil.getNextDasByNumber(date, span));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
+    }
+    
+    public int getFlightsTimeSpan(List<List<Flight>> path) {
+    	int max = 0;
+    	for(List<Flight> list : path) {
+    		int span = 0;
+    		for(int i=0; i<list.size()-1;i++) {
+    			if(!list.get(i).getArrivetime().before(list.get(i+1).getTakeofftime())) {
+    				span++;
+    			}
+    		}
+    		if(span>=max) {
+    			max = span;
+    		}
+    	}
+    	return max;
     }
     
     /**
