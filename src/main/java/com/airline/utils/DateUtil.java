@@ -1,4 +1,4 @@
-package com.airline.services.Utils;
+package com.airline.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,4 +24,28 @@ public class DateUtil {
         Date date=(Date) calendar.getTime();//calendar 转 date  类型
         return date;
     }
+	
+	/**
+	 * Convert sql.date to util,date
+	 * @param sqlDate
+	 * @return
+	 */
+	public static java.util.Date convertFromSQLDateToJAVADate(
+            java.sql.Date sqlDate) {
+        java.util.Date javaDate = null;
+        if (sqlDate != null) {
+            javaDate = new Date(sqlDate.getTime());
+        }
+        return javaDate;
+    }
+	
+	/**
+	 * Convert util.date to sql.date+
+	 * @param utilDate
+	 * @return
+	 */
+	public static java.sql.Date convertFromJavaDateToSqlDate(java.util.Date utilDate){
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		return sqlDate;
+	}
 }

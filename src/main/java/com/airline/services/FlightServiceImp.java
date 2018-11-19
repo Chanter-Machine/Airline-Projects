@@ -1,10 +1,17 @@
 package com.airline.services;
-
-import java.sql.Date;
+/**
+ * 
+ * @author Chaofan
+ * 
+ */
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,15 +20,18 @@ import com.airline.bean.Flight;
 import com.airline.bean.FlightExample;
 import com.airline.bean.SearchData;
 import com.airline.bean.FlightExample.Criteria;
+import com.airline.bean.FlightRecord;
 import com.airline.dao.FlightMapper;
-import com.airline.services.Utils.DateUtil;
+import com.airline.utils.DateUtil;
 @Service
 public class FlightServiceImp implements IFlightService {
 
 	@Autowired
 	FlightMapper flightMapper;
+	@Autowired
+	IFlightRecordService flightRecordService;
 	FlightExample flightExample;
-    List<Flight> flights ;
+    List<Flight> flights;
 	
 	public List<Flight> getFlightsFromDB() {
 		flights = flightMapper.selectByExample(flightExample);
@@ -36,8 +46,8 @@ public class FlightServiceImp implements IFlightService {
 	    depthFirst(graph, visited, end, results);
         List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();
 
-	    //Remove the canceled.
-
+//	    Remove the canceled.
+        
         //get flights
         return convertNodes2Flight(results, mappedFlights);
 	}
@@ -73,7 +83,7 @@ public class FlightServiceImp implements IFlightService {
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
 		
-		checkFlightRecord(searchData.getTraveldate(), results);
+		results = checkFlightRecord(searchData.getTraveldate(), results);
 		
 		return results;
 	}
@@ -123,19 +133,76 @@ public class FlightServiceImp implements IFlightService {
     /**
      * check record in Table flightRecord, find if there is a flight is canceled
      * in schedule. 
+     * @param date Date of takeoff.
      */
-    public void checkFlightRecord(java.util.Date date, List<List<Flight>> path) {
+    public List<List<Flight>> checkFlightRecord(java.util.Date startDate, List<List<Flight>> path) {
     	int span = getFlightsTimeSpan(path);
 //    	System.out.println(getFlightsTimeSpan(path));
+    	Date arriveDate = new Date();
     	try {
-			System.out.println(DateUtil.getNextDasByNumber(date, span));
+		  arriveDate = DateUtil.getNextDasByNumber(startDate, span);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	List<FlightRecord> records = flightRecordService.getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
+    			DateUtil.convertFromJavaDateToSqlDate(arriveDate));
+//    	System.out.println("records size = "+ records.size());
+    	List<Integer> listOfFlightId = new ArrayList<Integer>();
+    	for(FlightRecord flightRecord : records) {
+    		listOfFlightId.add(flightRecord.getFlightid());
+    	}
     	
+    	List<List<Flight>> newPath = new ArrayList<List<Flight>>();
+    	
+    	for(List<Flight> list : path) {
+    		
+    		boolean removeFlag = false;
+    		Map<Integer, Date> map = getMapOfFlightandDate(list, startDate);
+    		
+    		for (Entry<Integer, Date> entry : map.entrySet()) { 
+    			for(FlightRecord flightRecord: records) {
+    				if(flightRecord.getFlightid().equals(entry.getKey()) && 
+    						flightRecord.getDate().equals(entry.getValue())) {
+    					removeFlag = true;
+    					break;
+    				}
+    				else {
+    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
+    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
+    				}
+
+    			}
+    		}
+    		
+    		if(!removeFlag) newPath.add(list);
+    	}
+    	return newPath;
     }
     
+    public Map<Integer, Date> getMapOfFlightandDate(List<Flight> list, Date startDate) {
+    	Map<Integer, Date> map = new HashMap<Integer, Date>();
+    	map.put(list.get(0).getFlightid(), startDate);
+    	for(int i=1;i<list.size();i++) {
+//    		System.out.println("list size"+list.size());
+    		if(list.get(i).getTakeofftime().before(list.get(i-1).getArrivetime())) {
+    			map.put(list.get(i).getFlightid(), new Date(startDate.getTime()+3600*24*1000));
+//    			System.out.println(new Date(startDate.getTime()+3600*24*1000));
+    		}
+    		else {
+    			map.put(list.get(i).getFlightid(), map.get(i-1));
+//    			System.out.println(map.get(i-1));
+    		}
+    	}
+    	return map;
+    }
+    
+    
+    /**
+     * Input several path and return the last date of all possible 
+     * arrival date.
+     * @param path
+     * @return
+     */
     public int getFlightsTimeSpan(List<List<Flight>> path) {
     	int max = 0;
     	for(List<Flight> list : path) {
@@ -157,7 +224,6 @@ public class FlightServiceImp implements IFlightService {
      */
     @Override
     public List<Flight> getFlightsWithCityFromDB() {
-    	
     	return flightMapper.selectWIthCity();
     }
 

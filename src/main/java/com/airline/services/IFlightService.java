@@ -13,5 +13,5 @@ public interface IFlightService {
 	public List<List<Flight>> searchPath(Graph graph, String start, String end);
 	public List<List<Flight>> searchFlights(SearchData searchData);
 	public List<Flight> getFlightsWithCityFromDB();
-	public void checkFlightRecord(java.util.Date startDate, List<List<Flight>> path);
+//	public void checkFlightRecord(java.util.Date startDate, List<List<Flight>> path);
 }

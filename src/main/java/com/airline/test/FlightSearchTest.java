@@ -1,5 +1,7 @@
 package com.airline.test;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.junit.Test;
@@ -20,7 +22,7 @@ public class FlightSearchTest {
 	@Autowired
 	IFlightService flightService;
 	
-	@Test
+//	@Test
 	public void searchFlightsWithCity() {
 		List<Flight> results = flightService.getFlightsWithCityFromDB();
 		for(Flight flight: results) {
@@ -29,7 +31,7 @@ public class FlightSearchTest {
 		}
 	}
 	
-	@Test
+//	@Test
 	public void searchAvailablePath() {
 		SearchData searchData = new SearchData();
 		searchData.setDestination(1);
@@ -46,6 +48,31 @@ public class FlightSearchTest {
 	}
 	
 	@Test
-	public void testDaysOfLongestPath(){
+	public void testRemovePath(){
+		Date date = new Date();
+		//
+		GregorianCalendar gc = new GregorianCalendar(2010,1,01);
+//		gc.set(Calendar.YEAR,2010);//设置年
+//		gc.set(Calendar.MONTH, 1);//这里0是1月..以此向后推
+//		gc.set(Calendar.DAY_OF_MONTH, 1);//设置天
+//		gc.set(Calendar.HOUR, 0);
+		date = gc.getTime();
+
+		SearchData searchData = new SearchData();
+		searchData.setDestination(1);
+		searchData.setOrigin(5);
+		searchData.setTraveldate(date);
+		System.out.println(date);
+		searchData.setTraveldate(date);
+		List<List<Flight>> results = flightService.searchFlights(searchData);
+//		System.out.println(results.size());
+		for(List<Flight> list : results)
+		{
+			for(Flight flight : list) {
+				System.out.print(flight.getFlightid()+"");
+			}
+			System.out.println("");
+		}
+		
 	}
 }
