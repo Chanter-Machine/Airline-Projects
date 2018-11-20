@@ -44,10 +44,7 @@ public class FlightServiceImp implements IFlightService {
         visited.add(start);
         //Find all available routine.
 	    depthFirst(graph, visited, end, results);
-        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();
-
-//	    Remove the canceled.
-        
+        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();     
         //get flights
         return convertNodes2Flight(results, mappedFlights);
 	}
@@ -83,9 +80,15 @@ public class FlightServiceImp implements IFlightService {
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
 		
+		//Remove the path which a flight is canceled on a specific day.
 		results = checkFlightRecord(searchData.getTraveldate(), results);
+		//Check there are enough seats for those path
 		
 		return results;
+	}
+	
+	public void checkSeats(List<List<Flight>> path) {
+		
 	}
 	
 	/**
@@ -146,11 +149,6 @@ public class FlightServiceImp implements IFlightService {
 		}
     	List<FlightRecord> records = flightRecordService.getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
     			DateUtil.convertFromJavaDateToSqlDate(arriveDate));
-//    	System.out.println("records size = "+ records.size());
-    	List<Integer> listOfFlightId = new ArrayList<Integer>();
-    	for(FlightRecord flightRecord : records) {
-    		listOfFlightId.add(flightRecord.getFlightid());
-    	}
     	
     	List<List<Flight>> newPath = new ArrayList<List<Flight>>();
     	
@@ -170,7 +168,6 @@ public class FlightServiceImp implements IFlightService {
     					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
     					System.out.println(flightRecord.getDate()+" "+entry.getValue());
     				}
-
     			}
     		}
     		
@@ -183,14 +180,11 @@ public class FlightServiceImp implements IFlightService {
     	Map<Integer, Date> map = new HashMap<Integer, Date>();
     	map.put(list.get(0).getFlightid(), startDate);
     	for(int i=1;i<list.size();i++) {
-//    		System.out.println("list size"+list.size());
     		if(list.get(i).getTakeofftime().before(list.get(i-1).getArrivetime())) {
     			map.put(list.get(i).getFlightid(), new Date(startDate.getTime()+3600*24*1000));
-//    			System.out.println(new Date(startDate.getTime()+3600*24*1000));
     		}
     		else {
     			map.put(list.get(i).getFlightid(), map.get(i-1));
-//    			System.out.println(map.get(i-1));
     		}
     	}
     	return map;

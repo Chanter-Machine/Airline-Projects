@@ -5,6 +5,8 @@ public class Plane {
 
     private String manufacturer;
 
+    private String model;
+
     private Integer numoffirstclass;
 
     private Integer numofbusinessclass;
@@ -25,6 +27,14 @@ public class Plane {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer == null ? null : manufacturer.trim();
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model == null ? null : model.trim();
     }
 
     public Integer getNumoffirstclass() {

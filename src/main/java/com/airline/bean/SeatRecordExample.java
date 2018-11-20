@@ -1,16 +1,20 @@
 package com.airline.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
-public class SeatrecordExample {
+import org.springframework.stereotype.Component;
+@Component
+public class SeatRecordExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public SeatrecordExample() {
+    public SeatRecordExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -102,6 +106,32 @@ public class SeatrecordExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andSeatrecordidIsNull() {
@@ -234,183 +264,303 @@ public class SeatrecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstIsNull() {
-            addCriterion("availFirst is null");
+        public Criteria andBookedfirstIsNull() {
+            addCriterion("bookedFirst is null");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstIsNotNull() {
-            addCriterion("availFirst is not null");
+        public Criteria andBookedfirstIsNotNull() {
+            addCriterion("bookedFirst is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstEqualTo(Integer value) {
-            addCriterion("availFirst =", value, "availfirst");
+        public Criteria andBookedfirstEqualTo(Integer value) {
+            addCriterion("bookedFirst =", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstNotEqualTo(Integer value) {
-            addCriterion("availFirst <>", value, "availfirst");
+        public Criteria andBookedfirstNotEqualTo(Integer value) {
+            addCriterion("bookedFirst <>", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstGreaterThan(Integer value) {
-            addCriterion("availFirst >", value, "availfirst");
+        public Criteria andBookedfirstGreaterThan(Integer value) {
+            addCriterion("bookedFirst >", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstGreaterThanOrEqualTo(Integer value) {
-            addCriterion("availFirst >=", value, "availfirst");
+        public Criteria andBookedfirstGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bookedFirst >=", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstLessThan(Integer value) {
-            addCriterion("availFirst <", value, "availfirst");
+        public Criteria andBookedfirstLessThan(Integer value) {
+            addCriterion("bookedFirst <", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstLessThanOrEqualTo(Integer value) {
-            addCriterion("availFirst <=", value, "availfirst");
+        public Criteria andBookedfirstLessThanOrEqualTo(Integer value) {
+            addCriterion("bookedFirst <=", value, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstIn(List<Integer> values) {
-            addCriterion("availFirst in", values, "availfirst");
+        public Criteria andBookedfirstIn(List<Integer> values) {
+            addCriterion("bookedFirst in", values, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstNotIn(List<Integer> values) {
-            addCriterion("availFirst not in", values, "availfirst");
+        public Criteria andBookedfirstNotIn(List<Integer> values) {
+            addCriterion("bookedFirst not in", values, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstBetween(Integer value1, Integer value2) {
-            addCriterion("availFirst between", value1, value2, "availfirst");
+        public Criteria andBookedfirstBetween(Integer value1, Integer value2) {
+            addCriterion("bookedFirst between", value1, value2, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailfirstNotBetween(Integer value1, Integer value2) {
-            addCriterion("availFirst not between", value1, value2, "availfirst");
+        public Criteria andBookedfirstNotBetween(Integer value1, Integer value2) {
+            addCriterion("bookedFirst not between", value1, value2, "bookedfirst");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessIsNull() {
-            addCriterion("availBusiness is null");
+        public Criteria andBookedbusinessIsNull() {
+            addCriterion("bookedBusiness is null");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessIsNotNull() {
-            addCriterion("availBusiness is not null");
+        public Criteria andBookedbusinessIsNotNull() {
+            addCriterion("bookedBusiness is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessEqualTo(Integer value) {
-            addCriterion("availBusiness =", value, "availbusiness");
+        public Criteria andBookedbusinessEqualTo(Integer value) {
+            addCriterion("bookedBusiness =", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessNotEqualTo(Integer value) {
-            addCriterion("availBusiness <>", value, "availbusiness");
+        public Criteria andBookedbusinessNotEqualTo(Integer value) {
+            addCriterion("bookedBusiness <>", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessGreaterThan(Integer value) {
-            addCriterion("availBusiness >", value, "availbusiness");
+        public Criteria andBookedbusinessGreaterThan(Integer value) {
+            addCriterion("bookedBusiness >", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessGreaterThanOrEqualTo(Integer value) {
-            addCriterion("availBusiness >=", value, "availbusiness");
+        public Criteria andBookedbusinessGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bookedBusiness >=", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessLessThan(Integer value) {
-            addCriterion("availBusiness <", value, "availbusiness");
+        public Criteria andBookedbusinessLessThan(Integer value) {
+            addCriterion("bookedBusiness <", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessLessThanOrEqualTo(Integer value) {
-            addCriterion("availBusiness <=", value, "availbusiness");
+        public Criteria andBookedbusinessLessThanOrEqualTo(Integer value) {
+            addCriterion("bookedBusiness <=", value, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessIn(List<Integer> values) {
-            addCriterion("availBusiness in", values, "availbusiness");
+        public Criteria andBookedbusinessIn(List<Integer> values) {
+            addCriterion("bookedBusiness in", values, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessNotIn(List<Integer> values) {
-            addCriterion("availBusiness not in", values, "availbusiness");
+        public Criteria andBookedbusinessNotIn(List<Integer> values) {
+            addCriterion("bookedBusiness not in", values, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessBetween(Integer value1, Integer value2) {
-            addCriterion("availBusiness between", value1, value2, "availbusiness");
+        public Criteria andBookedbusinessBetween(Integer value1, Integer value2) {
+            addCriterion("bookedBusiness between", value1, value2, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvailbusinessNotBetween(Integer value1, Integer value2) {
-            addCriterion("availBusiness not between", value1, value2, "availbusiness");
+        public Criteria andBookedbusinessNotBetween(Integer value1, Integer value2) {
+            addCriterion("bookedBusiness not between", value1, value2, "bookedbusiness");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylIsNull() {
-            addCriterion("availEconomyl is null");
+        public Criteria andBookedeconomicIsNull() {
+            addCriterion("bookedEconomic is null");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylIsNotNull() {
-            addCriterion("availEconomyl is not null");
+        public Criteria andBookedeconomicIsNotNull() {
+            addCriterion("bookedEconomic is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylEqualTo(Integer value) {
-            addCriterion("availEconomyl =", value, "availeconomyl");
+        public Criteria andBookedeconomicEqualTo(Integer value) {
+            addCriterion("bookedEconomic =", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylNotEqualTo(Integer value) {
-            addCriterion("availEconomyl <>", value, "availeconomyl");
+        public Criteria andBookedeconomicNotEqualTo(Integer value) {
+            addCriterion("bookedEconomic <>", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylGreaterThan(Integer value) {
-            addCriterion("availEconomyl >", value, "availeconomyl");
+        public Criteria andBookedeconomicGreaterThan(Integer value) {
+            addCriterion("bookedEconomic >", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylGreaterThanOrEqualTo(Integer value) {
-            addCriterion("availEconomyl >=", value, "availeconomyl");
+        public Criteria andBookedeconomicGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bookedEconomic >=", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylLessThan(Integer value) {
-            addCriterion("availEconomyl <", value, "availeconomyl");
+        public Criteria andBookedeconomicLessThan(Integer value) {
+            addCriterion("bookedEconomic <", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylLessThanOrEqualTo(Integer value) {
-            addCriterion("availEconomyl <=", value, "availeconomyl");
+        public Criteria andBookedeconomicLessThanOrEqualTo(Integer value) {
+            addCriterion("bookedEconomic <=", value, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylIn(List<Integer> values) {
-            addCriterion("availEconomyl in", values, "availeconomyl");
+        public Criteria andBookedeconomicIn(List<Integer> values) {
+            addCriterion("bookedEconomic in", values, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylNotIn(List<Integer> values) {
-            addCriterion("availEconomyl not in", values, "availeconomyl");
+        public Criteria andBookedeconomicNotIn(List<Integer> values) {
+            addCriterion("bookedEconomic not in", values, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylBetween(Integer value1, Integer value2) {
-            addCriterion("availEconomyl between", value1, value2, "availeconomyl");
+        public Criteria andBookedeconomicBetween(Integer value1, Integer value2) {
+            addCriterion("bookedEconomic between", value1, value2, "bookedeconomic");
             return (Criteria) this;
         }
 
-        public Criteria andAvaileconomylNotBetween(Integer value1, Integer value2) {
-            addCriterion("availEconomyl not between", value1, value2, "availeconomyl");
+        public Criteria andBookedeconomicNotBetween(Integer value1, Integer value2) {
+            addCriterion("bookedEconomic not between", value1, value2, "bookedeconomic");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateIsNull() {
+            addCriterion("date is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateIsNotNull() {
+            addCriterion("date is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateEqualTo(Date value) {
+            addCriterionForJDBCDate("date =", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("date <>", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateGreaterThan(Date value) {
+            addCriterionForJDBCDate("date >", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("date >=", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLessThan(Date value) {
+            addCriterionForJDBCDate("date <", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("date <=", value, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateIn(List<Date> values) {
+            addCriterionForJDBCDate("date in", values, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("date not in", values, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("date between", value1, value2, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andDateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("date not between", value1, value2, "date");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidIsNull() {
+            addCriterion("planeId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidIsNotNull() {
+            addCriterion("planeId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidEqualTo(Integer value) {
+            addCriterion("planeId =", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidNotEqualTo(Integer value) {
+            addCriterion("planeId <>", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidGreaterThan(Integer value) {
+            addCriterion("planeId >", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("planeId >=", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidLessThan(Integer value) {
+            addCriterion("planeId <", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidLessThanOrEqualTo(Integer value) {
+            addCriterion("planeId <=", value, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidIn(List<Integer> values) {
+            addCriterion("planeId in", values, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidNotIn(List<Integer> values) {
+            addCriterion("planeId not in", values, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidBetween(Integer value1, Integer value2) {
+            addCriterion("planeId between", value1, value2, "planeid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlaneidNotBetween(Integer value1, Integer value2) {
+            addCriterion("planeId not between", value1, value2, "planeid");
             return (Criteria) this;
         }
     }
