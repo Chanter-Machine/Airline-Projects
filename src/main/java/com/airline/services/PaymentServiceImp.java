@@ -4,10 +4,12 @@ import com.airline.bean.*;
 import com.airline.dao.OrderMapper;
 import com.airline.dao.PaymentrecordMapper;
 import com.airline.services.PaymentApproach.IPaymentApproach;
-import org.junit.Test;
+import com.airline.services.PaymentApproach.PayByPayPal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,18 @@ public class PaymentServiceImp implements IPaymentService {
     private OrderMapper orderMapper;
 
     private IPaymentApproach paymentApproach;
+
+    public PaymentServiceImp(HttpServletRequest request) {
+        if (request.getParameter("payment_type").equals("paypal")) {
+            this.paymentApproach = new PayByPayPal();
+        } else {
+            this.paymentApproach = null;
+        }
+    }
+
+    public void setPaymentApproach(IPaymentApproach paymentApproach) {
+        this.paymentApproach = paymentApproach;
+    }
 
     public Paymentrecord queryPayment(Integer paymentId) {
         if (paymentId == null) {
@@ -61,9 +75,14 @@ public class PaymentServiceImp implements IPaymentService {
         return paymentrecordList;
     }
 
-    //todo invoke PaymentApproach.pay();
-    public boolean pay(Passenger passenger, Order order) {
-
-        return false;
+    @Override
+    public boolean pay(HttpServletRequest request, HttpServletResponse response) {
+        if (this.paymentApproach == null) {
+            System.out.println("Error: paymentApproach is null");
+            return false;
+        }
+        return paymentApproach.pay(request, response);
     }
+
+
 }
