@@ -83,4 +83,21 @@ public class SeatRecord {
 		this.plane = plane;
 	}
 	
+	public boolean checkAvailableSeats() {
+		if(bookedbusiness<plane.getNumofbusinessclass() || 
+		   bookedeconomic<plane.getNumofeconomyclass() ||
+		   bookedfirst<plane.getNumoffirstclass()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "SeatRecord [seatrecordid=" + seatrecordid + ", flightid=" + flightid + ", bookedfirst=" + bookedfirst
+				+ ", bookedbusiness=" + bookedbusiness + ", bookedeconomic=" + bookedeconomic + ", date=" + date
+				+ ", planeid=" + planeid + ", plane=" + plane + "]";
+	}
+	
+	
 }

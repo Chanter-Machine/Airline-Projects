@@ -5,7 +5,6 @@ package com.airline.services;
  * 
  */
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,18 +18,32 @@ import org.springframework.stereotype.Service;
 import com.airline.bean.Flight;
 import com.airline.bean.FlightExample;
 import com.airline.bean.SearchData;
+import com.airline.bean.SeatRecord;
+import com.airline.bean.SeatRecordExample;
 import com.airline.bean.FlightExample.Criteria;
 import com.airline.bean.FlightRecord;
+import com.airline.bean.FlightRecordExample;
 import com.airline.dao.FlightMapper;
+import com.airline.dao.FlightRecordMapper;
+import com.airline.dao.SeatRecordMapper;
 import com.airline.utils.DateUtil;
 @Service
 public class FlightServiceImp implements IFlightService {
 
 	@Autowired
 	FlightMapper flightMapper;
+
 	@Autowired
-	IFlightRecordService flightRecordService;
+	FlightRecordMapper flightRecordMapper;
+	
+	@Autowired
+	SeatRecordMapper seatRecordMapper;
+	
+	@Autowired
+	ISeatRecordService seatRecordService;
+	
 	FlightExample flightExample;
+	
     List<Flight> flights;
 	
 	public List<Flight> getFlightsFromDB() {
@@ -83,55 +96,44 @@ public class FlightServiceImp implements IFlightService {
 		//Remove the path which a flight is canceled on a specific day.
 		results = checkFlightRecord(searchData.getTraveldate(), results);
 		//Check there are enough seats for those path
-		
+		results = checkSeats(searchData.getTraveldate(), results);
 		return results;
 	}
 	
-	public void checkSeats(List<List<Flight>> path) {
-		
+	/**
+	 * Input all the available path and check whether there still enough seats
+	 * for the trip. If a flight in a path is full booked, then this path will
+	 * not appeared in the results.
+	 * @param path
+	 * @param startDate
+	 * @return
+	 */
+	public List<List<Flight>> checkSeats(Date startDate, List<List<Flight>> path) {
+		List<List<Flight>> newPath = new ArrayList<List<Flight>>(); 
+		for(List<Flight> list:path) {
+			boolean availableFlag = true;
+			Map<Integer, Date> mapOfFlightandDate = getMapOfFlightandDate(list, startDate);
+			for(Flight flight : list) {
+				System.out.println(flight.getFlightid());
+				java.sql.Date sqlDate = DateUtil.convertFromJavaDateToSqlDate(mapOfFlightandDate.get(flight.getFlightid()));
+				List<SeatRecord> seatRecord = getSeatRecordByDateAndflight(sqlDate, 
+						flight.getFlightid());
+				if(seatRecord!=null&&seatRecord.size()>0) {
+					if(!seatRecord.get(0).checkAvailableSeats()) {
+						availableFlag = false;
+					}
+				}
+			}
+			System.out.println("");
+			
+			if(availableFlag==true) {
+				newPath.add(list);
+			}
+		}
+		return newPath;
 	}
 	
-	/**
-	 * Algorithms that find each path from flight table.
-	 * @param graph
-	 * @param visited
-	 * @param end
-	 * @param results
-	 */
-	private void depthFirst(Graph graph, LinkedList<String> visited, String end, List<List<String>> results) {
-        LinkedList<String> nodes = graph.adjacentNodes(visited.getLast());
-        // examine adjacent nodes
-        for (String node : nodes) {
-            if (visited.contains(node)) {
-                continue;
-            }
-            if (node.equals(end)) {
-                visited.add(node);
-                printPath(visited, results);
-                visited.removeLast();
-                break;
-            }
-        }
-        for (String node : nodes) {
-            if (visited.contains(node) || node.equals(end)) {
-                continue;
-            }
-            visited.addLast(node);
-            depthFirst(graph, visited, end, results);
-            visited.removeLast();
-        }
-    }
-
-    private void printPath(LinkedList<String> visited, List<List<String>> results) {
-    	List<String>  result = new ArrayList<String>();
-        for (String node : visited) {
-//            System.out.print(node);
-//            System.out.print(" ");
-            result.add(node);
-        }
-        results.add(result);
-//        System.out.println();
-    }
+	
     
     /**
      * check record in Table flightRecord, find if there is a flight is canceled
@@ -147,7 +149,7 @@ public class FlightServiceImp implements IFlightService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	List<FlightRecord> records = flightRecordService.getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
+    	List<FlightRecord> records = getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
     			DateUtil.convertFromJavaDateToSqlDate(arriveDate));
     	
     	List<List<Flight>> newPath = new ArrayList<List<Flight>>();
@@ -233,6 +235,66 @@ public class FlightServiceImp implements IFlightService {
     	
     }
 
+    /**
+	 * Algorithms that find each path from flight table.
+	 * @param graph
+	 * @param visited
+	 * @param end
+	 * @param results
+	 */
+	private void depthFirst(Graph graph, LinkedList<String> visited, String end, List<List<String>> results) {
+        LinkedList<String> nodes = graph.adjacentNodes(visited.getLast());
+        // examine adjacent nodes
+        for (String node : nodes) {
+            if (visited.contains(node)) {
+                continue;
+            }
+            if (node.equals(end)) {
+                visited.add(node);
+                printPath(visited, results);
+                visited.removeLast();
+                break;
+            }
+        }
+        for (String node : nodes) {
+            if (visited.contains(node) || node.equals(end)) {
+                continue;
+            }
+            visited.addLast(node);
+            depthFirst(graph, visited, end, results);
+            visited.removeLast();
+        }
+    }
+
+    private void printPath(LinkedList<String> visited, List<List<String>> results) {
+    	List<String>  result = new ArrayList<String>();
+        for (String node : visited) {
+//            System.out.print(node);
+//            System.out.print(" ");
+            result.add(node);
+        }
+        results.add(result);
+    }
     
+    /**
+     * Get Flight Record
+     * @param takeoffDate
+     * @param arriveDate
+     * @return
+     */
+    public List<FlightRecord> getRecord(Date takeoffDate, Date arriveDate) {
+		FlightRecordExample flightRecordexample = new FlightRecordExample();
+		com.airline.bean.FlightRecordExample.Criteria criteria = flightRecordexample.createCriteria();
+		criteria.andDateBetween(takeoffDate, arriveDate);
+		return flightRecordMapper.selectByExample(flightRecordexample);
+	}
     
+    public List<SeatRecord> getSeatRecordByDateAndflight(Date takeoffDate, int flightId) {
+		SeatRecordExample example = new SeatRecordExample(); 
+		com.airline.bean.SeatRecordExample.Criteria criteria = example.createCriteria();
+		criteria.andDateEqualTo(takeoffDate);
+		criteria.andFlightidEqualTo(flightId+"");
+		System.out.println(flightId);
+		return seatRecordMapper.selectByExampleWithPlane(example);
+	}
 }

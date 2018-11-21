@@ -46,8 +46,8 @@ public class FlightSearchTest {
 		}
 	}
 	
-	@Test
-	public void testRemovePath(){
+//	@Test
+	public void testRemovePathByFlightRecord(){
 		Date date = new Date();
 		//
 		GregorianCalendar gc = new GregorianCalendar(2010,1,01);
@@ -65,6 +65,31 @@ public class FlightSearchTest {
 		searchData.setTraveldate(date);
 		List<List<Flight>> results = flightService.searchFlights(searchData);
 //		System.out.println(results.size());
+		for(List<Flight> list : results)
+		{
+			for(Flight flight : list) {
+				System.out.print(flight.getFlightid()+"");
+			}
+			System.out.println("");
+		}
+		
+	}
+	
+	@Test
+	public void testRemovePathBySeatRecord(){
+		Date date = new Date();
+		GregorianCalendar gc = new GregorianCalendar(2010,1,01);
+
+		date = gc.getTime();
+
+		SearchData searchData = new SearchData();
+		searchData.setDestination(1);
+		searchData.setOrigin(5);
+		searchData.setTraveldate(date);
+		System.out.println(date);
+		searchData.setTraveldate(date);
+		List<List<Flight>> results = flightService.searchFlights(searchData);
+
 		for(List<Flight> list : results)
 		{
 			for(Flight flight : list) {

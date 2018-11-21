@@ -20,9 +20,8 @@ public class FlightRecordImp implements IFlightRecordService {
 	@Autowired
 	FlightRecordMapper flightRecordMapper;
 	
-	FlightRecordExample flightRecordexample = new FlightRecordExample();
-	
 	public List<FlightRecord> getRecord(Date takeoffDate, Date arriveDate) {
+		FlightRecordExample flightRecordexample = new FlightRecordExample();
 		Criteria criteria = flightRecordexample.createCriteria();
 		criteria.andDateBetween(takeoffDate, arriveDate);
 		return flightRecordMapper.selectByExample(flightRecordexample);

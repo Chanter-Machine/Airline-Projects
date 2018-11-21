@@ -60,4 +60,12 @@ public class Plane {
     public void setNumofeconomyclass(Integer numofeconomyclass) {
         this.numofeconomyclass = numofeconomyclass;
     }
+
+	@Override
+	public String toString() {
+		return "Plane [planeid=" + planeid + ", manufacturer=" + manufacturer + ", model=" + model
+				+ ", numoffirstclass=" + numoffirstclass + ", numofbusinessclass=" + numofbusinessclass
+				+ ", numofeconomyclass=" + numofeconomyclass + "]";
+	}
+    
 }

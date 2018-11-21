@@ -13,15 +13,17 @@ import com.airline.dao.SeatRecordMapper;
 @Service
 public class SeatRecordServiceImp implements ISeatRecordService {
 //	@Autowired
-	SeatRecordExample example = new SeatRecordExample();
+//	SeatRecordExample example;
 	@Autowired
 	SeatRecordMapper seatRecordMapper;
 	
 	@Override
 	public List<SeatRecord> getSeatRecordByDateAndflight(Date takeoffDate, int flightId) {
+		SeatRecordExample example = new SeatRecordExample(); 
 		Criteria criteria = example.createCriteria();
 		criteria.andDateEqualTo(takeoffDate);
 		criteria.andFlightidEqualTo(flightId+"");
+		System.out.println(flightId);
 		return seatRecordMapper.selectByExampleWithPlane(example);
 	}
 

@@ -24,7 +24,7 @@
     	<result column="manufacturer" property="manufacturer"/>
     	<result column="model" property="model"/>
     	<result column="numOfFirstClass" property="numoffirstclass"/>
-    	<result column="nunOfBusinessClass" property="nunofbusinessclass"/>
+    	<result column="numOfBusinessClass" property="numofbusinessclass"/>
     	<result column="numOfEconomyClass" property="numofeconomyclass"/>
     </association>
   </resultMap>
@@ -109,20 +109,21 @@
     from seatrecord
     where seatRecordId = #{seatrecordid,jdbcType=INTEGER}
   </select>
-  <select id="selectByExampleWithPlane" parameterType="com.airline.bean.SeatRecordExample" resultMap="ResultMapWithPlane">
+  <select id="selectByExampleWithPlane" parameterType="com.airline.bean.SeatRecordExample" resultMap="ResultMapWithPlane" 
+  >
     select
     <if test="distinct">
       distinct
     </if>
     s.seatRecordId, s.flightId, s.bookedFirst, s.bookedBusiness, s.bookedEconomic, s.date, s.planeId, 
- p.planeId, p.manufacturer, p.model, p.numOfFirstClass, p.numOfBusinessClass, p.numOfEconomyClass 
+ 	p.planeId, p.manufacturer, p.model, p.numOfFirstClass, p.numOfBusinessClass, p.numOfEconomyClass 
     FROM seatrecord s LEFT JOIN plane p ON s.planeId = p.planeId 
-   <!--  <if test="_parameter != null">
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null">
       order by ${orderByClause}
-    </if> -->
+    </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from seatrecord

@@ -25,9 +25,11 @@ public class SeatRecordTest {
 	public void getSeatRecord() {
 		GregorianCalendar gc = new GregorianCalendar(2010,1,1);
 		Date takeoffDate =  DateUtil.convertFromJavaDateToSqlDate(gc.getTime());
-		int flightId = 7;
-		if(takeoffDate==null) System.out.println("asdf");
+		int flightId = 3;
 		List<SeatRecord> records = seatRecordService.getSeatRecordByDateAndflight(takeoffDate, flightId);
-		System.out.println(records.get(0).getPlane().getManufacturer());
+		if(records!=null) {
+			System.out.println(records);
+//			System.out.println(records.get(0).getPlane().getManufacturer());
+		}
 	}
 }
