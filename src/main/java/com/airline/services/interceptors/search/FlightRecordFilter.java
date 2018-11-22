@@ -46,7 +46,6 @@ public class FlightRecordFilter implements IPathFilter {
     				if(flightRecord.getFlightid().equals(entry.getKey()) && 
     						flightRecord.getDate().equals(entry.getValue())) {
     					removeFlag = true;
-//    					System.out.println("==============");
     					break;
     				}
     				else {

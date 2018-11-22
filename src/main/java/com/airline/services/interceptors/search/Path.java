@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.airline.bean.Flight;
+import com.airline.services.strategy.sorting.SortingFactory;
+
 @Component
 public class Path {
 	@Autowired
@@ -21,13 +23,22 @@ public class Path {
 	@Qualifier("flightRecordFilter")
 	IPathFilter flightRecordFilter;
 	
+	@Autowired
+	Target target;
+	
+	@Autowired
+	SortingFactory sortingFactory;
+	
+	
 //	public void setFilterManager(FilterManager filterManager){
 //		pathFilterManager = filterManager;
 //	}
  
-	public void doFilter(Date takeoffDate, List<List<Flight>> path){
+	public void doFilter(Date takeoffDate, List<List<Flight>> path, String sortingRequirement){
+		pathFilterManager.setTarget(target);
 		pathFilterManager.setFilter(flightRecordFilter);
 		pathFilterManager.setFilter(seatRecordFilter);
+		target.getSortingObject(sortingFactory.getSortingObject(sortingRequirement));
 		pathFilterManager.filterRequest(takeoffDate, path);
 	}
 

@@ -31,6 +31,7 @@ import com.airline.services.interceptors.search.FlightRecordFilter;
 import com.airline.services.interceptors.search.IPathFilter;
 import com.airline.services.interceptors.search.Path;
 import com.airline.services.interceptors.search.SeatRecordFilter;
+import com.airline.services.strategy.sorting.SortingFactory;
 import com.airline.utils.DateUtil;
 @Service
 public class FlightServiceImp implements IFlightService {
@@ -107,7 +108,7 @@ public class FlightServiceImp implements IFlightService {
 //		results = checkSeats(searchData.getTraveldate(), results);
 		
 		//Use Path Interceptor filter
-		path.doFilter(searchData.getTraveldate(), results);
+		path.doFilter(searchData.getTraveldate(), results, searchData.getOptions());
 		return results;
 	}
 	
@@ -125,7 +126,7 @@ public class FlightServiceImp implements IFlightService {
 			boolean availableFlag = true;
 			Map<Integer, Date> mapOfFlightandDate = getMapOfFlightandDate(list, startDate);
 			for(Flight flight : list) {
-				System.out.println(flight.getFlightid());
+//				System.out.println(flight.getFlightid());
 				java.sql.Date sqlDate = DateUtil.convertFromJavaDateToSqlDate(mapOfFlightandDate.get(flight.getFlightid()));
 				List<SeatRecord> seatRecord = getSeatRecordByDateAndflight(sqlDate, 
 						flight.getFlightid());
@@ -135,7 +136,7 @@ public class FlightServiceImp implements IFlightService {
 					}
 				}
 			}
-			System.out.println("");
+//			System.out.println("");
 			
 			if(availableFlag==true) {
 				newPath.add(list);
@@ -178,8 +179,8 @@ public class FlightServiceImp implements IFlightService {
     					break;
     				}
     				else {
-    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
-    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
+//    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
+//    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
     				}
     			}
     		}
@@ -305,7 +306,7 @@ public class FlightServiceImp implements IFlightService {
 		com.airline.bean.SeatRecordExample.Criteria criteria = example.createCriteria();
 		criteria.andDateEqualTo(takeoffDate);
 		criteria.andFlightidEqualTo(flightId+"");
-		System.out.println(flightId);
+//		System.out.println(flightId);
 		return seatRecordMapper.selectByExampleWithPlane(example);
 	}
 }

@@ -19,6 +19,10 @@ public class PathFilterManager {
 	
 	public PathFilterManager() {}
 	
+	public void setTarget(Target target) {
+		pathFilterChain.setTarget(target);
+	}
+	
 	public void setFilter(IPathFilter filter){
 		pathFilterChain.addFilter(filter);
 	}

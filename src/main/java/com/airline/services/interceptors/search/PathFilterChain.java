@@ -19,17 +19,10 @@ public class PathFilterChain {
 	public void execute(Date takeoffDate, List<List<Flight>> path){
 		
 		for (IPathFilter filter : filters) {
-			path = filter.pathFilter(takeoffDate, path);
-//	    	System.out.println("+++++++++++++++++++++++++++++++");
-//	    	for(List<Flight> list:path) {
-//	    		for(Flight flight:list) {
-//	    			System.out.print(flight.getFlightid());
-//	    		}
-//	    		System.out.println("");
-//	    	}
-//	    	System.out.println("+++++++++++++++++++++++++++++++");
+//			path = filter.pathFilter(takeoffDate, path);
 		}
-//	      target.execute(request);
+//		System.out.println(path);
+	    target.execute(takeoffDate, path);
 	}
 	 
 	   public void setTarget(Target target){
