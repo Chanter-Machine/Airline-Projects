@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.airline.bean.Flight;
@@ -26,6 +27,10 @@ import com.airline.bean.FlightRecordExample;
 import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightRecordMapper;
 import com.airline.dao.SeatRecordMapper;
+import com.airline.services.interceptors.search.FlightRecordFilter;
+import com.airline.services.interceptors.search.IPathFilter;
+import com.airline.services.interceptors.search.Path;
+import com.airline.services.interceptors.search.SeatRecordFilter;
 import com.airline.utils.DateUtil;
 @Service
 public class FlightServiceImp implements IFlightService {
@@ -41,6 +46,9 @@ public class FlightServiceImp implements IFlightService {
 	
 	@Autowired
 	ISeatRecordService seatRecordService;
+	
+	@Autowired
+	Path path;
 	
 	FlightExample flightExample;
 	
@@ -94,9 +102,12 @@ public class FlightServiceImp implements IFlightService {
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
 		
 		//Remove the path which a flight is canceled on a specific day.
-		results = checkFlightRecord(searchData.getTraveldate(), results);
+//		results = checkFlightRecord(searchData.getTraveldate(), results);
 		//Check there are enough seats for those path
-		results = checkSeats(searchData.getTraveldate(), results);
+//		results = checkSeats(searchData.getTraveldate(), results);
+		
+		//Use Path Interceptor filter
+		path.doFilter(searchData.getTraveldate(), results);
 		return results;
 	}
 	
