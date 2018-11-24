@@ -24,13 +24,6 @@ public class PaymentServiceImp implements IPaymentService {
 
     private IPaymentApproach paymentApproach;
 
-    public PaymentServiceImp(HttpServletRequest request) {
-        if (request.getParameter("payment_type").equals("paypal")) {
-            this.paymentApproach = new PayByPayPal();
-        } else {
-            this.paymentApproach = null;
-        }
-    }
 
     public void setPaymentApproach(IPaymentApproach paymentApproach) {
         this.paymentApproach = paymentApproach;

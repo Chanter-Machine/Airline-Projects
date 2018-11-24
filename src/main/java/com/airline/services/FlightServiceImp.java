@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.airline.bean.Flight;
 import com.airline.bean.FlightExample;
 import com.airline.bean.FlightExample.Criteria;
-import com.airline.converter.MyDataConverter;
+
 import com.airline.dao.FlightMapper;
 @Service
 public class FlightServiceImp implements IFlightService {

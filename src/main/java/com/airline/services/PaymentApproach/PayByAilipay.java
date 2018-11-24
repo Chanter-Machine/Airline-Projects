@@ -1,12 +1,17 @@
 package com.airline.services.PaymentApproach;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class PayByAilipay implements IPaymentApproach {
 
-    public boolean pay() {
+    @Override
+    public boolean pay(HttpServletRequest request, HttpServletResponse response) {
         return false;
     }
 
-    public boolean refund() {
+    @Override
+    public boolean refund(HttpServletRequest request, HttpServletResponse response) {
         return false;
     }
 }

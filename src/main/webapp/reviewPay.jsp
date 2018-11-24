@@ -18,6 +18,12 @@
     <link href="static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="static/styles/elements_styles.css">
     <link rel="stylesheet" type="text/css" href="static/styles/elements_responsive.css">
+    <style>
+        .modal {
+            color: black;
+            font-size: medium;
+        }
+    </style>
 </head>
 
 <body>
@@ -207,78 +213,103 @@
                                 <hr class="mb-4">
 
                                 <h4 class="mb-3">Payment</h4>
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-4 ">
+                                        <div class="row justify-content-center">
+                                            <div class="col-9">
+                                                <div id="PayPal"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 ">
+                                        <div class="row justify-content-center">
+                                            <div class="col-8">
+                                                <div id="Alipay"><a href="#"><img
+                                                        style="width:126px; height: 54px; "
+                                                        src="/static/images/alipay.png"
+                                                        alt=""></a></div>
+                                            </div>
+                                        </div>
 
-                                <div class="d-block my-3">
-                                    <div class="custom-control custom-radio">
-                                        <label class="custom-control-label" for="credit"><input id="credit"
-                                                                                                name="paymentMethod"
-                                                                                                type="radio" checked=""
-                                                                                                required="">
-                                            <i class="fa fa-cc-mastercard fa-3x text-danger"></i> Master Card</label>
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                        <label class="custom-control-label" for="debit"><input id="debit"
-                                                                                               name="paymentMethod"
-                                                                                               type="radio" required="">
-                                            <i class="fa fa-cc-visa fa-3x text-primary"></i> Visa</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <label class="custom-control-label" for="paypal"><input id="paypal"
-                                                                                                name="paymentMethod"
-                                                                                                type="radio"
-                                                                                                required="">
-                                            <i class="fa fa-paypal fa-3x text-dark"></i> PayPal</label>
+                                    <div class="col-4 ">
+                                        <div class="row justify-content-center">
+                                            <div class="col-8">
+                                                <div id="CurrencyFair"><a href="#"><img
+                                                        style="width:126px; height: 54px; "
+                                                        src="/static/images/currencyfair.png"
+                                                        alt=""></a></div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="row" id="creditcard-info1">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="cc-name">Name on card</label>
-                                        <input type="text" class="form-control" id="cc-name" placeholder="" required="">
-                                        <small class="text-muted">Full name as displayed on card</small>
-                                        <div class="invalid-feedback">
-                                            Name on card is required
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="cc-number">Credit card number</label>
-                                        <input type="text" class="form-control" id="cc-number" placeholder=""
-                                               required="">
-                                        <div class="invalid-feedback">
-                                            Credit card number is required
+                                <!-- modal for comformation -->
+                                <div class="modal fade" id="conform_dialog">
+                                    <div class="modal-dialog modal-lg  modal-dialog-centered ">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title">Review Order and Proceed to Pay</h3>
+                                                <button type="button" class="close" data-dismiss="modal">&times;
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="row justify-content-center">
+                                                    <div class="col-8">
+                                                        <div>
+
+                                                            <div>Shipping Address</div>
+                                                            <table class="table" style="margin-top:10px">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>Name :</td>
+                                                                    <td><span id="recipient_name"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Address :</td>
+                                                                    <td><span id="line1"</span><span id="line2"></span>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>City :</td>
+                                                                    <td><span id="city"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>State :</td>
+                                                                    <td><span id="state_in_modal"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Postal Code :</td>
+                                                                    <td><span id="postal_code"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Country Code :</td>
+                                                                    <td><span id="country_code"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Amount :</td>
+                                                                    <td><span id="amount"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Currency :</td>
+                                                                    <td><span id="currency"></span></td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="button" style="margin-top:10px" id="payNowButton"
+                                                           alt="Proceed to Checkout"
+                                                           class="btn btn-primary btn-large" value="Pay Now"
+                                                           name="checkout" data-dismiss="modal">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row" id="creditcard-info2">
-                                    <div class="col-md-3 mb-3">
-                                        <label for="cc-expiration">Expiration</label>
-                                        <input type="text" class="form-control" id="cc-expiration" placeholder=""
-                                               required="">
-                                        <div class="invalid-feedback">
-                                            Expiration date required
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="cc-cvv">CVV</label>
-                                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
-                                        <div class="invalid-feedback">
-                                            Security code required
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" id="jump-to-third-party-platform">
-                                </div>
-                                <hr class="mb-4">
-                                <button class="btn btn-agile btn-lg btn-block" type="submit">Continue to checkout
-                                </button>
-                            </form>
-                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                <input type="hidden" name="cmd" value="_s-xclick">
-                                <input type="hidden" name="hosted_button_id" value="5A3NE3YMZB5WE">
-                                <input type="image"
-                                       src="https://www.paypalobjects.com/en_US/C2/i/btn/btn_buynowCC_LG.gif" border="0"
-                                       name="submit" alt="PayPal - The safer, easier way to pay online!">
-                                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif"
-                                     width="1" height="1">
                             </form>
                             <p>&nbsp;</p>
                         </div>
@@ -320,27 +351,97 @@
 <script src="static/plugins/jquery-circle-progress-1.2.2/circle-progress.js"></script>
 <script src="static/plugins/parallax-js-master/parallax.min.js"></script>
 <script src="static/js/elements_custom.js"></script>
-<script>
-    $('.d-block.my-3').on("click", "label", function () {
+<script src="http://www.paypalobjects.com/api/checkout.js"></script>
+<script type="text/javascript">
+    paypal.Button.render({
+
+        env: 'sandbox', // Or 'production',
+
+        commit: false, // Show a 'Pay Now' button
+
+        payment: function () {
+
+            // Set up the payment here
+            // 1. call your server side method or api to intiate the paymnets
+            var data = {
+                "description": "test",
+                "shipping": "0",
+                "tax": "0",
+                "shipping_discount": "0",
+                "total": "10",
+                "currency": "USD",
+                "intent": "sale",
+                "subtotal": "10",
+                "name": "test_product",
+                "price": "10",
+                "quantity": "1",
+                "handling_fee": "0",
+                "insurance": "0",
+                "customFlag": "false"
+            }
+            //return paypal.request.post('/api/create-payments')
+            return paypal.request({
+                method: 'post',
+                url: '${APP_PATH}/pay.do?payment_type=paypal&step_of_payment=create_payment',
+                json: data
+            })
+                .then(function (res) {
+                    console.log(res)
+                    console.log(res.id);
+                    return res.id;
+                });
+        },
+
+        onAuthorize: function (data, actions) {
+
+            // Set up a url on your server to execute the payment
+            var EXECUTE_URL = '${APP_PATH}/pay.do?payment_type=paypal&step_of_payment=execute_payment';
+            var data = {
+                paymentID: data.paymentID,
+                payerID: data.payerID
+
+            };
+
+            return actions.payment.get().then(function (paymentDetails) {
+                // show the confirmation popup dialog
+                //show payment details
+                console.log(paymentDetails);
+                $("#recipient_name").text(paymentDetails.payer.payer_info.shipping_address.recipient_name)
+                $("#line1").text(paymentDetails.payer.payer_info.shipping_address.line1)
+                $("#line2").text(paymentDetails.payer.payer_info.shipping_address.line2)
+                $("#city").text(paymentDetails.payer.payer_info.shipping_address.city)
+                $("#state_in_modal").text(paymentDetails.payer.payer_info.shipping_address.state)
+                $("#postal_code").text(paymentDetails.payer.payer_info.shipping_address.postal_code)
+                $("#country_code").text(paymentDetails.payer.payer_info.shipping_address.country_code)
+                $("#amount").text(paymentDetails.transactions[0].amount.total)
+                $("#currency").text(paymentDetails.transactions[0].amount.currency)
+                $("#conform_dialog").modal() //show modal
+
+                // Click Listener
+                document.querySelector('#payNowButton').addEventListener('click', function () {
+
+                    return paypal.request({
+                        method: 'post',
+                        url: EXECUTE_URL,
+                        json: data
+                    }).then(function (res) {
+                        console.log(res)
+                        window.location.href = "${APP_PATH}/"
+                    }).catch(function (err) {
+                        alert(err);
+                    });
+                })
+            });
+        },
+        onCancel: function (data, actions) {
+            return actions.redirect();
+        }
 
 
-    })
+    }, '#PayPal');
 
-    // $("#paypal").click(function () {
-    //     var divRow = $("#paypal").parent().parent().parent();
-    //     var nextAll = divRow.nextAll(".row");
-    //     nextAll.hide();
-    //     console.log(nextAll);
-    //     nextAll.each(function (index, element) {
-    //         var hidden = $(this).is(":hidden");
-    //         console.log(hidden);
-    //     })
-    //
-    //
-    // });
 
 </script>
-
 </body>
 
 </html>
