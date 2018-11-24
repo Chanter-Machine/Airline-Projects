@@ -88,7 +88,7 @@ public class FlightSearchTest {
 		searchData.setTraveldate(date);
 		System.out.println(date);
 		searchData.setTraveldate(date);
-		searchData.setOptions("2");
+		searchData.setOptions("1");
 		List<List<Flight>> results = flightService.searchFlights(searchData);
 
 		for(List<Flight> list : results)
