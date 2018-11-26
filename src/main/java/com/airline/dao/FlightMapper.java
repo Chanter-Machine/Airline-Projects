@@ -27,4 +27,8 @@ public interface FlightMapper {
     int updateByPrimaryKeySelective(Flight record);
 
     int updateByPrimaryKey(Flight record);
+
+	void deleteById(Integer flightid);
+
+	void insertFlight(Flight flight);
 }
