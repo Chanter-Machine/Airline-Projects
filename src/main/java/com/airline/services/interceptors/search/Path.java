@@ -14,27 +14,26 @@ import com.airline.services.strategy.sorting.SortingFactory;
 public class Path {
 	@Autowired
 	PathFilterManager pathFilterManager;
-	
+
 	@Autowired
 	@Qualifier("seatRecordFilter")
 	IPathFilter seatRecordFilter;
-	
+
 	@Autowired
 	@Qualifier("flightRecordFilter")
 	IPathFilter flightRecordFilter;
-	
+
 	@Autowired
 	Target target;
-	
+
 	@Autowired
 	SortingFactory sortingFactory;
-	
-	
+
 //	public void setFilterManager(FilterManager filterManager){
 //		pathFilterManager = filterManager;
 //	}
- 
-	public void doFilter(Date takeoffDate, List<List<Flight>> path, String sortingRequirement){
+
+	public void doFilter(Date takeoffDate, List<List<Flight>> path, String sortingRequirement) {
 		pathFilterManager.setTarget(target);
 		pathFilterManager.setFilter(flightRecordFilter);
 		pathFilterManager.setFilter(seatRecordFilter);
@@ -49,6 +48,9 @@ public class Path {
 	public void setPathFilterManager(PathFilterManager pathFilterManager) {
 		this.pathFilterManager = pathFilterManager;
 	}
-	
-	
+
+	public Target getTarget() {
+		return target;
+	}
+
 }

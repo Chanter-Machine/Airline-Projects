@@ -8,6 +8,14 @@ public class SearchData {
 	private int destination;
 	private Date traveldate;
 	private String seat;
+	private String sorting;
+	
+	public String getSorting() {
+		return sorting;
+	}
+	public void setSorting(String sorting) {
+		this.sorting = sorting;
+	}
 	public String getOptions() {
 		return options;
 	}
@@ -41,8 +49,10 @@ public class SearchData {
 	@Override
 	public String toString() {
 		return "SearchData [options=" + options + ", origin=" + origin + ", destination=" + destination
-				+ ", traveldate=" + traveldate + ", seat=" + seat + "]";
+				+ ", traveldate=" + traveldate + ", seat=" + seat + ", sorting=" + sorting + "]";
 	}
+	
+	
 	
 	
 }

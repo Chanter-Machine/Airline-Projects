@@ -27,6 +27,12 @@ import com.airline.bean.FlightRecordExample;
 import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightRecordMapper;
 import com.airline.dao.SeatRecordMapper;
+import com.airline.services.decorator.PriceDecorator.EconomyClassPrice;
+import com.airline.services.decorator.PriceDecorator.IFlightPrice;
+import com.airline.services.decorator.PriceDecorator.InsuranceDecorator;
+import com.airline.services.decorator.PriceDecorator.PriceDecorator;
+import com.airline.services.decorator.PriceDecorator.SeatClassFactory;
+import com.airline.services.decorator.PriceDecorator.TaxDecorator;
 import com.airline.services.interceptors.search.FlightRecordFilter;
 import com.airline.services.interceptors.search.IPathFilter;
 import com.airline.services.interceptors.search.Path;
@@ -50,6 +56,9 @@ public class FlightServiceImp implements IFlightService {
 	
 	@Autowired
 	Path path;
+	
+	@Autowired
+	SeatClassFactory seatClassFactory;
 	
 	FlightExample flightExample;
 	
@@ -108,8 +117,26 @@ public class FlightServiceImp implements IFlightService {
 //		results = checkSeats(searchData.getTraveldate(), results);
 		
 		//Use Path Interceptor filter
-		path.doFilter(searchData.getTraveldate(), results, searchData.getOptions());
-		return results;
+		path.doFilter(searchData.getTraveldate(), results, searchData.getSorting());
+		return path.getTarget().getSortedPath();
+//		return results;
+	}
+	
+	public void getFinalPriceofSearch() {
+		int price = 100;
+		IFlightPrice flightPrice = seatClassFactory.getFlightPrice("first");
+		flightPrice.setPrice(price);
+		PriceDecorator taxDecorator = new TaxDecorator(flightPrice);
+		PriceDecorator insuranceDecorator = new InsuranceDecorator(taxDecorator);
+		System.out.println(insuranceDecorator.getPrice());
+	}
+	
+	public int getInitPriceOfEachPath(List<Flight> list) {
+		int sum = 0;
+		for(Flight flight : list) {
+			sum += flight.getPrice();
+		}
+		return sum;
 	}
 	
 	/**

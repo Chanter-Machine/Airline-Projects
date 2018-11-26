@@ -158,7 +158,7 @@
 							</div>
 							<div class="search_item">
 								<div>Seat Preference</div>
-                                    <select name="seat" id="origin" class="form-control custom-select custom-select-lg mb-3">
+                                    <select name="seat" id="seat_preference" class="form-control custom-select custom-select-lg mb-3">
                                         <option>Economy Class</option>
                                         <option>Business Class</option>
                                         <option>First Class</option>

@@ -32,13 +32,14 @@ public class FlightController {
 	@RequestMapping("/search2.do")
 	public void search2(SearchData searchData) {
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-		
+		System.out.println(searchData);
+		searchData.setSorting("1");
 		List<List<Flight>> flights = flightService.searchFlights(searchData);
-		for(List<Flight> list : flights) {
-			for(Flight flight: list) {
-				System.out.print(flight.getFlightid()+" ");
-			}
-			System.out.println("");
-		}
+//		for(List<Flight> list : flights) {
+//			for(Flight flight: list) {
+//				System.out.print(flight.getFlightid()+" ");
+//			}
+//			System.out.println("");
+//		}
 	}
 }

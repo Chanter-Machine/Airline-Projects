@@ -19,7 +19,7 @@ public class PathFilterChain {
 	public void execute(Date takeoffDate, List<List<Flight>> path){
 		
 		for (IPathFilter filter : filters) {
-//			path = filter.pathFilter(takeoffDate, path);
+			path = filter.pathFilter(takeoffDate, path);
 		}
 //		System.out.println(path);
 	    target.execute(takeoffDate, path);

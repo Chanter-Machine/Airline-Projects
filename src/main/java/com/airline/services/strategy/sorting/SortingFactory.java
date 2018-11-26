@@ -18,7 +18,7 @@ public class SortingFactory{
 	@Autowired
 	@Qualifier("sortByWaitingHours")
 	ISorting sortByWaitingHours;
-//	
+	
 	public ISorting getSortingObject(String requirement) {
 		if(requirement.equals("1")) {
 			return sortByAmount;
