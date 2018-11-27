@@ -60,6 +60,12 @@ public class FlightServiceImp implements IFlightService {
 	@Autowired
 	SeatClassFactory seatClassFactory;
 	
+	@Autowired
+	PriceCollection priceCollection;
+	
+	@Autowired
+	PathCollection pathCollection;
+	
 	FlightExample flightExample;
 	
     List<Flight> flights;
@@ -110,6 +116,7 @@ public class FlightServiceImp implements IFlightService {
 			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
+		pathCollection.setPathList(searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+""));
 		
 		//Remove the path which a flight is canceled on a specific day.
 //		results = checkFlightRecord(searchData.getTraveldate(), results);
@@ -118,17 +125,22 @@ public class FlightServiceImp implements IFlightService {
 		
 		//Use Path Interceptor filter
 		path.doFilter(searchData.getTraveldate(), results, searchData.getSorting());
-		return path.getTarget().getSortedPath();
-//		return results;
+		results = path.getTarget().getSortedPath();
+		getFinalPriceofSearch(results, searchData.getSeat());
+//		return path.getTarget().getSortedPath();
+		return results;
 	}
 	
-	public void getFinalPriceofSearch() {
-		int price = 100;
-		IFlightPrice flightPrice = seatClassFactory.getFlightPrice("first");
-		flightPrice.setPrice(price);
-		PriceDecorator taxDecorator = new TaxDecorator(flightPrice);
-		PriceDecorator insuranceDecorator = new InsuranceDecorator(taxDecorator);
-		System.out.println(insuranceDecorator.getPrice());
+	public void getFinalPriceofSearch(List<List<Flight>> path, String seatRequirement) {
+		for(List<Flight> list : path) {
+			int sumOfEachPath = getInitPriceOfEachPath(list);
+			IFlightPrice flightPrice = seatClassFactory.getFlightPrice(seatRequirement);
+			flightPrice.setPrice(sumOfEachPath);
+			PriceDecorator taxDecorator = new TaxDecorator(flightPrice);
+			PriceDecorator insuranceDecorator = new InsuranceDecorator(taxDecorator);
+//			System.out.println(insuranceDecorator.getPrice());
+			priceCollection.getPriceList().add(insuranceDecorator.getPrice());
+		}
 	}
 	
 	public int getInitPriceOfEachPath(List<Flight> list) {

@@ -13,7 +13,7 @@ public class InsuranceDecorator extends PriceDecorator{
 	}
 
 	public int getPrice() {
-		System.out.println("insurance "+super.getPrice());
+//		System.out.println("insurance "+super.getPrice());
 		return super.getPrice()+50;
 	}
 }

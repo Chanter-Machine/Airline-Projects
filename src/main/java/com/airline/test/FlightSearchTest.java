@@ -75,7 +75,7 @@ public class FlightSearchTest {
 		
 	}
 	
-//	@Test
+	@Test
 	public void testRemovePathBySeatRecord(){
 		Date date = new Date();
 		GregorianCalendar gc = new GregorianCalendar(2010,1,01);
@@ -90,6 +90,7 @@ public class FlightSearchTest {
 		searchData.setTraveldate(date);
 		searchData.setOptions("2");
 		searchData.setSorting("2");
+		searchData.setSeat("first");
 		List<List<Flight>> results = flightService.searchFlights(searchData);
 
 		for(List<Flight> list : results)
@@ -102,8 +103,8 @@ public class FlightSearchTest {
 		
 	}
 	
-	@Test
+//	@Test
 	public void testDecorator() {
-		flightService.getFinalPriceofSearch();
+//		flightService.getFinalPriceofSearch();
 	}
 }

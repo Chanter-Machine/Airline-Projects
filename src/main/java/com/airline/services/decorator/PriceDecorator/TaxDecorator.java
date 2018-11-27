@@ -12,7 +12,7 @@ public class TaxDecorator extends PriceDecorator{
 	}
 
 	public int getPrice() {
-		System.out.println("tax "+super.getPrice());
+//		System.out.println("tax "+super.getPrice());
 		return (int) (super.getPrice()*1.15);
 	}
 	

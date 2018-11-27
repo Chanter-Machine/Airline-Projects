@@ -35,7 +35,7 @@ public class TimeOfFlightCalculation implements Callable<Integer>{
 			}
 			long result = i / (1000 * 60);
 			sum += result;
-			System.out.println(result);
+//			System.out.println(result);
 		}
 		return sum;
 	}
