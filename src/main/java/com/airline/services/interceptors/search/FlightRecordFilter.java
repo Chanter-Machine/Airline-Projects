@@ -14,6 +14,7 @@ import com.airline.bean.Flight;
 import com.airline.bean.FlightRecord;
 import com.airline.bean.FlightRecordExample;
 import com.airline.dao.FlightRecordMapper;
+import com.airline.services.PathCollection;
 import com.airline.services.interceptors.utils.InterceptorsUtils;
 import com.airline.utils.DateUtil;
 @Component("flightRecordFilter")
@@ -22,24 +23,24 @@ public class FlightRecordFilter implements IPathFilter {
 	FlightRecordMapper flightRecordMapper;
 	
 	@Override
-	public List<List<Flight>> pathFilter(Date startDate, List<List<Flight>> path) {
-		int span = getFlightsTimeSpan(path);
+	public List<List<Flight>> pathFilter(PathCollection pathCollection) {
+		int span = getFlightsTimeSpan(pathCollection.getPathList());
 //    	System.out.println(getFlightsTimeSpan(path));
     	Date arriveDate = new Date();
     	try {
-		  arriveDate = DateUtil.getNextDasByNumber(startDate, span);
+		  arriveDate = DateUtil.getNextDasByNumber(pathCollection.getTakeoffDate(), span);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	List<FlightRecord> records = getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
+    	List<FlightRecord> records = getRecord(DateUtil.convertFromJavaDateToSqlDate(pathCollection.getTakeoffDate()), 
     			DateUtil.convertFromJavaDateToSqlDate(arriveDate));
     	
     	List<List<Flight>> newPath = new ArrayList<List<Flight>>();
     	
-    	for(List<Flight> list : path) {
+    	for(List<Flight> list : pathCollection.getPathList()) {
     		
     		boolean removeFlag = false;
-    		Map<Integer, Date> map = InterceptorsUtils.getMapOfFlightandDate(list, startDate);
+    		Map<Integer, Date> map = InterceptorsUtils.getMapOfFlightandDate(list, pathCollection.getTakeoffDate());
     		
     		for (Entry<Integer, Date> entry : map.entrySet()) { 
     			for(FlightRecord flightRecord: records) {
@@ -49,8 +50,8 @@ public class FlightRecordFilter implements IPathFilter {
     					break;
     				}
     				else {
-    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
-    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
+//    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
+//    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
     				}
     			}
     		}
@@ -65,7 +66,7 @@ public class FlightRecordFilter implements IPathFilter {
 //    		System.out.println("");
 //    	}
 //    	System.out.println("==============================");
-    	path=newPath;
+    	pathCollection.setPathList(newPath);
     	return newPath;
 	}
 

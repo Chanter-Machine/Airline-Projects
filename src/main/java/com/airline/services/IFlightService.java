@@ -11,7 +11,7 @@ import com.airline.bean.SearchData;
 public interface IFlightService {
 	public List<Flight> getFlightsFromDB();
 	public List<List<Flight>> searchPath(Graph graph, String start, String end);
-	public List<List<Flight>> searchFlights(SearchData searchData);
+	public SearchResult searchFlights(SearchData searchData);
 	public List<Flight> getFlightsWithCityFromDB();
 //	public void checkFlightRecord(java.util.Date startDate, List<List<Flight>> path);
 //	public void getFinalPriceofSearch();

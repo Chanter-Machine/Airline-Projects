@@ -9,13 +9,12 @@ public class FirstClassPrice implements IFlightPrice {
 	
 	@Override
 	public int getPrice() {
-		// TODO Auto-generated method stub
 		return basicPrice;
 	}
 
 	@Override
 	public void setPrice(int price) {
-		basicPrice = price;
+		basicPrice = price*2;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.airline.bean.Flight;
+import com.airline.services.PathCollection;
 @Component
 public class PathFilterManager {
 	@Autowired
@@ -27,7 +28,7 @@ public class PathFilterManager {
 		pathFilterChain.addFilter(filter);
 	}
  
-	public void filterRequest(Date takeoffDate, List<List<Flight>> path){
-		pathFilterChain.execute(takeoffDate, path);
+	public void filterRequest(PathCollection pathCollection){
+		pathFilterChain.execute(pathCollection);
 	}
 }

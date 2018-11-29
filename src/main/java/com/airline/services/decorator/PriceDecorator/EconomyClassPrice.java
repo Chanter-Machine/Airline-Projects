@@ -9,8 +9,7 @@ public class EconomyClassPrice implements IFlightPrice {
 	
 	@Override
 	public int getPrice() {
-		// TODO Auto-generated method stub
-		return 0;
+		return basicPrice;
 	}
 
 	@Override

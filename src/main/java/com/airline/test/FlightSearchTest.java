@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.airline.bean.Flight;
 import com.airline.bean.SearchData;
 import com.airline.services.IFlightService;
+import com.airline.services.SearchResult;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,14 +37,14 @@ public class FlightSearchTest {
 		searchData.setDestination(1);
 		searchData.setOrigin(5);
 		searchData.setTraveldate(new Date());
-		List<List<Flight>> results = flightService.searchFlights(searchData);
-		for(List<Flight> list : results)
-		{
-			for(Flight flight : list) {
-				System.out.print(flight.getFlightid()+"");
-			}
-			System.out.println("");
-		}
+//		List<List<Flight>> results = flightService.searchFlights(searchData);
+//		for(List<Flight> list : results)
+//		{
+//			for(Flight flight : list) {
+//				System.out.print(flight.getFlightid()+"");
+//			}
+//			System.out.println("");
+//		}
 	}
 	
 //	@Test
@@ -63,15 +64,15 @@ public class FlightSearchTest {
 		searchData.setTraveldate(date);
 		System.out.println(date);
 		searchData.setTraveldate(date);
-		List<List<Flight>> results = flightService.searchFlights(searchData);
-//		System.out.println(results.size());
-		for(List<Flight> list : results)
-		{
-			for(Flight flight : list) {
-				System.out.print(flight.getFlightid()+"");
-			}
-			System.out.println("");
-		}
+//		List<List<Flight>> results = flightService.searchFlights(searchData);
+////		System.out.println(results.size());
+//		for(List<Flight> list : results)
+//		{
+//			for(Flight flight : list) {
+//				System.out.print(flight.getFlightid()+"");
+//			}
+//			System.out.println("");
+//		}
 		
 	}
 	
@@ -89,11 +90,11 @@ public class FlightSearchTest {
 		System.out.println(date);
 		searchData.setTraveldate(date);
 		searchData.setOptions("2");
-		searchData.setSorting("2");
+		searchData.setSorting("1");
 		searchData.setSeat("first");
-		List<List<Flight>> results = flightService.searchFlights(searchData);
+		SearchResult results = flightService.searchFlights(searchData);
 
-		for(List<Flight> list : results)
+		for(List<Flight> list : results.getPathCollection().getPathList())
 		{
 			for(Flight flight : list) {
 				System.out.print(flight.getFlightid()+"");

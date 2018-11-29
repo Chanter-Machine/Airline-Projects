@@ -210,6 +210,30 @@ $(document).ready(function()
     5. Init Accordions
 
     */
+    
+    $('.search_btn').click(function() {
+    	setTimeout(function(){
+    		initAccordions();
+    		$('.choose_flight').on('click', function() {
+	        	var money = $(this).parent().prev().children().html();;
+	        	money = money.replace("€", "");
+	      		var date = $('.travel_date').val();
+	        	var flightId = [];
+	        	$(this).parent().parent().next().children().find("tr").each(function(){ 
+	        		if($(this).attr("value") !== undefined) {
+	        			flightId.push($(this).attr("value")); 
+	        		}
+	        	});
+	        	var order = {
+	        		'money' : money,
+	        		'date' : date,
+	        		'flightid': flightId
+	        	}
+	        	console.log(order);
+	        	}
+    		);
+    	}, 1000);
+    });
 
     function initAccordions()
     {

@@ -12,6 +12,7 @@ import com.airline.bean.Flight;
 import com.airline.bean.SeatRecord;
 import com.airline.bean.SeatRecordExample;
 import com.airline.dao.SeatRecordMapper;
+import com.airline.services.PathCollection;
 import com.airline.services.interceptors.utils.InterceptorsUtils;
 import com.airline.utils.DateUtil;
 @Component("seatRecordFilter")
@@ -20,11 +21,11 @@ public class SeatRecordFilter implements IPathFilter {
 	SeatRecordMapper seatRecordMapper;
 	
 	@Override
-	public List<List<Flight>> pathFilter(Date takeoffDate, List<List<Flight>> path) {
+	public List<List<Flight>> pathFilter(PathCollection pathCollection) {
 		List<List<Flight>> newPath = new ArrayList<List<Flight>>(); 
-		for(List<Flight> list:path) {
+		for(List<Flight> list:pathCollection.getPathList()) {
 			boolean availableFlag = true;
-			Map<Integer, Date> mapOfFlightandDate = InterceptorsUtils.getMapOfFlightandDate(list, takeoffDate);
+			Map<Integer, Date> mapOfFlightandDate = InterceptorsUtils.getMapOfFlightandDate(list, pathCollection.getTakeoffDate());
 			for(Flight flight : list) {
 				System.out.println(flight.getFlightid());
 				java.sql.Date sqlDate = DateUtil.convertFromJavaDateToSqlDate(mapOfFlightandDate.get(flight.getFlightid()));
@@ -42,6 +43,7 @@ public class SeatRecordFilter implements IPathFilter {
 				newPath.add(list);
 			}
 		}
+		pathCollection.setPathList(newPath);
 		return newPath;
 	}
 

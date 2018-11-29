@@ -26,9 +26,10 @@ public class SeatClassFactory {
 		else if(classRequirement.equals("first")) {
 			return firstClassPrice;
 		}
-		else {
+		else if(classRequirement.equals("business")){
 			return businessClassPrice;
 		}
+		return economyClassPrice;
 	}
 	
 	public IFlightPrice getFlightPrice() {

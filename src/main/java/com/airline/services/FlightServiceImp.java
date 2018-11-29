@@ -66,12 +66,16 @@ public class FlightServiceImp implements IFlightService {
 	@Autowired
 	PathCollection pathCollection;
 	
+	@Autowired
+	SearchResult searchResult;
+	
 	FlightExample flightExample;
 	
     List<Flight> flights;
 	
 	public List<Flight> getFlightsFromDB() {
-		flights = flightMapper.selectByExample(flightExample);
+//		flights = flightMapper.selectByExample(flightExample);
+		flights = flightMapper.selectWIthCity();
 		return flights;
 	}
 
@@ -109,7 +113,7 @@ public class FlightServiceImp implements IFlightService {
 	/**
 	 * Invoked by Controller, the result contains available path.
 	 */
-	public List<List<Flight>> searchFlights(SearchData searchData){
+	public SearchResult searchFlights(SearchData searchData){
 		Graph graph = new Graph();
 		List<Flight> flights = getFlightsFromDB();
 		for(Flight flight: flights) {
@@ -117,28 +121,33 @@ public class FlightServiceImp implements IFlightService {
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
 		pathCollection.setPathList(searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+""));
-		
-		//Remove the path which a flight is canceled on a specific day.
-//		results = checkFlightRecord(searchData.getTraveldate(), results);
-		//Check there are enough seats for those path
-//		results = checkSeats(searchData.getTraveldate(), results);
+		pathCollection.setTakeoffDate(searchData.getTraveldate());
+//		System.out.println(pathCollection.getPathList().get(0).get(0).getDstCity());
 		
 		//Use Path Interceptor filter
-		path.doFilter(searchData.getTraveldate(), results, searchData.getSorting());
-		results = path.getTarget().getSortedPath();
-		getFinalPriceofSearch(results, searchData.getSeat());
-//		return path.getTarget().getSortedPath();
-		return results;
+		path.doFilter(pathCollection, searchData.getSorting());
+		getFinalPriceofSearch(searchData.getSeat());
+		searchResult.setPathCollection(pathCollection);
+		searchResult.setPriceCollection(priceCollection);
+		return searchResult;
 	}
 	
-	public void getFinalPriceofSearch(List<List<Flight>> path, String seatRequirement) {
-		for(List<Flight> list : path) {
+	public void injectFinalResult() {
+		for(int i=0;i<pathCollection.getPathList().size();i++){
+			
+		}
+	}
+	
+	public void getFinalPriceofSearch(String seatRequirement) {
+		priceCollection.cleanData();
+		for(List<Flight> list : pathCollection.getPathList()) {
 			int sumOfEachPath = getInitPriceOfEachPath(list);
 			IFlightPrice flightPrice = seatClassFactory.getFlightPrice(seatRequirement);
 			flightPrice.setPrice(sumOfEachPath);
 			PriceDecorator taxDecorator = new TaxDecorator(flightPrice);
+			priceCollection.getTaxList().add(taxDecorator.getPrice()-sumOfEachPath);
 			PriceDecorator insuranceDecorator = new InsuranceDecorator(taxDecorator);
-//			System.out.println(insuranceDecorator.getPrice());
+			priceCollection.getInsuranceList().add(insuranceDecorator.getPrice()-taxDecorator.getPrice());
 			priceCollection.getPriceList().add(insuranceDecorator.getPrice());
 		}
 	}

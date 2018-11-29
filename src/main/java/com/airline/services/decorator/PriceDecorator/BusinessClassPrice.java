@@ -9,11 +9,11 @@ public class BusinessClassPrice implements IFlightPrice {
 	@Override
 	public int getPrice() {
 		// TODO Auto-generated method stub
-		return 0;
+		return basicPrice;
 	}
 	@Override
 	public void setPrice(int price) {
-		basicPrice = price;
+		basicPrice = (int)(price*1.5);
 		
 	}
 
