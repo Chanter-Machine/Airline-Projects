@@ -17,6 +17,8 @@ public interface FlightMapper {
     int insertSelective(Flight record);
 
     List<Flight> selectByExample(FlightExample example);
+    
+    List<Flight> selectWIthCity();
 
     Flight selectByPrimaryKey(Integer flightid);
 

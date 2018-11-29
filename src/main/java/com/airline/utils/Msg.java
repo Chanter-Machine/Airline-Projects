@@ -48,7 +48,6 @@ public class Msg {
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
-	
 	public Msg add(String key, Object value) {
 		this.getData().put(key, value);
 		return this;
