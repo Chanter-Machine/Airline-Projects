@@ -1,6 +1,7 @@
 package com.airline.test;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class FlightManagementTest {
 	@Autowired
 	IFlightManagementService flightManagementService;
 
-	@Test
+//	@Test
 	public void addFlightTest() {
 		Calendar calendar = Calendar.getInstance();
 		Date takeoffTime = (Date) calendar.getTime();
@@ -35,9 +36,18 @@ public class FlightManagementTest {
 		flight.setPrice(120);
 		flightManagementService.addFlight(flight);
 	}
+	
 	public void deletFlightTest() {
 		
 	}
+	
+	@Test
+	public void selectAll() {
+		List<Flight> flights = flightManagementService.getAllFLights();
+		for(Flight flight : flights) {
+			System.out.println(" "+flight.getPlane());
+		}
 	}
+}
 
 

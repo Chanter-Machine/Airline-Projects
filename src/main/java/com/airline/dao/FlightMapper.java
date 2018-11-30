@@ -22,6 +22,8 @@ public interface FlightMapper {
 
     Flight selectByPrimaryKey(Integer flightid);
 
+    List<Flight> selectWIthEverything();
+    
     int updateByExampleSelective(@Param("record") Flight record, @Param("example") FlightExample example);
 
     int updateByExample(@Param("record") Flight record, @Param("example") FlightExample example);
