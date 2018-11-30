@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.airline.dao.PaymentTypeMapper">
   <resultMap id="BaseResultMap" type="com.airline.bean.PaymentType">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+      <id column="paymentTypeId" jdbcType="INTEGER" property="paymenttypeid"/>
+      <result column="paymentTypeName" jdbcType="VARCHAR" property="paymenttypename"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -64,7 +64,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name
+    paymentTypeId, paymentTypeName
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.PaymentTypeExample" resultMap="BaseResultMap">
     select
@@ -84,11 +84,11 @@
     select 
     <include refid="Base_Column_List" />
     from paymenttype
-    where id = #{id,jdbcType=INTEGER}
+      where paymentTypeId = #{paymenttypeid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from paymenttype
-    where id = #{id,jdbcType=INTEGER}
+    where paymentTypeId = #{paymenttypeid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.airline.bean.PaymentTypeExample">
     delete from paymenttype
@@ -97,25 +97,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.airline.bean.PaymentType">
-    insert into paymenttype (id, name)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+    insert into paymenttype (paymentTypeId, paymentTypeName)
+    values (#{paymenttypeid,jdbcType=INTEGER}, #{paymenttypename,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.PaymentType">
     insert into paymenttype
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
+        <if test="paymenttypeid != null">
+            paymentTypeId,
       </if>
-      <if test="name != null">
-        name,
+        <if test="paymenttypename != null">
+            paymentTypeName,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        <if test="paymenttypeid != null">
+            #{paymenttypeid,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+        <if test="paymenttypename != null">
+            #{paymenttypename,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -128,11 +128,11 @@
   <update id="updateByExampleSelective" parameterType="map">
     update paymenttype
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
+        <if test="record.paymenttypeid != null">
+            paymentTypeId = #{record.paymenttypeid,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null">
-        name = #{record.name,jdbcType=VARCHAR},
+        <if test="record.paymenttypename != null">
+            paymentTypeName = #{record.paymenttypename,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -141,8 +141,8 @@
   </update>
   <update id="updateByExample" parameterType="map">
     update paymenttype
-    set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR}
+      set paymentTypeId = #{record.paymenttypeid,jdbcType=INTEGER},
+      paymentTypeName = #{record.paymenttypename,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -150,15 +150,15 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.PaymentType">
     update paymenttype
     <set>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+        <if test="paymenttypename != null">
+            paymentTypeName = #{paymenttypename,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+      where paymentTypeId = #{paymenttypeid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.airline.bean.PaymentType">
     update paymenttype
-    set name = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    set paymentTypeName = #{paymenttypename,jdbcType=VARCHAR}
+    where paymentTypeId = #{paymenttypeid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -426,7 +426,7 @@
                         json: data
                     }).then(function (res) {
                         console.log(res)
-                        window.location.href = "${APP_PATH}/"
+                        window.location.href = "../.."
                     }).catch(function (err) {
                         alert(err);
                     });

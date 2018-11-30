@@ -1,24 +1,14 @@
 package com.airline.test;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+public class JsonTest {
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
-public class Test {
-    public static void main(String[] args) throws FileNotFoundException {
-        FileInputStream fileInputStream = new FileInputStream("src\\main\\resources\\paypal.properties");
-        System.out.println(fileInputStream);
-    }
-
-    @org.junit.Test
-    public void test() {
-        String json = "{\n" +
+    @Test
+    public void test01() {
+        String jsonString = "{\n" +
                 "    \"create_time\": \"2018-11-27T21:50:22Z\",\n" +
                 "    \"links\": [\n" +
                 "        {\n" +
@@ -141,13 +131,16 @@ public class Test {
                 "    },\n" +
                 "    \"cart\": \"89W18276FV7632627\"\n" +
                 "}";
-        System.out.println("\n\n\n\n");
-        JSONObject jsonObject = new JSONObject(json);
-        System.out.println(jsonObject);
-        String state = (String) jsonObject.get("state");
-        System.out.println(state.getClass());
-        System.out.println((String) state);
-        System.out.println("\n\n\n\n");
-    }
+        JSONObject jsonObject = new JSONObject(jsonString);
+        String id = jsonObject.getString("id");
+        System.out.println(id);
+        System.out.println();
 
+        JSONArray transactions = jsonObject.getJSONArray("transactions");
+        JSONObject firstObjectInTransactions = transactions.getJSONObject(transactions.length() - 1);
+        String invoice_number = firstObjectInTransactions.getString("invoice_number").substring(12);
+        System.out.println(invoice_number);
+//        String invoice_number = transactions.getString(transactions.getString("invoice_number").substring(11));
+//        System.out.println(transactions);
+    }
 }

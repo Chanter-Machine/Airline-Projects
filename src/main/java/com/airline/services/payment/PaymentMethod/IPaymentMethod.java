@@ -1,11 +1,11 @@
-package com.airline.services.PaymentApproach;
+package com.airline.services.payment.PaymentMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public interface IPaymentApproach {
+public interface IPaymentMethod {
 
-    public boolean pay(HttpServletRequest request, HttpServletResponse response);
+    public String pay(HttpServletRequest request, HttpServletResponse response);
 
     public boolean refund(HttpServletRequest request, HttpServletResponse response);
 }

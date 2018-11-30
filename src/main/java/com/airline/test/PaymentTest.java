@@ -1,7 +1,7 @@
 package com.airline.test;
 
 import com.airline.bean.Paymentrecord;
-import com.airline.services.IPaymentService;
+import com.airline.services.payment.IPaymentService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

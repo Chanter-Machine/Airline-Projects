@@ -1,16 +1,16 @@
-package com.airline.services;
+package com.airline.services.payment;
 
 import com.airline.bean.*;
 import com.airline.dao.OrderMapper;
 import com.airline.dao.PaymentrecordMapper;
-import com.airline.services.PaymentApproach.IPaymentApproach;
-import com.airline.services.PaymentApproach.PayByPayPal;
+import com.airline.services.payment.PaymentMethod.PaymentMethodFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,12 +22,9 @@ public class PaymentServiceImp implements IPaymentService {
     @Autowired
     private OrderMapper orderMapper;
 
-    private IPaymentApproach paymentApproach;
+    @Autowired
+    private PaymentMethodFactory paymentMethodFactory;
 
-
-    public void setPaymentApproach(IPaymentApproach paymentApproach) {
-        this.paymentApproach = paymentApproach;
-    }
 
     public Paymentrecord queryPayment(Integer paymentId) {
         if (paymentId == null) {
@@ -63,18 +60,23 @@ public class PaymentServiceImp implements IPaymentService {
 
         PaymentrecordExample paymentrecordExample = new PaymentrecordExample();
         paymentrecordExample.or().andPaymentidIn(paymentIdList);
-
         List<Paymentrecord> paymentrecordList = paymentrecordMapper.selectByExample(paymentrecordExample);
         return paymentrecordList;
     }
 
     @Override
-    public boolean pay(HttpServletRequest request, HttpServletResponse response) {
-        if (this.paymentApproach == null) {
-            System.out.println("Error: paymentApproach is null");
-            return false;
+    public boolean pay(HttpServletRequest request, HttpServletResponse response, Order order, Integer paymentMethod) {
+        boolean isSuccessful = false;
+        Paymentrecord paymentrecord = paymentrecordMapper.selectByPrimaryKey(order.getPaymentid());
+        String result = paymentMethodFactory.getPaymentApproach(paymentMethod).pay(request, response);
+        if (result != null) {
+            paymentrecord.setDate(new Date());
+            paymentrecord.setStatus(Paymentrecord.PaidStatus);
+            paymentrecord.setPaymenttype(paymentMethod);
+            paymentrecord.setThirtypartypaymentid(result);
+            isSuccessful = true;
         }
-        return paymentApproach.pay(request, response);
+        return isSuccessful;
     }
 
 

@@ -1,9 +1,8 @@
-package com.airline.services;
+package com.airline.services.payment;
 
 import com.airline.bean.Order;
 import com.airline.bean.Passenger;
 import com.airline.bean.Paymentrecord;
-import com.airline.services.PaymentApproach.IPaymentApproach;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ public interface IPaymentService {
 
     public List<Paymentrecord> queryPayments(Passenger passenger);
 
-    public boolean pay(HttpServletRequest request, HttpServletResponse response);
+    public boolean pay(HttpServletRequest request, HttpServletResponse response, Order order, Integer paymentMethod);
 
-    public void setPaymentApproach(IPaymentApproach paymentApproach);
 }

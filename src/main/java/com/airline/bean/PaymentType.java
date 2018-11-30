@@ -1,23 +1,23 @@
 package com.airline.bean;
 
 public class PaymentType {
-    private Integer id;
+    private Integer paymenttypeid;
 
-    private String name;
+    private String paymenttypename;
 
-    public Integer getId() {
-        return id;
+    public Integer getPaymenttypeid() {
+        return paymenttypeid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPaymenttypeid(Integer paymenttypeid) {
+        this.paymenttypeid = paymenttypeid;
     }
 
-    public String getName() {
-        return name;
+    public String getPaymenttypename() {
+        return paymenttypename;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setPaymenttypename(String paymenttypename) {
+        this.paymenttypename = paymenttypename == null ? null : paymenttypename.trim();
     }
 }

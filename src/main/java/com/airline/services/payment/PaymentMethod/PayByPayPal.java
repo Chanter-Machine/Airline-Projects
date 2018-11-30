@@ -1,12 +1,17 @@
-package com.airline.services.PaymentApproach;
+package com.airline.services.payment.PaymentMethod;
 
+import com.airline.bean.PayPal;
+import com.airline.dao.PayPalMapper;
 import com.airline.dto.ApplicationConfiguration;
 import com.airline.dto.CreatePaymentDto;
 import com.airline.dto.TransactionAmountDto;
 import com.airline.dto.TransactionDetailsDto;
 import com.airline.utils.PayPalHelper;
 import com.airline.utils.RestClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,16 +20,23 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-public class PayByPayPal implements IPaymentApproach {
+@Component("PayByPayPal")
+public class PayByPayPal implements IPaymentMethod {
 
-    public boolean pay(HttpServletRequest request, HttpServletResponse response) {
+    private String paymentType = "PayPal";
+
+    @Autowired
+    private PayPalMapper payPalMapper;
+
+    public String pay(HttpServletRequest request, HttpServletResponse response) {
         //obtain the paypal config
         ApplicationConfiguration ac = (ApplicationConfiguration) request.getServletContext().getAttribute("config");
-
+        String paymentId = null;
         //according to the step_of_payment to execute different method
         if ("create_payment".equals(request.getParameter("step_of_payment"))) {
             try {
                 JSONObject jsonObject = CreatePayment(ac, request);
+                paymentId = jsonObject.getString("id");
                 response.setContentType("application/json");
                 response.setStatus(200);
                 PrintWriter out = response.getWriter();
@@ -32,11 +44,37 @@ public class PayByPayPal implements IPaymentApproach {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return true;
+            return paymentId;
         } else if ("execute_payment".equals(request.getParameter("step_of_payment"))) {
             JSONObject jsonObject = null;
             try {
                 jsonObject = ExecutePayment(ac, request);
+                if ("approved".equals(jsonObject.get("state"))) {
+                    PayPal payPal = new PayPal();
+                    paymentId = jsonObject.getString("id");
+                    payPal.setPaypalid(paymentId);
+                    payPal.setIntent(jsonObject.getString("intent"));
+                    payPal.setPaymentstate(jsonObject.getString("state"));
+
+                    JSONArray transactions = jsonObject.getJSONArray("transactions");
+                    JSONObject firstObject = transactions.getJSONObject(0);
+                    payPal.setTotalamount(firstObject.getJSONObject("amount").getString("total"));
+                    payPal.setInvoicenumber(firstObject.getString("invoice_number").substring(12));
+
+
+                    JSONObject payer = jsonObject.getJSONObject("payer");
+                    payPal.setPaymentmethod(payer.getString("payment_method"));
+
+                    JSONObject payer_info = payer.getJSONObject("payer_info");
+                    payPal.setPayerid(payer_info.getString("payer_id"));
+                    payPal.setFirstname(payer_info.getString("first_name"));
+                    payPal.setLastname(payer_info.getString("last_name"));
+
+                    payPal.setEmail(payer_info.getString("email"));
+                    payPal.setCountrycode(payer_info.getJSONObject("shipping_address").getString("country_code"));
+
+                    payPalMapper.insert(payPal);
+                }
                 response.setContentType("application/json");
                 response.setStatus(200);
                 PrintWriter out = response.getWriter();
@@ -44,9 +82,9 @@ public class PayByPayPal implements IPaymentApproach {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return true;
+            return paymentId;
         } else {
-            return false;
+            return paymentId;
         }
     }
 

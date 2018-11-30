@@ -2,15 +2,16 @@ package com.airline.dao;
 
 import com.airline.bean.PaymentType;
 import com.airline.bean.PaymentTypeExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PaymentTypeMapper {
     long countByExample(PaymentTypeExample example);
 
     int deleteByExample(PaymentTypeExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer paymenttypeid);
 
     int insert(PaymentType record);
 
@@ -18,7 +19,7 @@ public interface PaymentTypeMapper {
 
     List<PaymentType> selectByExample(PaymentTypeExample example);
 
-    PaymentType selectByPrimaryKey(Integer id);
+    PaymentType selectByPrimaryKey(Integer paymenttypeid);
 
     int updateByExampleSelective(@Param("record") PaymentType record, @Param("example") PaymentTypeExample example);
 

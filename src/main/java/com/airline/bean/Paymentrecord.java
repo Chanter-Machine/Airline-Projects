@@ -3,6 +3,9 @@ package com.airline.bean;
 import java.util.Date;
 
 public class Paymentrecord {
+    public static final String PendingStatus = "Pending";
+    public static final String PaidStatus = "Paid";
+    public static final String RefundStatus = "Refund";
     private Integer paymentid;
 
     private String amount;
@@ -11,7 +14,9 @@ public class Paymentrecord {
 
     private Date date;
 
-    private Integer typeid;
+    private Integer paymenttype;
+
+    private String thirtypartypaymentid;
 
     public Integer getPaymentid() {
         return paymentid;
@@ -45,11 +50,19 @@ public class Paymentrecord {
         this.date = date;
     }
 
-    public Integer getTypeid() {
-        return typeid;
+    public Integer getPaymenttype() {
+        return paymenttype;
     }
 
-    public void setTypeid(Integer typeid) {
-        this.typeid = typeid;
+    public void setPaymenttype(Integer paymenttype) {
+        this.paymenttype = paymenttype;
+    }
+
+    public String getThirtypartypaymentid() {
+        return thirtypartypaymentid;
+    }
+
+    public void setThirtypartypaymentid(String thirtypartypaymentid) {
+        this.thirtypartypaymentid = thirtypartypaymentid == null ? null : thirtypartypaymentid.trim();
     }
 }

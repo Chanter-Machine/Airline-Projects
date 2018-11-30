@@ -1,5 +1,7 @@
 package com.airline.bean;
 
+import java.util.Date;
+
 public class Flightandorder {
     private Integer flightandorderid;
 
@@ -10,6 +12,8 @@ public class Flightandorder {
     private String seattype;
 
     private Integer seatnum;
+
+    private Date takeoffdate;
 
     public Integer getFlightandorderid() {
         return flightandorderid;
@@ -49,5 +53,13 @@ public class Flightandorder {
 
     public void setSeatnum(Integer seatnum) {
         this.seatnum = seatnum;
+    }
+
+    public Date getTakeoffdate() {
+        return takeoffdate;
+    }
+
+    public void setTakeoffdate(Date takeoffdate) {
+        this.takeoffdate = takeoffdate;
     }
 }

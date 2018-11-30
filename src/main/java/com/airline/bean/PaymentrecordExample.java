@@ -2,6 +2,7 @@ package com.airline.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class PaymentrecordExample {
@@ -103,6 +104,32 @@ public class PaymentrecordExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andPaymentidIsNull() {
@@ -316,112 +343,182 @@ public class PaymentrecordExample {
         }
 
         public Criteria andDateEqualTo(Date value) {
-            addCriterion("date =", value, "date");
+            addCriterionForJDBCDate("date =", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateNotEqualTo(Date value) {
-            addCriterion("date <>", value, "date");
+            addCriterionForJDBCDate("date <>", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateGreaterThan(Date value) {
-            addCriterion("date >", value, "date");
+            addCriterionForJDBCDate("date >", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateGreaterThanOrEqualTo(Date value) {
-            addCriterion("date >=", value, "date");
+            addCriterionForJDBCDate("date >=", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateLessThan(Date value) {
-            addCriterion("date <", value, "date");
+            addCriterionForJDBCDate("date <", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateLessThanOrEqualTo(Date value) {
-            addCriterion("date <=", value, "date");
+            addCriterionForJDBCDate("date <=", value, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateIn(List<Date> values) {
-            addCriterion("date in", values, "date");
+            addCriterionForJDBCDate("date in", values, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateNotIn(List<Date> values) {
-            addCriterion("date not in", values, "date");
+            addCriterionForJDBCDate("date not in", values, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateBetween(Date value1, Date value2) {
-            addCriterion("date between", value1, value2, "date");
+            addCriterionForJDBCDate("date between", value1, value2, "date");
             return (Criteria) this;
         }
 
         public Criteria andDateNotBetween(Date value1, Date value2) {
-            addCriterion("date not between", value1, value2, "date");
+            addCriterionForJDBCDate("date not between", value1, value2, "date");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidIsNull() {
-            addCriterion("typeId is null");
+        public Criteria andPaymenttypeIsNull() {
+            addCriterion("paymentType is null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidIsNotNull() {
-            addCriterion("typeId is not null");
+        public Criteria andPaymenttypeIsNotNull() {
+            addCriterion("paymentType is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidEqualTo(Integer value) {
-            addCriterion("typeId =", value, "typeid");
+        public Criteria andPaymenttypeEqualTo(Integer value) {
+            addCriterion("paymentType =", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidNotEqualTo(Integer value) {
-            addCriterion("typeId <>", value, "typeid");
+        public Criteria andPaymenttypeNotEqualTo(Integer value) {
+            addCriterion("paymentType <>", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidGreaterThan(Integer value) {
-            addCriterion("typeId >", value, "typeid");
+        public Criteria andPaymenttypeGreaterThan(Integer value) {
+            addCriterion("paymentType >", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("typeId >=", value, "typeid");
+        public Criteria andPaymenttypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("paymentType >=", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidLessThan(Integer value) {
-            addCriterion("typeId <", value, "typeid");
+        public Criteria andPaymenttypeLessThan(Integer value) {
+            addCriterion("paymentType <", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidLessThanOrEqualTo(Integer value) {
-            addCriterion("typeId <=", value, "typeid");
+        public Criteria andPaymenttypeLessThanOrEqualTo(Integer value) {
+            addCriterion("paymentType <=", value, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidIn(List<Integer> values) {
-            addCriterion("typeId in", values, "typeid");
+        public Criteria andPaymenttypeIn(List<Integer> values) {
+            addCriterion("paymentType in", values, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidNotIn(List<Integer> values) {
-            addCriterion("typeId not in", values, "typeid");
+        public Criteria andPaymenttypeNotIn(List<Integer> values) {
+            addCriterion("paymentType not in", values, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidBetween(Integer value1, Integer value2) {
-            addCriterion("typeId between", value1, value2, "typeid");
+        public Criteria andPaymenttypeBetween(Integer value1, Integer value2) {
+            addCriterion("paymentType between", value1, value2, "paymenttype");
             return (Criteria) this;
         }
 
-        public Criteria andTypeidNotBetween(Integer value1, Integer value2) {
-            addCriterion("typeId not between", value1, value2, "typeid");
+        public Criteria andPaymenttypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("paymentType not between", value1, value2, "paymenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidIsNull() {
+            addCriterion("thirtyPartyPaymentId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidIsNotNull() {
+            addCriterion("thirtyPartyPaymentId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidEqualTo(String value) {
+            addCriterion("thirtyPartyPaymentId =", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidNotEqualTo(String value) {
+            addCriterion("thirtyPartyPaymentId <>", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidGreaterThan(String value) {
+            addCriterion("thirtyPartyPaymentId >", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidGreaterThanOrEqualTo(String value) {
+            addCriterion("thirtyPartyPaymentId >=", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidLessThan(String value) {
+            addCriterion("thirtyPartyPaymentId <", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidLessThanOrEqualTo(String value) {
+            addCriterion("thirtyPartyPaymentId <=", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidLike(String value) {
+            addCriterion("thirtyPartyPaymentId like", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidNotLike(String value) {
+            addCriterion("thirtyPartyPaymentId not like", value, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidIn(List<String> values) {
+            addCriterion("thirtyPartyPaymentId in", values, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidNotIn(List<String> values) {
+            addCriterion("thirtyPartyPaymentId not in", values, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidBetween(String value1, String value2) {
+            addCriterion("thirtyPartyPaymentId between", value1, value2, "thirtypartypaymentid");
+            return (Criteria) this;
+        }
+
+        public Criteria andThirtypartypaymentidNotBetween(String value1, String value2) {
+            addCriterion("thirtyPartyPaymentId not between", value1, value2, "thirtypartypaymentid");
             return (Criteria) this;
         }
     }
