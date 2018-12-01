@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.airline.dao.OrderMapper">
+    <insert id="insertAndGetId" parameterType="com.airline.bean.Order">
+        <selectKey keyProperty="orderid" order="AFTER" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into orders (orderId, passagerId, paymentId,
+        status, date)
+        values (#{orderid,jdbcType=INTEGER}, #{passagerid,jdbcType=INTEGER}, #{paymentid,jdbcType=INTEGER},
+        #{status,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP})
+    </insert>
+
+</mapper>

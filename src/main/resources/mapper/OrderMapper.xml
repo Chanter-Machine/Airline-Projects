@@ -5,6 +5,8 @@
     <id column="orderId" jdbcType="INTEGER" property="orderid" />
     <result column="passagerId" jdbcType="INTEGER" property="passagerid" />
     <result column="paymentId" jdbcType="INTEGER" property="paymentid" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    orderId, passagerId, paymentId
+    orderId, passagerId, paymentId, status, date
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.OrderExample" resultMap="BaseResultMap">
     select
@@ -73,7 +75,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from order
+    from orders
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,27 +86,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from orders
     where orderId = #{orderid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from order
+    delete from orders
     where orderId = #{orderid,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByExample" parameterType="com.airline.bean.OrderExample">
-    delete from order
+    delete from orders
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.airline.bean.Order">
-    insert into order (orderId, passagerId, paymentId
-      )
-    values (#{orderid,jdbcType=INTEGER}, #{passagerid,jdbcType=INTEGER}, #{paymentid,jdbcType=INTEGER}
-      )
+    insert into orders (orderId, passagerId, paymentId, 
+      status, date)
+    values (#{orderid,jdbcType=INTEGER}, #{passagerid,jdbcType=INTEGER}, #{paymentid,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.Order">
-    insert into order
+    insert into orders
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderid != null">
         orderId,
@@ -114,6 +116,12 @@
       </if>
       <if test="paymentid != null">
         paymentId,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="date != null">
+        date,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -126,16 +134,22 @@
       <if test="paymentid != null">
         #{paymentid,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.airline.bean.OrderExample" resultType="java.lang.Long">
-    select count(*) from order
+    select count(*) from orders
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update order
+    update orders
     <set>
       <if test="record.orderid != null">
         orderId = #{record.orderid,jdbcType=INTEGER},
@@ -146,22 +160,30 @@
       <if test="record.paymentid != null">
         paymentId = #{record.paymentid,jdbcType=INTEGER},
       </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update order
+    update orders
     set orderId = #{record.orderid,jdbcType=INTEGER},
       passagerId = #{record.passagerid,jdbcType=INTEGER},
-      paymentId = #{record.paymentid,jdbcType=INTEGER}
+      paymentId = #{record.paymentid,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.Order">
-    update order
+    update orders
     <set>
       <if test="passagerid != null">
         passagerId = #{passagerid,jdbcType=INTEGER},
@@ -169,13 +191,21 @@
       <if test="paymentid != null">
         paymentId = #{paymentid,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where orderId = #{orderid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.airline.bean.Order">
-    update order
+    update orders
     set passagerId = #{passagerid,jdbcType=INTEGER},
-      paymentId = #{paymentid,jdbcType=INTEGER}
+      paymentId = #{paymentid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP}
     where orderId = #{orderid,jdbcType=INTEGER}
   </update>
 </mapper>
