@@ -1,6 +1,8 @@
 package com.airline.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class PassengerExample {
@@ -102,6 +104,32 @@ public class PassengerExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andPassengeridIsNull() {
@@ -304,66 +332,6 @@ public class PassengerExample {
             return (Criteria) this;
         }
 
-        public Criteria andAgeIsNull() {
-            addCriterion("age is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeIsNotNull() {
-            addCriterion("age is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeEqualTo(Integer value) {
-            addCriterion("age =", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeNotEqualTo(Integer value) {
-            addCriterion("age <>", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeGreaterThan(Integer value) {
-            addCriterion("age >", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("age >=", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeLessThan(Integer value) {
-            addCriterion("age <", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeLessThanOrEqualTo(Integer value) {
-            addCriterion("age <=", value, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeIn(List<Integer> values) {
-            addCriterion("age in", values, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeNotIn(List<Integer> values) {
-            addCriterion("age not in", values, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeBetween(Integer value1, Integer value2) {
-            addCriterion("age between", value1, value2, "age");
-            return (Criteria) this;
-        }
-
-        public Criteria andAgeNotBetween(Integer value1, Integer value2) {
-            addCriterion("age not between", value1, value2, "age");
-            return (Criteria) this;
-        }
-
         public Criteria andPhoneIsNull() {
             addCriterion("phone is null");
             return (Criteria) this;
@@ -491,6 +459,66 @@ public class PassengerExample {
 
         public Criteria andUseridNotBetween(Integer value1, Integer value2) {
             addCriterion("userId not between", value1, value2, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobIsNull() {
+            addCriterion("dob is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobIsNotNull() {
+            addCriterion("dob is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobEqualTo(Date value) {
+            addCriterionForJDBCDate("dob =", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobNotEqualTo(Date value) {
+            addCriterionForJDBCDate("dob <>", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobGreaterThan(Date value) {
+            addCriterionForJDBCDate("dob >", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("dob >=", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobLessThan(Date value) {
+            addCriterionForJDBCDate("dob <", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("dob <=", value, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobIn(List<Date> values) {
+            addCriterionForJDBCDate("dob in", values, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobNotIn(List<Date> values) {
+            addCriterionForJDBCDate("dob not in", values, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("dob between", value1, value2, "dob");
+            return (Criteria) this;
+        }
+
+        public Criteria andDobNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("dob not between", value1, value2, "dob");
             return (Criteria) this;
         }
     }

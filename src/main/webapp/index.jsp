@@ -18,6 +18,7 @@
 <link rel="stylesheet" type="text/css" href="static/plugins/OwlCarousel2-2.2.1/animate.css">
 <link rel="stylesheet" type="text/css" href="static/styles/main_styles.css">
 <link rel="stylesheet" type="text/css" href="static/styles/responsive.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/bootstrap-datetimepicker.min.css" media="screen">
 </head>
 <body>
 	<div class="super_container">
@@ -44,7 +45,7 @@
 						</div>
 						<div class="user_box ml-auto">
 							<div class="user_box_login user_box_link nav_slider_link"><a href="#">login</a></div>
-							<div class="user_box_register user_box_link nav_slider_link"><a href="#">register</a></div>
+							<div class="user_box_register user_box_link nav_slider_link"><a id="register_link" href="#">register</a></div>
 						</div>
 					</div>
 				</div>
@@ -151,12 +152,13 @@
                                    <div style="position: absolute; top:30px; left: 50px;">
                                     <div class="contact_title">log in</div>
                                     <form action="${APP_PATH}/login.do" method="POST" id="contact_form" class="contact_form">
+										<p class="login_msg" style="font-size: 10pt; color: #fff;"></p>
                                         <input type="email" name="email" id="contact_form_email" class="contact_form_subject input_field" placeholder="Email Address" required="required" data-error="Email is required.">
                                         <input type="password" name="password" id="contact_form_subject" class="contact_form_subject input_field" placeholder="Password" required="required" data-error="Subject is required.">
                                         <button type="submit" id="form_submit_button" class="form_submit_button button">log in<span></span><span></span><span></span></button>
                                     </form>
                                     <p>&nbsp;</p>
-                                    <div><a href="#">Not registered? Create an Account</a></div>
+                                    <div><a onclick="$('#register_link').click()" href="#">Not registered? Create an Account</a></div>
                                     </div>
 						</div>
 					</div>
@@ -174,11 +176,12 @@
 									<input type="text" id="register_form_name" name="passengername" class="contact_form_name input_field" placeholder="Name" required="required" data-error="Name is required.">
 									<input type="text" id="register_form_email" name="email" class="contact_form_email input_field" placeholder="E-mail" required="required" data-error="Email is required.">
 									<input type="text" id="register_form_phone" name="phone" class="contact_form_name input_field" placeholder="Phone Number" required="required" data-error="Phone number is required.">
-									<input type="text" id="register_form_age" name="age" class="contact_form_email input_field" placeholder="Age" required="required" data-error="Age is required.">
+									<input type="text" id="register_form_dob" name="dob" class="contact_form_email input_field form_date" placeholder="Date of Birth (yyyy/mm/dd)" required="required" data-error="date of birth is required.">
 									<textarea id="register_form_address" class="text_field contact_form_message" name="address" rows="2" placeholder="Address" required="required" data-error="Please, provide a valid address"></textarea>
 									<input type="password" id="register_form_password" name="password" class="contact_form_name input_field" placeholder="Password" required="required" data-error="Password is required.">
 									<input type="password" id="register_form_cpassword" class="contact_form_email input_field" placeholder="Confirm Password" required="required" data-error="Password confirmation is required.">
-
+									<p>&nbsp;</p>
+									<div class="col-md-12"><label style="font-size:10pt; color:#fff;"><input name="subscribed" type="checkbox" value="true" checked="checked" />&nbsp;&nbsp;E-mail me when there are new deals and promotions</label></div>
 									<button type="button" id="form_submit_register" class="form_submit_button button trans_200">register<span></span><span></span><span></span></button>
 								</form>
 							</div>
@@ -262,38 +265,48 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="static/styles/bootstrap4/bootstrap.min.js"></script>
 <script src="static/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
 <script src="static/plugins/easing/easing.js"></script>
-<script src="static/js/custom.js"></script>
+<script src="static/js/custom.js"></script><script src="static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script>
+        $('.form_date').datetimepicker({
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            format: 'yyyy/mm/dd'
+        });
+
+
+    </script>
 	<!-- <form >
 		email:<input type="text" name="email"/></br>
 		password:<input type="password" name="password"/></br>
 		<input value="Submit" id="user_login"/>
 	</form>  -->
+	<%
+		Object result = request.getAttribute("result");
+		if (result!=null) {
+	%>
+		<script>$('.login_msg').html('${result.msg}');</script>
+	<% }
+		Object error = request.getAttribute("error");
+	if (error!=null){ %>
+		<script>
+            $(document).ready(function()
+            {
+                $('#register_link').click();
+				alert('${error}');
+			});
+		</script>
+	<% } %>
 	<script>
 		$('#form_submit_register').click( function() {
             var form = $(this).parents('form');
-			/*var data = {
-                    passengerInfo: {passengername: form.find('#register_form_name').val(), address: form.find('#register_form_address').val(),age:form.find('#register_form_age').val(), phone:form.find('#register_form_phone').val()},
-                    userInfo: {email:form.find('#register_form_email').val(), password:form.find('#register_form_password').val()}
-                };*/
+
 		    if (form.find('#register_form_cpassword').val()==form.find('#register_form_password').val()){
 		        form.submit();
-                /*$.ajax({
-                    url:"${APP_PATH}/register.do",
-                    data:JSON.stringify(data),
-                    type:"POST",
-                    dataType: "html",
-                    contentType: 'application/json',
-                    mimeType: 'application/json',
-                    success:function(result){
-                        if(result.code==200){
-                            console.log(result);
-                            alert("success");
-                        }
-                        else{
-                            alert("interesting");
-                        }
-                    }
-                });*/
 			} else
 			{
 			    alert("Passwords do not match.\nPlease check that you have entered the correct password in the spaces provided.");

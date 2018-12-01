@@ -15,6 +15,9 @@ public class Msg {
 	private String msg;
 //	data to browser
 	private Map<String, Object> data = new HashMap<String, Object>();
+
+//  boolean success status
+	private boolean isSuccessful;
 	
 	public static Msg success() {
 		Msg result = new Msg();
@@ -48,7 +51,15 @@ public class Msg {
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
-	
+
+	public boolean isSuccessful() {
+		return isSuccessful;
+	}
+
+	public void setSuccessful(boolean successful) {
+		isSuccessful = successful;
+	}
+
 	public Msg add(String key, Object value) {
 		this.getData().put(key, value);
 		return this;
