@@ -5,9 +5,9 @@
     <id column="paymentId" jdbcType="INTEGER" property="paymentid" />
     <result column="amount" jdbcType="VARCHAR" property="amount" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="date" jdbcType="DATE" property="date" />
-    <result column="paymentType" jdbcType="INTEGER" property="paymenttype" />
-    <result column="thirtyPartyPaymentId" jdbcType="VARCHAR" property="thirtypartypaymentid" />
+      <result column="date" jdbcType="DATE" property="date"/>
+      <result column="paymentType" jdbcType="INTEGER" property="paymenttype"/>
+      <result column="thirtyPartyPaymentId" jdbcType="VARCHAR" property="thirtypartypaymentid"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -120,14 +120,14 @@
       <if test="status != null">
         status,
       </if>
-      <if test="date != null">
-        date,
-      </if>
-      <if test="paymenttype != null">
-        paymentType,
-      </if>
-      <if test="thirtypartypaymentid != null">
-        thirtyPartyPaymentId,
+        <if test="date != null">
+            date,
+        </if>
+        <if test="paymenttype != null">
+            paymentType,
+        </if>
+        <if test="thirtypartypaymentid != null">
+            thirtyPartyPaymentId,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -140,14 +140,14 @@
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="date != null">
-        #{date,jdbcType=DATE},
-      </if>
-      <if test="paymenttype != null">
-        #{paymenttype,jdbcType=INTEGER},
-      </if>
-      <if test="thirtypartypaymentid != null">
-        #{thirtypartypaymentid,jdbcType=VARCHAR},
+        <if test="date != null">
+            #{date,jdbcType=DATE},
+        </if>
+        <if test="paymenttype != null">
+            #{paymenttype,jdbcType=INTEGER},
+        </if>
+        <if test="thirtypartypaymentid != null">
+            #{thirtypartypaymentid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -169,14 +169,14 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
-      <if test="record.date != null">
-        date = #{record.date,jdbcType=DATE},
-      </if>
-      <if test="record.paymenttype != null">
-        paymentType = #{record.paymenttype,jdbcType=INTEGER},
-      </if>
-      <if test="record.thirtypartypaymentid != null">
-        thirtyPartyPaymentId = #{record.thirtypartypaymentid,jdbcType=VARCHAR},
+        <if test="record.date != null">
+            date = #{record.date,jdbcType=DATE},
+        </if>
+        <if test="record.paymenttype != null">
+            paymentType = #{record.paymenttype,jdbcType=INTEGER},
+        </if>
+        <if test="record.thirtypartypaymentid != null">
+            thirtyPartyPaymentId = #{record.thirtypartypaymentid,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -204,14 +204,14 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="date != null">
-        date = #{date,jdbcType=DATE},
-      </if>
-      <if test="paymenttype != null">
-        paymentType = #{paymenttype,jdbcType=INTEGER},
-      </if>
-      <if test="thirtypartypaymentid != null">
-        thirtyPartyPaymentId = #{thirtypartypaymentid,jdbcType=VARCHAR},
+        <if test="date != null">
+            date = #{date,jdbcType=DATE},
+        </if>
+        <if test="paymenttype != null">
+            paymentType = #{paymenttype,jdbcType=INTEGER},
+        </if>
+        <if test="thirtypartypaymentid != null">
+            thirtyPartyPaymentId = #{thirtypartypaymentid,jdbcType=VARCHAR},
       </if>
     </set>
     where paymentId = #{paymentid,jdbcType=INTEGER}

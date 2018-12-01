@@ -9,10 +9,12 @@ import com.airline.services.payment.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @Controller
 public class OrderController {
@@ -26,10 +28,11 @@ public class OrderController {
     private FlightandorderMapper flightandorderMapper;
 
     @RequestMapping("/create_order.do")
-    public ModelAndView createOrder(HttpServletRequest request, HttpSession session) {
+    public ModelAndView createOrder(HttpServletRequest request, HttpSession session, Double amount, Date takeoffDate, @RequestParam(value = "flights_id") int[] flights_id) {
         //get the necessary data
         Passenger passenger = (Passenger) session.getAttribute("passenger");
         Order order = new Order();
+
         Paymentrecord payment = (Paymentrecord) session.getAttribute("payment");
 //todo        List<Flight> flightList = (List<Flight>) session.getAttribute("flights");
 

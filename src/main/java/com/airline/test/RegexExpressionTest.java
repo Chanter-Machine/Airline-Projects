@@ -12,7 +12,7 @@ public class RegexExpressionTest {
         String checkString = "sdfdfsscriptsfdsdf";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(checkString);
-        while(matcher.find()){
+        while (matcher.find()) {
             System.out.println(matcher.group());
         }
 

@@ -22,8 +22,8 @@
     <link rel="stylesheet" type="text/css" href="static/styles/elements_styles.css">
     <link rel="stylesheet" type="text/css" href="static/styles/elements_responsive.css">
     <style>
-        .modal{
-            color:black;
+        .modal {
+            color: black;
             font-size: medium;
         }
     </style>
