@@ -6,7 +6,5 @@ public interface IUserService {
 	public User queryUser(String email, String password);
 	public void addUser(User user);
 	public List<User> getUserByEmail(String email);
-
-
-
+	public List<User> getUserBySubscribed();
 }

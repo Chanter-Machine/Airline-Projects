@@ -29,7 +29,7 @@ public class PassengerTest {
 
         u.setEmail("meeeee@got.com");
         u.setPassword("Time");
-        u.setRole("passenger");
+        u.setRole(1);
 
         passengerService.createPassengerAccount(u);
 
@@ -40,7 +40,7 @@ public class PassengerTest {
         }
 
         p.setAddress("Voids");
-        p.setAge(16);
+        //p.setAge(16);
         p.setPassengername("Winter Bottom");
         p.setPhone("89912312345");
 

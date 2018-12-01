@@ -24,7 +24,7 @@ public class UserQueryTest {
 
 	@Test
 	public void queryUser() {
-		User user=userService.queryUser("123@test.com", "123456");
+		User user=userService.queryUser("test@test.com", "password");
 		if(user!=null) {
 			System.out.println(user.getEmail());
 		}
@@ -38,7 +38,7 @@ public class UserQueryTest {
 		User user = new User();
 		user.setEmail("freshlypressed@email.com");
 		user.setPassword("new password");
-		user.setRole("passenger");
+		user.setRole(1);
 		//userService.addUser(user);
 
         passengerService.createPassengerAccount(user);

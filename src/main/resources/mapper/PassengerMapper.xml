@@ -5,9 +5,9 @@
     <id column="passengerId" jdbcType="INTEGER" property="passengerid" />
     <result column="passengerName" jdbcType="VARCHAR" property="passengername" />
     <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="age" jdbcType="INTEGER" property="age" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="dob" jdbcType="DATE" property="dob" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    passengerId, passengerName, address, age, phone, userId
+    passengerId, passengerName, address, phone, userId, dob
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.PassengerExample" resultMap="BaseResultMap">
     select
@@ -100,11 +100,11 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.Passenger" useGeneratedKeys="true" keyProperty="passengerid">
+  <insert id="insert" parameterType="com.airline.bean.Passenger">
     insert into passenger (passengerId, passengerName, address, 
-      age, phone, userId)
+      phone, userId, dob)
     values (#{passengerid,jdbcType=INTEGER}, #{passengername,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{age,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER})
+      #{phone,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{dob,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.Passenger">
     insert into passenger
@@ -118,14 +118,14 @@
       <if test="address != null">
         address,
       </if>
-      <if test="age != null">
-        age,
-      </if>
       <if test="phone != null">
         phone,
       </if>
       <if test="userid != null">
         userId,
+      </if>
+      <if test="dob != null">
+        dob,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -138,14 +138,14 @@
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="age != null">
-        #{age,jdbcType=INTEGER},
-      </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dob != null">
+        #{dob,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -167,14 +167,14 @@
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.age != null">
-        age = #{record.age,jdbcType=INTEGER},
-      </if>
       <if test="record.phone != null">
         phone = #{record.phone,jdbcType=VARCHAR},
       </if>
       <if test="record.userid != null">
         userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dob != null">
+        dob = #{record.dob,jdbcType=DATE},
       </if>
     </set>
     <if test="_parameter != null">
@@ -186,9 +186,9 @@
     set passengerId = #{record.passengerid,jdbcType=INTEGER},
       passengerName = #{record.passengername,jdbcType=VARCHAR},
       address = #{record.address,jdbcType=VARCHAR},
-      age = #{record.age,jdbcType=INTEGER},
       phone = #{record.phone,jdbcType=VARCHAR},
-      userId = #{record.userid,jdbcType=INTEGER}
+      userId = #{record.userid,jdbcType=INTEGER},
+      dob = #{record.dob,jdbcType=DATE}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -202,14 +202,14 @@
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="age != null">
-        age = #{age,jdbcType=INTEGER},
-      </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="userid != null">
         userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dob != null">
+        dob = #{dob,jdbcType=DATE},
       </if>
     </set>
     where passengerId = #{passengerid,jdbcType=INTEGER}
@@ -218,9 +218,9 @@
     update passenger
     set passengerName = #{passengername,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
       phone = #{phone,jdbcType=VARCHAR},
-      userId = #{userid,jdbcType=INTEGER}
+      userId = #{userid,jdbcType=INTEGER},
+      dob = #{dob,jdbcType=DATE}
     where passengerId = #{passengerid,jdbcType=INTEGER}
   </update>
 </mapper>

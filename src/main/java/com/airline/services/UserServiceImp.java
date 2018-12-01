@@ -34,7 +34,7 @@ public class UserServiceImp implements IUserService {
 		List<User> users = getUserByEmail(user.getEmail());
 		if (users.size()==0) {
 
-			userMapper.insertAndGetId(user);
+			userMapper.insert(user);
 		}
 	}
 
@@ -42,6 +42,17 @@ public class UserServiceImp implements IUserService {
 	public List<User> getUserByEmail(String email) {
 		Criteria criteria = userExample.createCriteria();
 		criteria.andEmailEqualTo(email);
+
+		List<User> userList = userMapper.selectByExample(userExample);
+
+		return userList;
+	}
+
+
+	@Override
+	public List<User> getUserBySubscribed() {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andSubscribedEqualTo(true);
 
 		List<User> userList = userMapper.selectByExample(userExample);
 

@@ -4,8 +4,13 @@
   <resultMap id="BaseResultMap" type="com.airline.bean.User">
     <id column="userId" jdbcType="INTEGER" property="userid" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="role" jdbcType="INTEGER" property="role" />
     <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="loginAttempts" jdbcType="INTEGER" property="loginattempts" />
+    <result column="activated" jdbcType="BIT" property="activated" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <result column="lastLogin" jdbcType="TIMESTAMP" property="lastlogin" />
+    <result column="subscribed" jdbcType="BIT" property="subscribed" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    userId, password, role, email
+    userId, password, role, email, loginAttempts, activated, locked, lastLogin, subscribed
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.UserExample" resultMap="BaseResultMap">
     select
@@ -98,21 +103,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
+  <insert id="insert" parameterType="com.airline.bean.User">
     insert into user (userId, password, role, 
-      email)
-    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR})
+      email, loginAttempts, activated, 
+      locked, lastLogin, subscribed
+      )
+    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, 
+      #{email,jdbcType=VARCHAR}, #{loginattempts,jdbcType=INTEGER}, #{activated,jdbcType=BIT}, 
+      #{locked,jdbcType=BIT}, #{lastlogin,jdbcType=TIMESTAMP}, #{subscribed,jdbcType=BIT}
+      )
   </insert>
-
-  <insert id="insertAndGetId" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyColumn="userId" keyProperty="userid">
-    insert into user (userId, password, role,
-                      email)
-    values (#{userid,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
-            #{email,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.airline.bean.User" useGeneratedKeys="true" keyProperty="userid">
-
+  <insert id="insertSelective" parameterType="com.airline.bean.User">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userid != null">
@@ -127,6 +128,21 @@
       <if test="email != null">
         email,
       </if>
+      <if test="loginattempts != null">
+        loginAttempts,
+      </if>
+      <if test="activated != null">
+        activated,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+      <if test="lastlogin != null">
+        lastLogin,
+      </if>
+      <if test="subscribed != null">
+        subscribed,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userid != null">
@@ -136,10 +152,25 @@
         #{password,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        #{role,jdbcType=VARCHAR},
+        #{role,jdbcType=INTEGER},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="loginattempts != null">
+        #{loginattempts,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null">
+        #{activated,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+      <if test="lastlogin != null">
+        #{lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subscribed != null">
+        #{subscribed,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -159,10 +190,25 @@
         password = #{record.password,jdbcType=VARCHAR},
       </if>
       <if test="record.role != null">
-        role = #{record.role,jdbcType=VARCHAR},
+        role = #{record.role,jdbcType=INTEGER},
       </if>
       <if test="record.email != null">
         email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginattempts != null">
+        loginAttempts = #{record.loginattempts,jdbcType=INTEGER},
+      </if>
+      <if test="record.activated != null">
+        activated = #{record.activated,jdbcType=BIT},
+      </if>
+      <if test="record.locked != null">
+        locked = #{record.locked,jdbcType=BIT},
+      </if>
+      <if test="record.lastlogin != null">
+        lastLogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.subscribed != null">
+        subscribed = #{record.subscribed,jdbcType=BIT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -173,8 +219,13 @@
     update user
     set userId = #{record.userid,jdbcType=INTEGER},
       password = #{record.password,jdbcType=VARCHAR},
-      role = #{record.role,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
+      role = #{record.role,jdbcType=INTEGER},
+      email = #{record.email,jdbcType=VARCHAR},
+      loginAttempts = #{record.loginattempts,jdbcType=INTEGER},
+      activated = #{record.activated,jdbcType=BIT},
+      locked = #{record.locked,jdbcType=BIT},
+      lastLogin = #{record.lastlogin,jdbcType=TIMESTAMP},
+      subscribed = #{record.subscribed,jdbcType=BIT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -186,10 +237,25 @@
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
-        role = #{role,jdbcType=VARCHAR},
+        role = #{role,jdbcType=INTEGER},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="loginattempts != null">
+        loginAttempts = #{loginattempts,jdbcType=INTEGER},
+      </if>
+      <if test="activated != null">
+        activated = #{activated,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+      <if test="lastlogin != null">
+        lastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subscribed != null">
+        subscribed = #{subscribed,jdbcType=BIT},
       </if>
     </set>
     where userId = #{userid,jdbcType=INTEGER}
@@ -197,8 +263,13 @@
   <update id="updateByPrimaryKey" parameterType="com.airline.bean.User">
     update user
     set password = #{password,jdbcType=VARCHAR},
-      role = #{role,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR}
+      role = #{role,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      loginAttempts = #{loginattempts,jdbcType=INTEGER},
+      activated = #{activated,jdbcType=BIT},
+      locked = #{locked,jdbcType=BIT},
+      lastLogin = #{lastlogin,jdbcType=TIMESTAMP},
+      subscribed = #{subscribed,jdbcType=BIT}
     where userId = #{userid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -48,7 +48,7 @@ public class PassengerController {
 		Passenger p = new Passenger(); //visitor.getPassengerInfo();
 		User u = new User(); //visitor.getUserInfo();
 
-			u.setRole("passenger");
+			u.setRole(1);
 			u.setPassword(visitor.getPassword());
 			u.setEmail(visitor.getEmail());
 			passengerService.createPassengerAccount(u);
@@ -56,7 +56,7 @@ public class PassengerController {
 			if (u.getUserid()!=null){
 				p.setPassengername(visitor.getPassengername());
 				p.setAddress(visitor.getAddress());
-				p.setAge(visitor.getAge());
+				//p.setAge(visitor.getAge());
 				p.setPhone(visitor.getPhone());
 				p.setUserid(u.getUserid());
 

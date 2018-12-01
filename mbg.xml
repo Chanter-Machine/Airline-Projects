@@ -12,8 +12,8 @@
   	<!-- config db connection -->
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
         connectionURL="jdbc:mysql://localhost:3306/airline"
-        userId="root"
-        password="123456">
+        userId="user"
+        password="">
     </jdbcConnection>
 
 	<!-- java Type solution -->
@@ -41,7 +41,7 @@
     </javaClientGenerator>
 
 	<!-- Specify strategies for generating beans from tables -->
-	<table tableName="passenger" domainObjectName="Passenger"/>
+	<!-- <table tableName="passenger" domainObjectName="Passenger"/>
 	<table tableName="city" domainObjectName="City"/>
 	<table tableName="flight" domainObjectName="Flightandorder"/>
 	<table tableName="flightandorder" domainObjectName="Flightandorder"/>
@@ -50,8 +50,14 @@
 	<table tableName="plane" domainObjectName="Plane"/>
 	<table tableName="seatrecord" domainObjectName="Seatrecord"/>
 	<table tableName="user" domainObjectName="User"/>
+
+      <table tableName="dealage" domainObjectName="DealAge"/>
+      <table tableName="dealdate" domainObjectName="Dealdate"/>
+      <table tableName="deal" domainObjectName="Deal"/>-->
+      <table tableName="dealtype" domainObjectName="Dealtype"/>
+
 		
-    <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
+    <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
       <property name="useActualColumnNames" value="true"/>
       <generatedKey column="ID" sqlStatement="DB2" identity="true" />
       <columnOverride column="DATE_FIELD" property="startDate" />
