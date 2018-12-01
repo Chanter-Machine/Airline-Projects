@@ -12,7 +12,7 @@
   	<!-- config db connection -->
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
         connectionURL="jdbc:mysql://localhost:3306/airline"
-        userId="user"
+        userId="root"
         password="">
     </jdbcConnection>
 

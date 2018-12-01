@@ -37,10 +37,10 @@ public class UserServiceImp implements IUserService {
 
 		//accountAccessValidation.begin(login);
 		AccountAccessValidation accountAccessValidation = new AccountAccessValidation(login, userList);
-        User user = accountAccessValidation.getUser();
-        result = accountAccessValidation.getResult();
+		User user = accountAccessValidation.getUser();
+		result = accountAccessValidation.getResult();
 
-		if (user!=null) {
+		if (user != null) {
 			updateUser(user);
 
 			if (result.isSuccessful()) {
@@ -52,6 +52,7 @@ public class UserServiceImp implements IUserService {
 		}
 
 		return null;
+	}
 
 	public void addUser(User user){
 
@@ -63,7 +64,7 @@ public class UserServiceImp implements IUserService {
 		List<User> users = getUsers(user.getEmail());
 		if (users.size()==0) {
 
-			userMapper.insertAndGetId(user);
+			userMapper.insert(user);
 		}
 	}
 

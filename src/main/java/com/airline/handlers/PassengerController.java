@@ -165,7 +165,7 @@ public class PassengerController {
 		return result;
 	}
 
-	@RequestMapping("/search.do")
+
 	public ModelAndView loggedOnUser(){
 
 		ModelAndView mv = new ModelAndView();
