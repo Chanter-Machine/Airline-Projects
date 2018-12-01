@@ -51,6 +51,20 @@ public class DealServiceImp implements IDealService {
     }
 
     @Override
+    public double calculateDiscount(Passenger passenger) {
+
+        List<Deal> listofDeals = getAllDealsAndType();
+        RunDealsVisit runDealsVisit= new RunDealsVisit();
+        runDealsVisit.setData(passenger, listofDeals);
+        return runDealsVisit.calculatePostage();
+    }
+
+    @Override
+    public List<Deal> getAllDealsAndType() {
+        return dealMapper.selectAllDealsAndType();
+    }
+
+    @Override
     public List<Deal> getAllDeals() {
 
         return dealMapper.selectByExample(dealExample);

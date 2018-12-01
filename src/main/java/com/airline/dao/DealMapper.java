@@ -16,6 +16,8 @@ public interface DealMapper {
 
     int insertSelective(Deal record);
 
+    List<Deal> selectAllDealsAndType();
+
     List<Deal> selectByExample(DealExample example);
 
     Deal selectByPrimaryKey(Integer dealid);

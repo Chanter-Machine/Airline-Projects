@@ -18,6 +18,11 @@ public class DealsTest {
     IDealService dealService;
 
     @Test
+    public void getAllDeals(){
+        System.out.println(dealService.getAllDealsAndType());
+    }
+
+    @Test
     public void addNewDeal(){
         Deal newDeal = new Deal();
         newDeal.setDescription("Christmas");

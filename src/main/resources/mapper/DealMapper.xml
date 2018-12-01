@@ -82,6 +82,9 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectAllDealsAndType" parameterType="com.airline.bean.DealExample" resultMap="BaseResultMap">
+    select a.*, b.minAge, b.maxAge, b.maxDate, b.minDate, b.rangeTypeCode from deal as a left join dealtype as b on a.typeID=b.typeID
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
