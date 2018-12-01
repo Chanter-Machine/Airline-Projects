@@ -17,19 +17,28 @@ import com.airline.services.IFlightService;
 public class FlightSearchTest {
 	@Autowired
 	IFlightService flightService;
+//	@Test
+//	public void searchByDate() {
+//		Graph graph = new Graph();
+//		String startDate = "2010-02-01";
+//		List<Flight> flights = flightService.getFlightsByDate(startDate);
+//		for(Flight flight: flights) {
+//			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
+//		}
+//
+//		List<List<Flight>> results = flightService.searchFlight(graph, "5", "1");
+//
+//		for(List<Flight> list: results) {
+//			for(Flight flight: list) {
+//				System.out.print(flight.getFlightid()+" ");
+//			}
+//			System.out.println("");
+//		}
+//	}
+	
 	@Test
-	public void searchByDate() {
-		Graph graph = new Graph();
-		String startDate = "2010-02-01";
-//		String arriveDate = "2010-02-02";
-		List<Flight> flights = flightService.getFlightsByDate(startDate);
-		for(Flight flight: flights) {
-			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
-		}
-
-		List<Flight> results = flightService.searchFlight(graph, "5", "1");
-		for (Flight flight: results){
-			System.out.println(flight.getFlightid());
-		}
+	public void searchFlights() {
+		
+		
 	}
 }

@@ -20,13 +20,13 @@ public class UserServiceImp implements IUserService {
 	@Autowired
 	UserMapper userMapper;
 
+
 	UserExample userExample=new UserExample();
 
 	@Autowired
 	UserFactory userFactory;
 
 	Msg result=new Msg();
-
 
 	//@Autowired
 	//AccountAccessValidation accountAccessValidation;
@@ -52,8 +52,6 @@ public class UserServiceImp implements IUserService {
 		}
 
 		return null;
-	
-	}
 
 	public void addUser(User user){
 
@@ -65,7 +63,7 @@ public class UserServiceImp implements IUserService {
 		List<User> users = getUsers(user.getEmail());
 		if (users.size()==0) {
 
-			userMapper.insert(user);
+			userMapper.insertAndGetId(user);
 		}
 	}
 
@@ -73,6 +71,17 @@ public class UserServiceImp implements IUserService {
 	public List<User> getUsers(String email) {
 		Criteria criteria = userExample.createCriteria();
 		criteria.andEmailEqualTo(email);
+
+		List<User> userList = userMapper.selectByExample(userExample);
+
+		return userList;
+	}
+
+
+	@Override
+	public List<User> getUserBySubscribed() {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andSubscribedEqualTo(true);
 
 		List<User> userList = userMapper.selectByExample(userExample);
 

@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Vector;
 
 import com.airline.bean.Flight;
+import com.airline.bean.SearchData;
 
 public interface IFlightService {
-	public List<Flight> getFlightsByDate(String takeOffDate);
-	public List<Flight> searchFlight(Graph graph, String start, String end);
+	public List<Flight> getFlightsFromDB();
+	public List<List<Flight>> searchPath(Graph graph, String start, String end);
+	public List<List<Flight>> searchFlights(SearchData searchData);
 }

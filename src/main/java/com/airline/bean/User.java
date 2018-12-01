@@ -1,8 +1,10 @@
 package com.airline.bean;
 
+import com.airline.deals.DealObserver;
+
 import java.util.Date;
 
-public class User {
+public class User implements DealObserver {
     private Integer userid;
 
     private String password;
@@ -92,4 +94,7 @@ public class User {
     public void setSubscribed(Boolean subscribed) {
         this.subscribed = subscribed;
     }
+
+    @Override
+    public void update(String dealName, String passengerEmail){}
 }
