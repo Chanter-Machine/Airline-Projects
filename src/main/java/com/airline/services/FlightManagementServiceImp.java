@@ -10,6 +10,8 @@ import com.airline.bean.FlightRecord;
 import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightRecordMapper;
 import com.airline.dao.FlightandorderMapper;
+import com.airline.services.oberver.cancelflight.FlightRecordObserver;
+import com.airline.services.oberver.cancelflight.Observer;
 @Service
 public class FlightManagementServiceImp implements IFlightManagementService {
 
@@ -34,7 +36,11 @@ public class FlightManagementServiceImp implements IFlightManagementService {
 	}
 	
 	public void addFlightRecord(FlightRecord record) {
-		flightRecordMapper.insert(record);
+//		flightRecordMapper.insert(record);
+		System.out.println(" :" + record);
+		Observer observer = new FlightRecordObserver();
+		record.attach(observer);
+		record.cancel();
 	}
 
 }

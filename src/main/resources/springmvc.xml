@@ -36,12 +36,11 @@
 		<!-- TO support advanced configuration of spring MVC (JSR303 validation, ajax, mapping dynamic request) -->
 		
 		<mvc:annotation-driven conversion-service="conversionService"/>
-		<bean id="myDataConverter" class="com.airline.converter.MyDataConverter"/>
 		<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
 	 		<property name="converters">
-	 				<set>
-	 					<ref bean="myDataConverter"/>
-	 				</set>
+	 				<list>
+	 					<bean class="com.airline.converter.MyDataConverter"/>
+	 				</list>
  			</property>
  		</bean>
 </beans>
