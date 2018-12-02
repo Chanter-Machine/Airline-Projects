@@ -7,7 +7,7 @@ import com.airline.utils.Msg;
 
 public interface IUserService {
 	public List<User> getUserBySubscribed();
-	User validateUser(Login login);
+	User validateUser(User user);
 	void addUser(User user);
 	List<User> getUsers(String email);
 	void activateUser(int userid);

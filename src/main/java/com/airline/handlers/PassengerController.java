@@ -51,11 +51,8 @@ public class PassengerController {
 		ModelAndView mv = new ModelAndView();
 
 		if (!containsBadData) {
-			Login login=new Login();
-			login.email=loginuser.getEmail();
-			login.password=loginuser.getPassword();
 
-			User user = userService.validateUser(login);
+			User user = userService.validateUser(loginuser);
 			Msg result = userService.getResult();
 
 			if (user != null) {
@@ -90,10 +87,7 @@ public class PassengerController {
 	@RequestMapping("/login2.do")
 	@ResponseBody
 	public Msg loginCheck2(User u) {
-		Login login=new Login();
-		login.email=u.getPassword();
-		login.password=u.getEmail();
-		User user = userService.validateUser(login);
+		User user = userService.validateUser(u);
 		return Msg.success().add("user", user);
 	}
 

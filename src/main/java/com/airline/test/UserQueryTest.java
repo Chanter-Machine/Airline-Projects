@@ -28,9 +28,9 @@ public class UserQueryTest {
 
 	@Test
 	public void queryUser() {
-		Login login = new Login();
-		login.email="newuser@got.com";
-		login.password="exquisiters";
+		User login = new User();
+		login.setEmail("newuser@got.com");
+		login.setPassword("exquisiters");
 		User user=userService.validateUser(login);
 		if(user!=null) {
 			System.out.println("login successful");

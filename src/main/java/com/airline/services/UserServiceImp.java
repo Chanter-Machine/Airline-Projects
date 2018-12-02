@@ -5,6 +5,8 @@ import java.util.List;
 import com.airline.bean.Login;
 import com.airline.security.AccountAccessValidation;
 import com.airline.security.Encryption;
+import com.airline.security.LoginValidationChain;
+import com.airline.security.LoginValidationFactory;
 import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,16 +33,22 @@ public class UserServiceImp implements IUserService {
 	//@Autowired
 	//AccountAccessValidation accountAccessValidation;
 
-	public User validateUser(Login login) {
+	public User validateUser(User attemptingUser) {
 
-		List<User> userList = getUsers(login.email);
+		List<User> userList = getUsers(attemptingUser.getEmail());
 
 		//accountAccessValidation.begin(login);
-		AccountAccessValidation accountAccessValidation = new AccountAccessValidation(login, userList);
-		User user = accountAccessValidation.getUser();
-		result = accountAccessValidation.getResult();
+		LoginValidationChain validationChain = new LoginValidationChain(attemptingUser, userList);
+		User user;
 
-		if (user != null) {
+		validationChain.run();
+		result = validationChain.getResult();
+		userList = (List<User>) result.getData().get("user");
+
+
+		if (userList.size() == 1) {
+			user = userList.get(0);
+			//log attempt details
 			updateUser(user);
 
 			if (result.isSuccessful()) {

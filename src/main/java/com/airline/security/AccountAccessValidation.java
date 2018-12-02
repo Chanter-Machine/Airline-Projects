@@ -7,44 +7,57 @@ import com.airline.utils.Msg;
 import java.util.Date;
 import java.util.List;
 
-public class AccountAccessValidation extends AccountLockValidation {
+public class AccountAccessValidation implements ILoginValidation {
 
     private String email;
     private String password;
     private final int MAXATTEMPTS=5;
     private int loginAttempts;
     private int latestAttemptCount;
+    public Login login;
+    public Msg result;
+    public User user;
 
     //@Autowired
-    public AccountAccessValidation(Login login, List<User> users) {
-        super(login, users);
-        this.email = login.email;
-        this.password = login.password;
-        result = validateAccess();
-    }
 
-    public Msg validateAccess() {
-        if (result.isSuccessful()){
+    AccountAccessValidation(){}
 
+
+    public Msg validate(User attemptingUser, List<User> userCollection) {
+
+        // set default error message
+        result=new Msg();
+        result.setSuccessful(false);
+        result.setMsg("There's an error with your account or it does not exist, please contact the administrator to assist.");
+        if (userCollection.size()==1 && attemptingUser.getEmail().equals(userCollection.get(0).getEmail())){
+            setUser(userCollection.get(0));
             loginAttempts = user.getLoginattempts();
 
             //lock account if attempts exceed allowed amount
             if (loginAttempts <= MAXATTEMPTS){
                 //check if the correct password was provided
-                if (!encryptPassword(password).equals(user.getPassword())){
+                if (!encryptPassword(attemptingUser.getPassword()).equals(user.getPassword())){
                     //increase login attempts
                     result.setSuccessful (false);
                     String msg="Incorrect username or password provided, please check that you have provided the correct details. " + logFailedAttempt();
                     result.setMsg(msg);
 
                 } else {
-                    super.unlockAccount();
+                    result.setSuccessful(true);
+                    AccountLockValidation accountLockValidation = new AccountLockValidation(user);
+                    setUser(accountLockValidation.unlockAccount());
+
+                    userCollection.clear();
+                    userCollection.add(user);
+                    result.add("user", userCollection);
+
                 }
             } else {
                 result.setSuccessful(false);
                 result.setMsg("You have exceeded the maximum failed attempts and your account has been locked.");
                 if (!(user.getLocked()==null || user.getLocked()==false)){
-                    super.lockAccount();
+                    AccountLockValidation accountLockValidation = new AccountLockValidation(user);
+                    accountLockValidation.lockAccount();
                 }
             }
 
@@ -81,5 +94,9 @@ public class AccountAccessValidation extends AccountLockValidation {
 
     public Msg getResult(){
         return result;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
