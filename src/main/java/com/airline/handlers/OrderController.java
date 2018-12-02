@@ -1,9 +1,6 @@
 package com.airline.handlers;
 
-import com.airline.bean.Flightandorder;
-import com.airline.bean.Order;
-import com.airline.bean.Passenger;
-import com.airline.bean.Paymentrecord;
+import com.airline.bean.*;
 import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightandorderMapper;
 import com.airline.services.order.IOrderService;
@@ -54,6 +51,10 @@ public class OrderController {
         for (int i :
                 flights_id) {
             flightandorder.setFlightid(i);
+            Flight flight = flightMapper.selectByPrimaryKey(i);
+            takeoffDate.setHours(flight.getTakeofftime().getHours());
+            takeoffDate.setMinutes(flight.getTakeofftime().getMinutes());
+            takeoffDate.setSeconds(flight.getTakeofftime().getSeconds());
             flightandorder.setOrderid(order.getOrderid());
             flightandorder.setSeatnum(7);
             flightandorder.setSeattype("Economic");
