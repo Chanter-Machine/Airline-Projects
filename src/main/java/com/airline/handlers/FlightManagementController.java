@@ -30,7 +30,7 @@ public class FlightManagementController {
 			resultInfo.setError("post correct pamarameter");
 			resultInfo.setState(0);
 			return resultInfo;
-			}
+		}
 		
 		try {
 			flightManagementService.addFlight(flight);
@@ -42,6 +42,8 @@ public class FlightManagementController {
 		}
 		return resultInfo;
 	}
+	
+	
 	
 //	@ResponseBody
 //	@RequestMapping(value = "/deleteFlight",method = RequestMethod.POST)
@@ -75,7 +77,6 @@ public class FlightManagementController {
 	@ResponseBody
 	@RequestMapping(value = "/cancelFlight.do",method=RequestMethod.POST)
 	public void cancelFlight(FlightRecord flightRecord) {
-		flightRecord.setStatus("canceled");
 		flightManagementService.addFlightRecord(flightRecord);
 	}
 }

@@ -2,8 +2,9 @@ package com.airline.dao;
 
 import com.airline.bean.SeatRecord;
 import com.airline.bean.SeatRecordExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SeatRecordMapper {
     long countByExample(SeatRecordExample example);

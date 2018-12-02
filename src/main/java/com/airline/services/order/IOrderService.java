@@ -1,9 +1,6 @@
 package com.airline.services.order;
 
-import com.airline.bean.Order;
-import com.airline.bean.OrderExample;
-import com.airline.bean.Passenger;
-import com.airline.bean.Paymentrecord;
+import com.airline.bean.*;
 
 import java.util.List;
 
@@ -26,4 +23,6 @@ public interface IOrderService {
     public boolean cancelOrder(Order order);
 
     public boolean orderCompleted(Order order);
+
+    public List<UserFlight> orderWithFlightByPassenger(int passengerid);
 }

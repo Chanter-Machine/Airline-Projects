@@ -1,9 +1,6 @@
 package com.airline.services.order;
 
-import com.airline.bean.Order;
-import com.airline.bean.OrderExample;
-import com.airline.bean.Passenger;
-import com.airline.bean.Paymentrecord;
+import com.airline.bean.*;
 import com.airline.dao.OrderMapper;
 import com.airline.dao.PaymentrecordMapper;
 import com.airline.utils.DBHelper;
@@ -113,5 +110,11 @@ public class OrderServiceImp implements IOrderService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public List<UserFlight> orderWithFlightByPassenger(int passengerid) {
+        List<UserFlight> userFlights = orderMapper.selectOrderByPassengerID(passengerid);
+        return userFlights;
     }
 }

@@ -8,6 +8,15 @@
       <result column="status" jdbcType="VARCHAR" property="status"/>
       <result column="date" jdbcType="TIMESTAMP" property="date"/>
   </resultMap>
+  <resultMap id="ExtendedResultMap" type="com.airline.bean.UserFlight">
+    <id column="orderId" jdbcType="INTEGER" property="orderID" />
+    <result column="flightDate" jdbcType="DATE" property="flightDate" />
+    <result column="flightOrigin" jdbcType="VARCHAR" property="flightOrigin" />
+    <result column="flightDestination" jdbcType="VARCHAR" property="flightDestination" />
+    <result column="paymentStatus" jdbcType="VARCHAR" property="paymentStatus" />
+    <result column="seatType" jdbcType="VARCHAR" property="seatType" />
+    <result column="flightTime" jdbcType="TIME" property="flightTime" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -69,6 +78,10 @@
   <sql id="Base_Column_List">
     orderId, passagerId, paymentId, status, date
   </sql>
+  <select id="selectOrderByPassengerID" parameterType="java.lang.Integer" resultMap="ExtendedResultMap">
+    select a.orderId as orderID , a.status as paymentStatus, d.cityName as flightOrigin, e.cityName as flightDestination, b.seatType as seatType, b.takeoffDate as flightDate, c.takeOffTIme as flightTime from orders as a left join flightandorder as b on a.orderId=b.orderId left join flight as c on b.flightId=c.flightId
+left join city as d on c.ori=d.cityId left join city as e on c.dst=e.cityId where a.passagerId=#{passengerid, jdbcType=INTEGER}
+  </select>
   <select id="selectByExample" parameterType="com.airline.bean.OrderExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

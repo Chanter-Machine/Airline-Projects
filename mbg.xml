@@ -1,70 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
 
-    <context id="DB2Tables" targetRuntime="MyBatis3">
-        <commentGenerator>
-            <property name="suppressAllComments" value="true"/>
-        </commentGenerator>
-        <!-- config db connection -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/airline1"
-                        userId="root"
-                        password="123456">
-        </jdbcConnection>
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+	<commentGenerator>
+	 	<property name="suppressAllComments" value="true" />
+	</commentGenerator>
+  	<!-- config db connection -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                    connectionURL="jdbc:mysql://localhost:3306/airline1"
+                    userId="root"
+                    password="123456">
+    </jdbcConnection>
 
-        <!-- java Type solution -->
-        <javaTypeResolver>
-            <property name="forceBigDecimals" value="false"/>
-        </javaTypeResolver>
+	<!-- java Type solution -->
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
 
-        <!-- assign a location to generate bean classes -->
-        <javaModelGenerator targetPackage="com.airline.bean"
-                            targetProject=".\src\main\java">
-            <property name="enableSubPackages" value="true"/>
-            <property name="trimStrings" value="true"/>
-        </javaModelGenerator>
+	<!-- assign a location to generate bean classes -->
+    <javaModelGenerator targetPackage="com.airline.bean" 
+    					targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
 
-        <!-- Specify a location to store sql mapping files -->
-        <sqlMapGenerator targetPackage="mapper"
-                         targetProject=".\src\main\resources">
-            <property name="enableSubPackages" value="true"/>
-        </sqlMapGenerator>
+	<!-- Specify a location to store sql mapping files -->
+    <sqlMapGenerator targetPackage="mapper"  
+    				 targetProject=".\src\main\resources">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
 
-        <!-- Specify a location to generate Dao Interfaces(location of mapper) -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.airline.dao"
-                             targetProject=".\src\main\java">
-            <property name="enableSubPackages" value="true"/>
-        </javaClientGenerator>
+	<!-- Specify a location to generate Dao Interfaces(location of mapper) -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.airline.dao"  
+    									  targetProject=".\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
 
-        <!-- Specify strategies for generating beans from tables -->
-        <!-- <table tableName="passenger" domainObjectName="Passenger"/>
-        <table tableName="city" domainObjectName="City"/>
-        <table tableName="flight" domainObjectName="Flightandorder"/>
-        <table tableName="flightandorder" domainObjectName="Flightandorder"/>
-        <table tableName="order" domainObjectName="Order"/>
-        <table tableName="paymentrecord" domainObjectName="Paymentrecord"/>
-        <table tableName="plane" domainObjectName="Plane"/>
-        <table tableName="seatrecord" domainObjectName="Seatrecord"/>
-        <table tableName="user" domainObjectName="User"/>
+	<!-- Specify strategies for generating beans from tables -->
+      <!-- <table tableName="passenger" domainObjectName="Passenger"/>
+      <table tableName="city" domainObjectName="City"/>
+      <table tableName="flight" domainObjectName="Flightandorder"/>
+      <table tableName="flightandorder" domainObjectName="Flightandorder"/>
+      <table tableName="order" domainObjectName="Order"/>
+      <table tableName="paymentrecord" domainObjectName="Paymentrecord"/>
+      <table tableName="plane" domainObjectName="Plane"/>
+      <table tableName="seatrecord" domainObjectName="Seatrecord"/>
+      <table tableName="user" domainObjectName="User"/>
 
-          <table tableName="dealage" domainObjectName="DealAge"/>
-          <table tableName="dealdate" domainObjectName="Dealdate"/>
-          <table tableName="deal" domainObjectName="Deal"/>-->
-        <table tableName="dealtype" domainObjectName="Dealtype"/>
+        <table tableName="dealage" domainObjectName="DealAge"/>
+        <table tableName="dealdate" domainObjectName="Dealdate"/>
+        <table tableName="deal" domainObjectName="Deal"/>-->
+      <table tableName="dealtype" domainObjectName="Dealtype"/>
 
 
-        <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
-          <property name="useActualColumnNames" value="true"/>
-          <generatedKey column="ID" sqlStatement="DB2" identity="true" />
-          <columnOverride column="DATE_FIELD" property="startDate" />
-          <ignoreColumn column="FRED" />
-          <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
-        </table> -->
+      <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
+        <property name="useActualColumnNames" value="true"/>
+        <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+        <columnOverride column="DATE_FIELD" property="startDate" />
+        <ignoreColumn column="FRED" />
+        <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+      </table> -->
 
-    </context>
+  </context>
 </generatorConfiguration>
-
