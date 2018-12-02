@@ -1,6 +1,6 @@
 package com.airline.bean;
 
-public class Deal {
+public class Deal extends Dealtype {
     private Integer dealid;
 
     private String description;
