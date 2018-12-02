@@ -11,9 +11,9 @@
 	</commentGenerator>
   	<!-- config db connection -->
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-        connectionURL="jdbc:mysql://localhost:3306/airline"
-        userId="root"
-        password="123456">
+                    connectionURL="jdbc:mysql://localhost:3306/airline1"
+                    userId="root"
+                    password="123456">
     </jdbcConnection>
 
 	<!-- java Type solution -->
@@ -41,23 +41,29 @@
     </javaClientGenerator>
 
 	<!-- Specify strategies for generating beans from tables -->
-	<table tableName="passenger" domainObjectName="Passenger"/>
-	<table tableName="city" domainObjectName="City"/>
-	<table tableName="flight" domainObjectName="Flightandorder"/>
-	<table tableName="flightandorder" domainObjectName="Flightandorder"/>
-	<table tableName="order" domainObjectName="Order"/>
-	<table tableName="paymentrecord" domainObjectName="Paymentrecord"/>
-	<table tableName="plane" domainObjectName="Plane"/>
-	<table tableName="seatrecord" domainObjectName="Seatrecord"/>
-	<table tableName="user" domainObjectName="User"/>
-		
-    <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer" >
-      <property name="useActualColumnNames" value="true"/>
-      <generatedKey column="ID" sqlStatement="DB2" identity="true" />
-      <columnOverride column="DATE_FIELD" property="startDate" />
-      <ignoreColumn column="FRED" />
-      <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
-    </table> -->
+      <!-- <table tableName="passenger" domainObjectName="Passenger"/>
+      <table tableName="city" domainObjectName="City"/>
+      <table tableName="flight" domainObjectName="Flightandorder"/>
+      <table tableName="flightandorder" domainObjectName="Flightandorder"/>
+      <table tableName="order" domainObjectName="Order"/>
+      <table tableName="paymentrecord" domainObjectName="Paymentrecord"/>
+      <table tableName="plane" domainObjectName="Plane"/>
+      <table tableName="seatrecord" domainObjectName="Seatrecord"/>
+      <table tableName="user" domainObjectName="User"/>
+
+        <table tableName="dealage" domainObjectName="DealAge"/>
+        <table tableName="dealdate" domainObjectName="Dealdate"/>
+        <table tableName="deal" domainObjectName="Deal"/>-->
+      <table tableName="dealtype" domainObjectName="Dealtype"/>
+
+
+      <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
+        <property name="useActualColumnNames" value="true"/>
+        <generatedKey column="ID" sqlStatement="DB2" identity="true" />
+        <columnOverride column="DATE_FIELD" property="startDate" />
+        <ignoreColumn column="FRED" />
+        <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" />
+      </table> -->
 
   </context>
 </generatorConfiguration>
