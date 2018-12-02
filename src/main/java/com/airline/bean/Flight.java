@@ -103,4 +103,12 @@ public class Flight {
 		this.dstCity = dstCity;
 	}
 
+	@Override
+	public String toString() {
+		return "Flight [flightid=" + flightid + ", ori=" + ori + ", dst=" + dst + ", planeid=" + planeid
+				+ ", takeofftime=" + takeofftime + ", arrivetime=" + arrivetime + ", price=" + price + ", oriCity="
+				+ oriCity + ", dstCity=" + dstCity + ", plane=" + plane + "]";
+	}
+
+
 }
