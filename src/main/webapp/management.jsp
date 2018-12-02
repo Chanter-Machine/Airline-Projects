@@ -315,7 +315,7 @@
 			$("#cancel_flight").modal({
 				backdrop:"static"
 			});
-		});
+		}); 
 	</script>
 </body>
 </html>
