@@ -18,6 +18,8 @@ public interface PassengerMapper {
 
     List<Passenger> selectByExample(PassengerExample example);
 
+    int insertVisitor(Passenger passenger);
+
     Passenger selectByPrimaryKey(Integer passengerid);
 
     int updateByExampleSelective(@Param("record") Passenger record, @Param("example") PassengerExample example);

@@ -1,3 +1,7 @@
+<%@ page import="com.airline.bean.UserFlight" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.airline.bean.User" %>
+<%@ page import="java.util.stream.Collectors" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%	
@@ -16,6 +20,7 @@
 	<link href="static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" type="text/css" href="static/styles/elements_styles.css">
 	<link rel="stylesheet" type="text/css" href="static/styles/elements_responsive.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/bootstrap-datetimepicker.min.css" media="screen">
 </head>
 
 <body>
@@ -43,8 +48,8 @@
 							</ul>
 						</div>
 						<div class="user_box ml-auto">
-							<div class="user_box_login user_box_link nav_slider_link"><a href="#">login</a></div>
-							<div class="user_box_register user_box_link nav_slider_link"><a href="#">register</a></div>
+							<div class="user_box_login user_box_link"><a href="#">${user.email}</a></div>
+							<div class="user_box_register user_box_link"><a href="#">logout</a></div>
 						</div>
 					</div>
 				</div>
@@ -84,7 +89,7 @@
 	<div class="body">
 		<div class="container">
 			<p>&nbsp;</p>
-			<p>Logged on as <cite>${user.email}</cite></p>
+			<p>Logged on as <cite>${user.passengername}</cite></p>
 			<p>&nbsp;</p>
 			<div class="row">
 				<div class="col-md-6">
@@ -157,26 +162,10 @@
 												</select>
 												<!--								<input type="text" class="form-control" required="required">-->
 											</div>
-											<div class="search_item">
-												<div><i class="fa fa-calendar"></i> Travel Date</div>
-												<select name="origin" id="origin" class="custom-select custom-select-lg mb-3">
-													<option>DD</option>
-													<c:forEach begin="1" end="31" varStatus="loop">
-														<option value="${loop.index}">${loop.index}</option>option>
-													</c:forEach>
-												</select>
-												/
-												<select name="origin" id="origin" class="custom-select custom-select-lg mb-3">
-													<option>MM</option>
-												</select>
-												/
-												<select name="origin" id="origin" class="custom-select custom-select-lg mb-3">
-													<option>YYYY</option>
-													<c:forEach begin="1910" end="2018" step="-1" varStatus="loop">
-														<option value="${loop.index}">${loop.index}</option>option>
-													</c:forEach>
-												</select>
-											</div>
+                                            <div class="search_item">
+                                                <div><i class="fa fa-calendar"></i> Travel Date</div>
+                                                <input name="traveldate" class="form-control contact_form_name date form_date" size="16" type="text" value="" placeholder="yyyy/mm/dd">
+                                            </div>
 											<div class="search_item">
 												<div>Seat Preference</div>
 												<select name="origin" id="origin" class="form-control custom-select custom-select-lg mb-3">
@@ -251,42 +240,41 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="accordion_container">
-							<div class="accordion d-flex flex-row align-items-center"><div>Dublin to Galway (October 10, 2018)</div></div>
-							<div class="accordion_panel">
-								<p>Your itenary for this trip:</p>
-								<div class="table-responsive">
-									<table class="table table-striped table-sm">
-										<thead>
-										<tr>
-											<th>#</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr>
-											<td>1,001</td>
-											<td>Lorem</td>
-											<td>ipsum</td>
-											<td>dolor</td>
-											<td>sit</td>
-										</tr>
-										<tr>
-											<td>1,002</td>
-											<td>amet</td>
-											<td>consectetur</td>
-											<td>adipiscing</td>
-											<td>elit</td>
-										</tr>
-										</tbody>
-									</table>
+						<c:if test="${not empty orders}">
+							<%
+								List<UserFlight> orders = (List<UserFlight>) request.getAttribute("orders");
+								List<Integer> uniqueOrders = (List<Integer>) request.getAttribute("orderIDs");
+							%>
+							<% for (Integer uniqueID: uniqueOrders) {
+								List<UserFlight> thisOrder = orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList());
+								String origin = thisOrder.get(0).toString();
+								String destination = thisOrder.get(thisOrder.size()-1).getFlightDestination();
+							%>
+								<div class="accordion_container">
+									<div class="accordion d-flex flex-row align-items-center"><div><%=origin%> to <%destination%> (<%=uniqueID%>)</div></div>
+									<div class="accordion_panel">
+										<p>Your itenary for this trip:</p>
+										<div class="table-responsive">
+											<table class="table table-striped table-sm">
+												<tbody>
+												<% for (UserFlight orderFlight: orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList())) { %>
+												<tr>
+													<td><%= orderFlight.getFlightOrigin() %></td>
+													<td><%= orderFlight.getFlightDestination() %></td>
+													<td><%= orderFlight.getSeatType() %></td>
+													<td><%= orderFlight.getPaymentStatus() %></td>
+													<td><%= orderFlight.getFlightDate() %></td>
+													<td><%= orderFlight.getFlightTime() %></td>
+												</tr>
+												<% } %>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
+							<%}%>
+						</c:if>
+
 
 						<div class="accordion_container">
 							<div class="accordion d-flex flex-row align-items-center"><div>Other Information</div></div>
@@ -330,7 +318,21 @@
 <script src="static/plugins/jquery-circle-progress-1.2.2/circle-progress.js"></script>
 <script src="static/plugins/parallax-js-master/parallax.min.js"></script>
 <script src="static/js/elements_custom.js"></script>
+<script src="static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+<script>
+    $('.form_date').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        format: 'yyyy/mm/dd'
+    });
 
+
+</script>
 </body>
 
 </html>

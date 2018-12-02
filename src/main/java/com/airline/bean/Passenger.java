@@ -1,17 +1,19 @@
 package com.airline.bean;
 
-public class Passenger {
+import java.util.Date;
+
+public class Passenger extends User {
     private Integer passengerid;
 
     private String passengername;
 
     private String address;
 
-    private Integer age;
-
     private String phone;
 
     private Integer userid;
+
+    private Date dob;
 
     public Integer getPassengerid() {
         return passengerid;
@@ -37,14 +39,6 @@ public class Passenger {
         this.address = address == null ? null : address.trim();
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -59,5 +53,13 @@ public class Passenger {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 }

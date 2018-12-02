@@ -2,6 +2,12 @@ package com.airline.services;
 
 import java.util.List;
 
+import com.airline.bean.Login;
+import com.airline.security.AccountAccessValidation;
+import com.airline.security.Encryption;
+import com.airline.security.LoginValidationChain;
+import com.airline.security.LoginValidationFactory;
+import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +21,110 @@ public class UserServiceImp implements IUserService {
 
 	@Autowired
 	UserMapper userMapper;
-	
-	UserExample userExample = new UserExample();
-	
-	public User queryUser(String email, String password) {
-		Criteria criteria = userExample.createCriteria();
-		criteria.andEmailEqualTo(email);
-		criteria.andPasswordEqualTo(password);
-		
-		List<User> userList = userMapper.selectByExample(userExample);
 
-		return userList.size()==1?userList.get(0):null;
-	
+
+	UserExample userExample=new UserExample();
+
+	@Autowired
+	UserFactory userFactory;
+
+	Msg result=new Msg();
+
+	//@Autowired
+	//AccountAccessValidation accountAccessValidation;
+
+	public User validateUser(User attemptingUser) {
+
+		List<User> userList = getUsers(attemptingUser.getEmail());
+
+		//accountAccessValidation.begin(login);
+		LoginValidationChain validationChain = new LoginValidationChain(attemptingUser, userList);
+		User user;
+
+		validationChain.run();
+		result = validationChain.getResult();
+		userList = (List<User>) result.getData().get("user");
+
+
+		if (userList.size() == 1) {
+			user = userList.get(0);
+			//log attempt details
+			updateUser(user);
+
+			if (result.isSuccessful()) {
+				User producedUser = userFactory.produce(user);
+				return producedUser;
+			} else {
+				return null;
+			}
+		}
+
+		return null;
 	}
 
 	public void addUser(User user){
 
-		List<User> users = getUserByEmail(user.getEmail());
+		//encrypt user's password
+		String password = user.getPassword();
+		password = new Encryption().encrypt(password);
+		user.setPassword(password);
+
+		List<User> users = getUsers(user.getEmail());
 		if (users.size()==0) {
 
-			userMapper.insertAndGetId(user);
+			userMapper.insert(user);
 		}
 	}
 
-
-	public List<User> getUserByEmail(String email) {
+	@Override
+	public List<User> getUsers(String email) {
 		Criteria criteria = userExample.createCriteria();
 		criteria.andEmailEqualTo(email);
 
 		List<User> userList = userMapper.selectByExample(userExample);
 
 		return userList;
+	}
+
+
+	@Override
+	public List<User> getUserBySubscribed() {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andSubscribedEqualTo(true);
+
+		List<User> userList = userMapper.selectByExample(userExample);
+
+		return userList;
+	}
+
+	@Override
+	public List<User> getUsers(int userid) {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andUseridEqualTo(userid);
+
+		List<User> userList = userMapper.selectByExample(userExample);
+
+		return userList;
+	}
+
+	@Override
+	public void activateUser(int userid) {
+		Criteria criteria = userExample.createCriteria();
+		criteria.andUseridEqualTo(userid);
+
+		User user = getUsers(userid).get(0);
+		user.setActivated(true);
+
+		userMapper.updateByExample(user, userExample);
+
+	}
+
+	@Override
+	public void updateUser(User user) {
+		userMapper.updateByPrimaryKey(user);
+	}
+
+	public Msg getResult() {
+		return result;
 	}
 }
