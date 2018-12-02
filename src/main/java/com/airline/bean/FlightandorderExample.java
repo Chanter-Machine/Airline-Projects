@@ -1,6 +1,7 @@
 package com.airline.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FlightandorderExample {
@@ -411,6 +412,66 @@ public class FlightandorderExample {
 
         public Criteria andSeatnumNotBetween(Integer value1, Integer value2) {
             addCriterion("seatNum not between", value1, value2, "seatnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateIsNull() {
+            addCriterion("takeoffDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateIsNotNull() {
+            addCriterion("takeoffDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateEqualTo(Date value) {
+            addCriterion("takeoffDate =", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateNotEqualTo(Date value) {
+            addCriterion("takeoffDate <>", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateGreaterThan(Date value) {
+            addCriterion("takeoffDate >", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateGreaterThanOrEqualTo(Date value) {
+            addCriterion("takeoffDate >=", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateLessThan(Date value) {
+            addCriterion("takeoffDate <", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateLessThanOrEqualTo(Date value) {
+            addCriterion("takeoffDate <=", value, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateIn(List<Date> values) {
+            addCriterion("takeoffDate in", values, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateNotIn(List<Date> values) {
+            addCriterion("takeoffDate not in", values, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateBetween(Date value1, Date value2) {
+            addCriterion("takeoffDate between", value1, value2, "takeoffdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andTakeoffdateNotBetween(Date value1, Date value2) {
+            addCriterion("takeoffDate not between", value1, value2, "takeoffdate");
             return (Criteria) this;
         }
     }

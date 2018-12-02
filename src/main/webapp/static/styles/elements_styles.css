@@ -825,6 +825,8 @@ section
 .button_color_1
 {
 	background: #31124b;
+	font-color: white;
+	font-weight: bold;
 }
 .button_color_1:hover
 {

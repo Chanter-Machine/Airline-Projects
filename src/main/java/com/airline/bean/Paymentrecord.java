@@ -3,13 +3,20 @@ package com.airline.bean;
 import java.util.Date;
 
 public class Paymentrecord {
+    public static final String PendingStatus = "Pending";
+    public static final String PaidStatus = "Paid";
+    public static final String RefundStatus = "Refund";
     private Integer paymentid;
 
     private String amount;
 
     private String status;
 
-    private Date data;
+    private Date date;
+
+    private Integer paymenttype;
+
+    private String thirtypartypaymentid;
 
     public Integer getPaymentid() {
         return paymentid;
@@ -35,11 +42,27 @@ public class Paymentrecord {
         this.status = status == null ? null : status.trim();
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Integer getPaymenttype() {
+        return paymenttype;
+    }
+
+    public void setPaymenttype(Integer paymenttype) {
+        this.paymenttype = paymenttype;
+    }
+
+    public String getThirtypartypaymentid() {
+        return thirtypartypaymentid;
+    }
+
+    public void setThirtypartypaymentid(String thirtypartypaymentid) {
+        this.thirtypartypaymentid = thirtypartypaymentid == null ? null : thirtypartypaymentid.trim();
     }
 }

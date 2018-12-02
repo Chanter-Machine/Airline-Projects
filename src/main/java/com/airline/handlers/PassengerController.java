@@ -1,12 +1,11 @@
 package com.airline.handlers;
 
-import com.airline.bean.City;
-import com.airline.bean.Login;
-import com.airline.bean.Passenger;
+import com.airline.bean.*;
 import com.airline.security.Validator;
 import com.airline.services.ICityService;
 import com.airline.services.IPassengerService;
 import com.airline.services.IUserActivationService;
+import com.airline.services.order.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ReflectionUtils;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.airline.bean.User;
 import com.airline.services.IUserService;
 import com.airline.utils.Msg;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -36,6 +35,9 @@ public class PassengerController {
 
 	@Autowired
 	IUserActivationService userActivationService;
+
+	@Autowired
+	IOrderService orderService;
 
 
 	@RequestMapping("/login.do")
@@ -54,7 +56,7 @@ public class PassengerController {
 
 			User user = userService.validateUser(loginuser);
 			Msg result = userService.getResult();
-
+			System.out.println(user.getActivated());
 			if (user != null) {
 				if (user.getActivated() == null || user.getActivated() == false) {
 					request.getSession().setAttribute("temp_no", user.getUserid());
@@ -67,7 +69,7 @@ public class PassengerController {
 				} else {
 
 					request.getSession().setAttribute("user", user);
-					mv = loggedOnUser();
+					mv = loggedOnUser(user);
 					mv.addObject("user", user);
 				}
 			} else {
@@ -160,11 +162,17 @@ public class PassengerController {
 	}
 
 
-	public ModelAndView loggedOnUser(){
+	public ModelAndView loggedOnUser(User user){
 
 		ModelAndView mv = new ModelAndView();
 		List<City> cities = cityService.findAllCityies();
+
+		Passenger p = (Passenger) user;
+		List<UserFlight> allorders = orderService.orderWithFlightByPassenger(p.getPassengerid());
+		List<Integer> orderIDs = allorders.stream().map(o->o.getOrderID()).distinct().collect(Collectors.toList());
 		mv.addObject("cities", cities);
+		mv.addObject("uniqueOrders", orderIDs);
+		mv.addObject("orders", allorders);
 		mv.setViewName("/WEB-INF/view/login.jsp");
 
 		return mv;

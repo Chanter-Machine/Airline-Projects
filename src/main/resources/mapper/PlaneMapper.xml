@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.airline.bean.Plane">
     <id column="planeId" jdbcType="INTEGER" property="planeid" />
     <result column="manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
     <result column="numOfFirstClass" jdbcType="INTEGER" property="numoffirstclass" />
     <result column="numOfBusinessClass" jdbcType="INTEGER" property="numofbusinessclass" />
     <result column="numOfEconomyClass" jdbcType="INTEGER" property="numofeconomyclass" />
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    planeId, manufacturer, numOfFirstClass, numOfBusinessClass, numOfEconomyClass
+    planeId, manufacturer, model, numOfFirstClass, numOfBusinessClass, numOfEconomyClass
   </sql>
   <select id="selectByExample" parameterType="com.airline.bean.PlaneExample" resultMap="BaseResultMap">
     select
@@ -100,10 +101,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.airline.bean.Plane">
-    insert into plane (planeId, manufacturer, numOfFirstClass, 
-      numOfBusinessClass, numOfEconomyClass)
-    values (#{planeid,jdbcType=INTEGER}, #{manufacturer,jdbcType=VARCHAR}, #{numoffirstclass,jdbcType=INTEGER}, 
-      #{numofbusinessclass,jdbcType=INTEGER}, #{numofeconomyclass,jdbcType=INTEGER})
+    insert into plane (planeId, manufacturer, model, 
+      numOfFirstClass, numOfBusinessClass, numOfEconomyClass
+      )
+    values (#{planeid,jdbcType=INTEGER}, #{manufacturer,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, 
+      #{numoffirstclass,jdbcType=INTEGER}, #{numofbusinessclass,jdbcType=INTEGER}, #{numofeconomyclass,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.Plane">
     insert into plane
@@ -113,6 +116,9 @@
       </if>
       <if test="manufacturer != null">
         manufacturer,
+      </if>
+      <if test="model != null">
+        model,
       </if>
       <if test="numoffirstclass != null">
         numOfFirstClass,
@@ -130,6 +136,9 @@
       </if>
       <if test="manufacturer != null">
         #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
       </if>
       <if test="numoffirstclass != null">
         #{numoffirstclass,jdbcType=INTEGER},
@@ -157,6 +166,9 @@
       <if test="record.manufacturer != null">
         manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
       </if>
+      <if test="record.model != null">
+        model = #{record.model,jdbcType=VARCHAR},
+      </if>
       <if test="record.numoffirstclass != null">
         numOfFirstClass = #{record.numoffirstclass,jdbcType=INTEGER},
       </if>
@@ -175,6 +187,7 @@
     update plane
     set planeId = #{record.planeid,jdbcType=INTEGER},
       manufacturer = #{record.manufacturer,jdbcType=VARCHAR},
+      model = #{record.model,jdbcType=VARCHAR},
       numOfFirstClass = #{record.numoffirstclass,jdbcType=INTEGER},
       numOfBusinessClass = #{record.numofbusinessclass,jdbcType=INTEGER},
       numOfEconomyClass = #{record.numofeconomyclass,jdbcType=INTEGER}
@@ -187,6 +200,9 @@
     <set>
       <if test="manufacturer != null">
         manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
       </if>
       <if test="numoffirstclass != null">
         numOfFirstClass = #{numoffirstclass,jdbcType=INTEGER},
@@ -203,6 +219,7 @@
   <update id="updateByPrimaryKey" parameterType="com.airline.bean.Plane">
     update plane
     set manufacturer = #{manufacturer,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
       numOfFirstClass = #{numoffirstclass,jdbcType=INTEGER},
       numOfBusinessClass = #{numofbusinessclass,jdbcType=INTEGER},
       numOfEconomyClass = #{numofeconomyclass,jdbcType=INTEGER}

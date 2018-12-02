@@ -16,6 +16,10 @@ public class Flight {
     private Date arrivetime;
 
     private Integer price;
+    
+    private City oriCity;
+    
+    private City dstCity;
 
     public Integer getFlightid() {
         return flightid;
@@ -72,4 +76,22 @@ public class Flight {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
+	public City getOriCity() {
+		return oriCity;
+	}
+
+	public void setOriCity(City oriCity) {
+		this.oriCity = oriCity;
+	}
+
+	public City getDstCity() {
+		return dstCity;
+	}
+
+	public void setDstCity(City dstCity) {
+		this.dstCity = dstCity;
+	}
+    
+    
 }

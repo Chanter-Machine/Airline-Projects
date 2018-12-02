@@ -1,15 +1,23 @@
 package com.airline.bean;
 
-public class Seatrecord {
+import java.util.Date;
+
+public class SeatRecord {
     private Integer seatrecordid;
 
     private String flightid;
 
-    private Integer availfirst;
+    private Integer bookedfirst;
 
-    private Integer availbusiness;
+    private Integer bookedbusiness;
 
-    private Integer availeconomyl;
+    private Integer bookedeconomic;
+
+    private Date date;
+
+    private Integer planeid;
+    
+    private Plane plane;
 
     public Integer getSeatrecordid() {
         return seatrecordid;
@@ -27,27 +35,69 @@ public class Seatrecord {
         this.flightid = flightid == null ? null : flightid.trim();
     }
 
-    public Integer getAvailfirst() {
-        return availfirst;
+    public Integer getBookedfirst() {
+        return bookedfirst;
     }
 
-    public void setAvailfirst(Integer availfirst) {
-        this.availfirst = availfirst;
+    public void setBookedfirst(Integer bookedfirst) {
+        this.bookedfirst = bookedfirst;
     }
 
-    public Integer getAvailbusiness() {
-        return availbusiness;
+    public Integer getBookedbusiness() {
+        return bookedbusiness;
     }
 
-    public void setAvailbusiness(Integer availbusiness) {
-        this.availbusiness = availbusiness;
+    public void setBookedbusiness(Integer bookedbusiness) {
+        this.bookedbusiness = bookedbusiness;
     }
 
-    public Integer getAvaileconomyl() {
-        return availeconomyl;
+    public Integer getBookedeconomic() {
+        return bookedeconomic;
     }
 
-    public void setAvaileconomyl(Integer availeconomyl) {
-        this.availeconomyl = availeconomyl;
+    public void setBookedeconomic(Integer bookedeconomic) {
+        this.bookedeconomic = bookedeconomic;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Integer getPlaneid() {
+        return planeid;
+    }
+
+    public void setPlaneid(Integer planeid) {
+        this.planeid = planeid;
+    }
+
+	public Plane getPlane() {
+		return plane;
+	}
+
+	public void setPlane(Plane plane) {
+		this.plane = plane;
+	}
+	
+	public boolean checkAvailableSeats() {
+		if(bookedbusiness<plane.getNumofbusinessclass() || 
+		   bookedeconomic<plane.getNumofeconomyclass() ||
+		   bookedfirst<plane.getNumoffirstclass()) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "SeatRecord [seatrecordid=" + seatrecordid + ", flightid=" + flightid + ", bookedfirst=" + bookedfirst
+				+ ", bookedbusiness=" + bookedbusiness + ", bookedeconomic=" + bookedeconomic + ", date=" + date
+				+ ", planeid=" + planeid + ", plane=" + plane + "]";
+	}
+	
+	
 }

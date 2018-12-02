@@ -1,3 +1,7 @@
+<%@ page import="com.airline.bean.UserFlight" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.airline.bean.User" %>
+<%@ page import="java.util.stream.Collectors" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%	
@@ -236,42 +240,41 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="accordion_container">
-							<div class="accordion d-flex flex-row align-items-center"><div>Dublin to Galway (October 10, 2018)</div></div>
-							<div class="accordion_panel">
-								<p>Your itenary for this trip:</p>
-								<div class="table-responsive">
-									<table class="table table-striped table-sm">
-										<thead>
-										<tr>
-											<th>#</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-										</tr>
-										</thead>
-										<tbody>
-										<tr>
-											<td>1,001</td>
-											<td>Lorem</td>
-											<td>ipsum</td>
-											<td>dolor</td>
-											<td>sit</td>
-										</tr>
-										<tr>
-											<td>1,002</td>
-											<td>amet</td>
-											<td>consectetur</td>
-											<td>adipiscing</td>
-											<td>elit</td>
-										</tr>
-										</tbody>
-									</table>
+						<c:if test="${not empty orders}">
+							<%
+								List<UserFlight> orders = (List<UserFlight>) request.getAttribute("orders");
+								List<Integer> uniqueOrders = (List<Integer>) request.getAttribute("orderIDs");
+							%>
+							<% for (Integer uniqueID: uniqueOrders) {
+								List<UserFlight> thisOrder = orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList());
+								String origin = thisOrder.get(0).toString();
+								String destination = thisOrder.get(thisOrder.size()-1).getFlightDestination();
+							%>
+								<div class="accordion_container">
+									<div class="accordion d-flex flex-row align-items-center"><div><%=origin%> to <%destination%> (<%=uniqueID%>)</div></div>
+									<div class="accordion_panel">
+										<p>Your itenary for this trip:</p>
+										<div class="table-responsive">
+											<table class="table table-striped table-sm">
+												<tbody>
+												<% for (UserFlight orderFlight: orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList())) { %>
+												<tr>
+													<td><%= orderFlight.getFlightOrigin() %></td>
+													<td><%= orderFlight.getFlightDestination() %></td>
+													<td><%= orderFlight.getSeatType() %></td>
+													<td><%= orderFlight.getPaymentStatus() %></td>
+													<td><%= orderFlight.getFlightDate() %></td>
+													<td><%= orderFlight.getFlightTime() %></td>
+												</tr>
+												<% } %>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
+							<%}%>
+						</c:if>
+
 
 						<div class="accordion_container">
 							<div class="accordion d-flex flex-row align-items-center"><div>Other Information</div></div>

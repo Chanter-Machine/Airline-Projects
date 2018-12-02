@@ -30,7 +30,7 @@ public class UserQueryTest {
 	public void queryUser() {
 		User login = new User();
 		login.setEmail("newuser@got.com");
-		login.setPassword("exquisiters");
+		login.setPassword("exquisite");
 		User user=userService.validateUser(login);
 		if(user!=null) {
 			System.out.println("login successful");

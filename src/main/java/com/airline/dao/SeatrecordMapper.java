@@ -1,30 +1,32 @@
 package com.airline.dao;
 
-import com.airline.bean.Seatrecord;
-import com.airline.bean.SeatrecordExample;
+import com.airline.bean.SeatRecord;
+import com.airline.bean.SeatRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface SeatrecordMapper {
-    long countByExample(SeatrecordExample example);
+public interface SeatRecordMapper {
+    long countByExample(SeatRecordExample example);
 
-    int deleteByExample(SeatrecordExample example);
+    int deleteByExample(SeatRecordExample example);
 
     int deleteByPrimaryKey(Integer seatrecordid);
 
-    int insert(Seatrecord record);
+    int insert(SeatRecord record);
 
-    int insertSelective(Seatrecord record);
+    int insertSelective(SeatRecord record);
 
-    List<Seatrecord> selectByExample(SeatrecordExample example);
+    List<SeatRecord> selectByExample(SeatRecordExample example);
 
-    Seatrecord selectByPrimaryKey(Integer seatrecordid);
+    SeatRecord selectByPrimaryKey(Integer seatrecordid);
+    
+    List<SeatRecord> selectByExampleWithPlane(SeatRecordExample example);
 
-    int updateByExampleSelective(@Param("record") Seatrecord record, @Param("example") SeatrecordExample example);
+    int updateByExampleSelective(@Param("record") SeatRecord record, @Param("example") SeatRecordExample example);
 
-    int updateByExample(@Param("record") Seatrecord record, @Param("example") SeatrecordExample example);
+    int updateByExample(@Param("record") SeatRecord record, @Param("example") SeatRecordExample example);
 
-    int updateByPrimaryKeySelective(Seatrecord record);
+    int updateByPrimaryKeySelective(SeatRecord record);
 
-    int updateByPrimaryKey(Seatrecord record);
+    int updateByPrimaryKey(SeatRecord record);
 }

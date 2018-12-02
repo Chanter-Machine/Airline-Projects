@@ -28,15 +28,18 @@ public class AccountAccessValidation implements ILoginValidation {
         // set default error message
         result=new Msg();
         result.setSuccessful(false);
-        result.setMsg("There's an error with your account or it does not exist, please contact the administrator to assist.");
-        if (userCollection.size()==1 && attemptingUser.getEmail().equals(userCollection.get(0).getEmail())){
+        result.setMsg("2. There's an error with your account or it does not exist, please contact the administrator to assist.");
+        if (userCollection.size()==1 && (attemptingUser.getEmail().equals(userCollection.get(0).getEmail()))){
             setUser(userCollection.get(0));
             loginAttempts = user.getLoginattempts();
 
+            System.out.println("In here");
             //lock account if attempts exceed allowed amount
             if (loginAttempts <= MAXATTEMPTS){
                 //check if the correct password was provided
                 if (!encryptPassword(attemptingUser.getPassword()).equals(user.getPassword())){
+
+                    System.out.println("In here too");
                     //increase login attempts
                     result.setSuccessful (false);
                     String msg="Incorrect username or password provided, please check that you have provided the correct details. " + logFailedAttempt();

@@ -10,6 +10,26 @@
     <result column="arriveTIme" jdbcType="TIME" property="arrivetime" />
     <result column="price" jdbcType="INTEGER" property="price" />
   </resultMap>
+  
+  <resultMap id="ResultMapWithCity" type="com.airline.bean.Flight">
+    <id column="flightId" jdbcType="INTEGER" property="flightid" />
+    <result column="ori" jdbcType="INTEGER" property="ori" />
+    <result column="dst" jdbcType="INTEGER" property="dst" />
+    <result column="planeId" jdbcType="INTEGER" property="planeid" />
+    <result column="takeOffTIme" jdbcType="TIME" property="takeofftime" />
+    <result column="arriveTIme" jdbcType="TIME" property="arrivetime" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <association property="oriCity" javaType="com.airline.bean.City">
+    	<id column="oriId" property="cityid"/>
+    	<result column="oriName" property="cityname"/>
+    	<result column="oriAirportCode" property="airportcode"/>
+    </association>
+    <association property="dstCity" javaType="com.airline.bean.City">
+    	<id column="dstId" property="cityid"/>
+    	<result column="dstName" property="cityname"/>
+    	<result column="dstAirportCode" property="airportcode"/>
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -85,6 +105,17 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  
+  <select id="selectWIthCity" resultMap="ResultMapWithCity">
+    select 
+    f.flightId, f.ori, f.dst, f.planeId, f.takeOffTime, f.arriveTime, f.price,
+    c1.cityId oriId, c1.cityName oriName, c1.airportCode oriAirportCode,c2.cityId dstId, 
+    c2.cityName dstName, c2.airportCode dstAirportCode
+    FROM flight f LEFT JOIN city c1 ON f.ori = c1.cityId LEFT JOIN city c2 ON f.dst = c2.cityId
+  </select>
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

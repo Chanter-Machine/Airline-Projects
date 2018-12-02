@@ -75,9 +75,9 @@
 		<!-- Decide what will be cut-in -->
 		<tx:attributes>
 			<!-- * means all cut-in methods are about transactions' methods -->
-			<tx:method name="*"/>
+			<tx:method name="*" read-only="false"/>
 			<!-- all cut-in methods start with "get" -->
-			<tx:method name="get*" read-only="true"/>
+			<!-- <tx:method name="get*" read-only="true"/> -->
 		</tx:attributes>
 	</tx:advice>
 	 

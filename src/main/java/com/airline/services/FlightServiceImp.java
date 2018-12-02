@@ -1,28 +1,59 @@
 package com.airline.services;
+/**
+ * 
+ * @author Chaofan
+ * 
+ */
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.airline.bean.*;
+import com.airline.dao.FlightMapper;
+import com.airline.dao.FlightRecordMapper;
+import com.airline.dao.SeatRecordMapper;
+import com.airline.services.decorator.PriceDecorator.*;
+import com.airline.services.interceptors.search.Path;
+import com.airline.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.airline.bean.Flight;
-import com.airline.bean.FlightExample;
-import com.airline.bean.SearchData;
-import com.airline.bean.FlightExample.Criteria;
-import com.airline.dao.FlightMapper;
+import java.util.*;
+import java.util.Map.Entry;
 @Service
 public class FlightServiceImp implements IFlightService {
 
 	@Autowired
 	FlightMapper flightMapper;
+
+	@Autowired
+	FlightRecordMapper flightRecordMapper;
+	
+	@Autowired
+	SeatRecordMapper seatRecordMapper;
+	
+	@Autowired
+	ISeatRecordService seatRecordService;
+	
+	@Autowired
+	Path path;
+	
+	@Autowired
+	SeatClassFactory seatClassFactory;
+	
+	@Autowired
+	PriceCollection priceCollection;
+	
+	@Autowired
+	PathCollection pathCollection;
+	
+	@Autowired
+	SearchResult searchResult;
+	
 	FlightExample flightExample;
-    List<Flight> flights ;
+	
+    List<Flight> flights;
 	
 	public List<Flight> getFlightsFromDB() {
-		flights = flightMapper.selectByExample(flightExample);
+//		flights = flightMapper.selectByExample(flightExample);
+		flights = flightMapper.selectWIthCity();
 		return flights;
 	}
 
@@ -32,10 +63,7 @@ public class FlightServiceImp implements IFlightService {
         visited.add(start);
         //Find all available routine.
 	    depthFirst(graph, visited, end, results);
-        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();
-
-	    //Remove the canceled.
-
+        List<List<Flight>> mappedFlights = new ArrayList<List<Flight>>();     
         //get flights
         return convertNodes2Flight(results, mappedFlights);
 	}
@@ -60,17 +88,192 @@ public class FlightServiceImp implements IFlightService {
 		return mappedFlights;
 	}
 	
-	public List<List<Flight>> searchFlights(SearchData searchData){
+	/**
+	 * Invoked by Controller, the result contains available path.
+	 */
+	public SearchResult searchFlights(SearchData searchData){
 		Graph graph = new Graph();
 		List<Flight> flights = getFlightsFromDB();
 		for(Flight flight: flights) {
 			graph.addEdge(flight.getOri().toString(), flight.getDst().toString());
 		}
 		List<List<Flight>> results = searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+"");
-		return results;
+		pathCollection.setPathList(searchPath(graph, searchData.getOrigin()+"", searchData.getDestination()+""));
+		pathCollection.setTakeoffDate(searchData.getTraveldate());
+//		System.out.println(pathCollection.getPathList().get(0).get(0).getDstCity());
+		
+		//Use Path Interceptor filter
+		path.doFilter(pathCollection, searchData.getSorting());
+		getFinalPriceofSearch(searchData.getSeat());
+		searchResult.setPathCollection(pathCollection);
+		searchResult.setPriceCollection(priceCollection);
+		return searchResult;
+	}
+	
+	public void injectFinalResult() {
+		for(int i=0;i<pathCollection.getPathList().size();i++){
+			
+		}
+	}
+	
+	public void getFinalPriceofSearch(String seatRequirement) {
+		priceCollection.cleanData();
+		for(List<Flight> list : pathCollection.getPathList()) {
+			int sumOfEachPath = getInitPriceOfEachPath(list);
+			IFlightPrice flightPrice = seatClassFactory.getFlightPrice(seatRequirement);
+			flightPrice.setPrice(sumOfEachPath);
+			PriceDecorator taxDecorator = new TaxDecorator(flightPrice);
+			priceCollection.getTaxList().add(taxDecorator.getPrice()-sumOfEachPath);
+			PriceDecorator insuranceDecorator = new InsuranceDecorator(taxDecorator);
+			priceCollection.getInsuranceList().add(insuranceDecorator.getPrice()-taxDecorator.getPrice());
+			priceCollection.getPriceList().add(insuranceDecorator.getPrice());
+		}
+	}
+	
+	public int getInitPriceOfEachPath(List<Flight> list) {
+		int sum = 0;
+		for(Flight flight : list) {
+			sum += flight.getPrice();
+		}
+		return sum;
 	}
 	
 	/**
+	 * Input all the available path and check whether there still enough seats
+	 * for the trip. If a flight in a path is full booked, then this path will
+	 * not appeared in the results.
+	 * @param path
+	 * @param startDate
+	 * @return
+	 */
+	public List<List<Flight>> checkSeats(Date startDate, List<List<Flight>> path) {
+		List<List<Flight>> newPath = new ArrayList<List<Flight>>(); 
+		for(List<Flight> list:path) {
+			boolean availableFlag = true;
+			Map<Integer, Date> mapOfFlightandDate = getMapOfFlightandDate(list, startDate);
+			for(Flight flight : list) {
+//				System.out.println(flight.getFlightid());
+				java.sql.Date sqlDate = DateUtil.convertFromJavaDateToSqlDate(mapOfFlightandDate.get(flight.getFlightid()));
+				List<SeatRecord> seatRecord = getSeatRecordByDateAndflight(sqlDate, 
+						flight.getFlightid());
+				if(seatRecord!=null&&seatRecord.size()>0) {
+					if(!seatRecord.get(0).checkAvailableSeats()) {
+						availableFlag = false;
+					}
+				}
+			}
+//			System.out.println("");
+			
+			if(availableFlag==true) {
+				newPath.add(list);
+			}
+		}
+		return newPath;
+	}
+	
+	
+    
+    /**
+     * check record in Table flightRecord, find if there is a flight is canceled
+     * in schedule. 
+     * @param date Date of takeoff.
+     */
+    public List<List<Flight>> checkFlightRecord(java.util.Date startDate, List<List<Flight>> path) {
+    	int span = getFlightsTimeSpan(path);
+//    	System.out.println(getFlightsTimeSpan(path));
+    	Date arriveDate = new Date();
+    	try {
+		  arriveDate = DateUtil.getNextDasByNumber(startDate, span);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	List<FlightRecord> records = getRecord(DateUtil.convertFromJavaDateToSqlDate(startDate), 
+    			DateUtil.convertFromJavaDateToSqlDate(arriveDate));
+    	
+    	List<List<Flight>> newPath = new ArrayList<List<Flight>>();
+    	
+    	for(List<Flight> list : path) {
+    		
+    		boolean removeFlag = false;
+    		Map<Integer, Date> map = getMapOfFlightandDate(list, startDate);
+    		
+    		for (Entry<Integer, Date> entry : map.entrySet()) { 
+    			for(FlightRecord flightRecord: records) {
+    				if(flightRecord.getFlightid().equals(entry.getKey()) && 
+    						flightRecord.getDate().equals(entry.getValue())) {
+    					removeFlag = true;
+    					break;
+    				}
+    				else {
+//    					System.out.println(flightRecord.getFlightid()+" "+entry.getKey());
+//    					System.out.println(flightRecord.getDate()+" "+entry.getValue());
+    				}
+    			}
+    		}
+    		
+    		if(!removeFlag) newPath.add(list);
+    	}
+    	return newPath;
+    }
+    
+    public Map<Integer, Date> getMapOfFlightandDate(List<Flight> list, Date startDate) {
+    	Map<Integer, Date> map = new HashMap<Integer, Date>();
+    	map.put(list.get(0).getFlightid(), startDate);
+    	for(int i=1;i<list.size();i++) {
+    		if(list.get(i).getTakeofftime().before(list.get(i-1).getArrivetime())) {
+    			map.put(list.get(i).getFlightid(), new Date(startDate.getTime()+3600*24*1000));
+    		}
+    		else {
+    			map.put(list.get(i).getFlightid(), map.get(i-1));
+    		}
+    	}
+    	return map;
+    }
+    
+    
+    /**
+     * Input several path and return the last date of all possible 
+     * arrival date.
+     * @param path
+     * @return
+     */
+    public int getFlightsTimeSpan(List<List<Flight>> path) {
+    	int max = 0;
+    	for(List<Flight> list : path) {
+    		int span = 0;
+    		for(int i=0; i<list.size()-1;i++) {
+    			if(!list.get(i).getArrivetime().before(list.get(i+1).getTakeofftime())) {
+    				span++;
+    			}
+    		}
+    		if(span>=max) {
+    			max = span;
+    		}
+    	}
+    	return max;
+    }
+    
+    /**
+     * Query all flight records from database
+     */
+    @Override
+    public List<Flight> getFlightsWithCityFromDB() {
+    	return flightMapper.selectWIthCity();
+    }
+
+    public void calculateCost() {
+    	
+    }
+    
+    public void calculateFlightDuration() {
+    	
+    }
+    
+    public void calculteWaitTime() {
+    	
+    }
+
+    /**
 	 * Algorithms that find each path from flight table.
 	 * @param graph
 	 * @param visited
@@ -109,28 +312,27 @@ public class FlightServiceImp implements IFlightService {
             result.add(node);
         }
         results.add(result);
-//        System.out.println();
     }
     
     /**
-     * check record in Table flightRecord, find if there is a flight is canceled
-     * in schedule. 
+     * Get Flight Record
+     * @param takeoffDate
+     * @param arriveDate
+     * @return
      */
-    public void checkFlightRecord() {
-    	
-    }
-
-    public void calculateCost() {
-    	
-    }
+    public List<FlightRecord> getRecord(Date takeoffDate, Date arriveDate) {
+		FlightRecordExample flightRecordexample = new FlightRecordExample();
+		com.airline.bean.FlightRecordExample.Criteria criteria = flightRecordexample.createCriteria();
+		criteria.andDateBetween(takeoffDate, arriveDate);
+		return flightRecordMapper.selectByExample(flightRecordexample);
+	}
     
-    public void calculateFlightDuration() {
-    	
-    }
-    
-    public void calculteWaitTime() {
-    	
-    }
-    
-    
+    public List<SeatRecord> getSeatRecordByDateAndflight(Date takeoffDate, int flightId) {
+		SeatRecordExample example = new SeatRecordExample(); 
+		com.airline.bean.SeatRecordExample.Criteria criteria = example.createCriteria();
+		criteria.andDateEqualTo(takeoffDate);
+		criteria.andFlightidEqualTo(flightId+"");
+//		System.out.println(flightId);
+		return seatRecordMapper.selectByExampleWithPlane(example);
+	}
 }

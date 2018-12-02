@@ -21,11 +21,13 @@ public class LoginValidationChain {
     public void run(){
         for (ILoginValidation rule: Rules.get()){
             result = rule.validate(user, userCollection);
-            if (!result.isSuccessful()) break;
+            //if (!result.isSuccessful()) break;
             userCollection = (List<User>) result.getData().get("user");
+            System.out.println(result.getMsg() + ": " + userCollection.size());
         }
 
         result.add("user", userCollection);
+        System.out.println(result.getMsg() + " : " + userCollection.size());
     }
 
     public Msg getResult() {
