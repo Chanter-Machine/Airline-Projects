@@ -79,5 +79,10 @@ public class PaymentServiceImp implements IPaymentService {
         return isSuccessful;
     }
 
+    public Paymentrecord paymentIsPaid(Paymentrecord p) {
+        p.setStatus(Paymentrecord.PaidStatus);
+        paymentrecordMapper.updateByPrimaryKey(p);
+        return p;
+    }
 
 }

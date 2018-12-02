@@ -8,7 +8,7 @@
         insert into paymentrecord(paymentId, amount, status,
         date, paymentType, thirtyPartyPaymentId )
         values (#{paymentid,jdbcType=INTEGER}, #{amount,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
-        #{date,jdbcType=DATE}, #{paymenttype,jdbcType=INTEGER}, #{thirtypartypaymentid,jdbcType=VARCHAR}
+        #{date,jdbcType=TIMESTAMP}, #{paymenttype,jdbcType=INTEGER}, #{thirtypartypaymentid,jdbcType=VARCHAR}
         )
     </insert>
 </mapper>

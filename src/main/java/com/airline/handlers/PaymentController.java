@@ -11,16 +11,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 @Controller
+@RequestMapping("/payment")
 public class PaymentController {
 
     @Autowired
     private IPaymentService paymentService;
 
     @RequestMapping("/pay.do")
-    public void pay(HttpServletRequest request, HttpServletResponse response, Order order, @RequestParam("payment_method") Integer paymentMethod) {
+    public void pay(HttpServletRequest request, HttpServletResponse response,
+                    @RequestParam("payment_method") Integer paymentMethod) {
+        Order order = new Order();
+        String orderid = request.getParameter("orderid");
+        order.setOrderid(Integer.valueOf(request.getParameter("orderid")));
+        order.setPassagerid(Integer.valueOf(request.getParameter("passagerid")));
+        order.setPaymentid(Integer.valueOf(request.getParameter("paymentid")));
+        order.setStatus(request.getParameter("status"));
+        order.setDate(new Date(Long.parseLong(request.getParameter("date"))));
         paymentService.pay(request, response, order, paymentMethod);
     }
 

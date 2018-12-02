@@ -18,4 +18,6 @@ public interface IPaymentService {
 
     public boolean pay(HttpServletRequest request, HttpServletResponse response, Order order, Integer paymentMethod);
 
+    public Paymentrecord paymentIsPaid(Paymentrecord p);
+
 }

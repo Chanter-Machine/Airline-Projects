@@ -108,30 +108,9 @@
                                 <span class="badge badge-secondary badge-pill">2</span>
                             </h4>
                             <ul class="list-group mb-3">
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                    <div>
-                                        <h6 class="my-0">Limerick to Dublin</h6>
-                                        <small class="text-muted">Multiple stops</small>
-                                    </div>
-                                    <span class="text-muted">&euro;12</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                    <div>
-                                        <h6 class="my-0">Dublin to Limerick</h6>
-                                        <small class="text-muted">Single stop</small>
-                                    </div>
-                                    <span class="text-muted">&euro;13</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between bg-light">
-                                    <div class="text-success">
-                                        <h6 class="my-0">Discount</h6>
-                                        <small>FFLYER (5%)</small>
-                                    </div>
-                                    <span class="text-success">- &euro;1.25</span>
-                                </li>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <strong class="text-dark">Total (EUR)</strong>
-                                    <strong class="text-dark">&euro;23.75</strong>
+                                    <strong class="text-dark" id="amount">&euro;${payment.amount}</strong>
                                 </li>
                             </ul>
                         </div>
@@ -140,19 +119,11 @@
                             <form class="needs-validation" novalidate="">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="firstName">First name</label>
+                                        <label for="firstName">Name</label>
                                         <input type="text" class="form-control" id="firstName" readonly="readonly"
-                                               placeholder="Customer" value="" required="">
+                                               placeholder="Customer" value="${user.passengername}" required="">
                                         <div class="invalid-feedback">
                                             Valid first name is required.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="lastName">Last name</label>
-                                        <input type="text" class="form-control" id="lastName" placeholder="" readonly
-                                               value="" placeholder="ABC" required="">
-                                        <div class="invalid-feedback">
-                                            Valid last name is required.
                                         </div>
                                     </div>
                                 </div>
@@ -160,7 +131,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="email">Email</label>
                                         <input type="email" class="form-control" id="email" readonly
-                                               placeholder="you@example.com">
+                                               value="${user.email}">
                                         <div class="invalid-feedback">
                                             Please enter a valid email address for flight updates.
                                         </div>
@@ -169,47 +140,18 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="address2">Mobile Number</label>
                                         <input type="text" class="form-control" id="address2" readonly
-                                               placeholder="+353 (899) 00000000">
+                                               placeholder="+353 (899) 00000000" value="${user.phone}">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="address">Contact Address</label>
                                     <input type="text" class="form-control" id="address" readonly
-                                           placeholder="1234 Main St" required="">
+                                           value="${user.address}" required="">
                                     <div class="invalid-feedback">
                                         Please enter your shipping address.
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-5 mb-3">
-                                        <label for="country">Country</label>
-                                        <select class="custom-select d-block w-100" id="country" required="">
-                                            <option value="">Choose...</option>
-                                            <option>United States</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select a valid country.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="state">State</label>
-                                        <select class="custom-select d-block w-100" id="state" required="">
-                                            <option value="">Choose...</option>
-                                            <option>California</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please provide a valid state.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="zip">Zip</label>
-                                        <input type="text" class="form-control" id="zip" placeholder="" required="">
-                                        <div class="invalid-feedback">
-                                            Zip code required.
-                                        </div>
-                                    </div>
-                                </div>
                                 <hr class="mb-4">
 
                                 <h4 class="mb-3">Payment</h4>
@@ -337,6 +279,14 @@
         </div>
     </div>
 
+    <!--payment success jump-->
+    <form method="post" id="jump_to_order_is_paid" action="${APP_PATH}/order_is_paid.do" hidden="true">
+        <input name="orderid" type="text" id="orderid" value="${order.orderid}">
+        <input name="passagerid" type="text" id="passagerid" value="${order.passagerid}">
+        <input name="paymentid" type="text" id="paymentid" value="${order.paymentid}">
+        <input name="status" type="text" id="status" value="${order.status}">
+        <input name="date" type="text" id="date" value="${date} ">
+    </form>
 </div>
 
 <script src="static/js/jquery-3.2.1.min.js"></script>
@@ -363,26 +313,36 @@
 
             // Set up the payment here
             // 1. call your server side method or api to intiate the paymnets
+            var amount = $("#amount").val();
+            amount = amount.replace("€", "");
             var data = {
                 "description": "test",
                 "shipping": "0",
                 "tax": "0",
                 "shipping_discount": "0",
-                "total": "10",
-                "currency": "USD",
+                "total": amount,
+                "currency": "EUR",
                 "intent": "sale",
-                "subtotal": "10",
+                "subtotal": amount,
                 "name": "test_product",
-                "price": "10",
+                "price": amount,
                 "quantity": "1",
                 "handling_fee": "0",
                 "insurance": "0",
                 "customFlag": "false"
             }
             //return paypal.request.post('/api/create-payments')
+            var url = '${APP_PATH}/payment/pay.do?payment_method=paypal&step_of_payment=create_payment';
+
+            url += "&orderid=" + $("#orderid").val();
+            url += "&passagerid=" + $("#passagerid").val();
+            url += "&paymentid=" + $("#paymentid").val();
+            url += "&status=" + $("#status").val();
+            url += "&date=" + $("#date").val();
+            console.log(url);
             return paypal.request({
                 method: 'post',
-                url: '${APP_PATH}/pay.do?payment_type=paypal&step_of_payment=create_payment',
+                url: url,
                 json: data
             })
                 .then(function (res) {
@@ -395,7 +355,14 @@
         onAuthorize: function (data, actions) {
 
             // Set up a url on your server to execute the payment
-            var EXECUTE_URL = '${APP_PATH}/pay.do?payment_type=paypal&step_of_payment=execute_payment';
+            var EXECUTE_URL = '${APP_PATH}/payment/pay.do?payment_method=paypal&step_of_payment=execute_payment';
+
+            EXECUTE_URL += "&orderid=" + $("#orderid").val();
+            EXECUTE_URL += "&passagerid=" + $("#passagerid").val();
+            EXECUTE_URL += "&paymentid=" + $("#paymentid").val();
+            EXECUTE_URL += "&status=" + $("#status").val();
+            EXECUTE_URL += "&date=" + $("#date").val();
+            console.log(EXECUTE_URL);
             var data = {
                 paymentID: data.paymentID,
                 payerID: data.payerID
@@ -426,7 +393,7 @@
                         json: data
                     }).then(function (res) {
                         console.log(res)
-                        window.location.href = "../.."
+                        $("#jump_to_order_is_paid").submit();
                     }).catch(function (err) {
                         alert(err);
                     });

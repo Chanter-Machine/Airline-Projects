@@ -199,6 +199,7 @@ $(document).ready(function () {
                             flightId.push($(this).attr("value"));
                         }
                     });
+                var flightsHTML = $(this).parent().parent().next().children().last().prop("outerHTML");
                     var data = {
                         amount: amount,
                         takeoffDate: date,
@@ -210,8 +211,23 @@ $(document).ready(function () {
                         traditional: true,
                         type: "post",
                         data: data,
-                        url: url
+                        url: url,
+                        success: function (response) {
+                            console.log(response);
+                            var order = response.data.order;
 
+                            $("#orderid").val(order.orderid);
+                            $("#passagerid").val(order.passagerid);
+                            $("#paymentid").val(order.paymentid);
+                            $("#status").val(order.status);
+                            $("#date").val(order.date);
+
+                            var div_in_body_in_modal = $(".modal-body .row.justify-content-center .col-8");
+                            div_in_body_in_modal.append(flightsHTML);
+                            console.log(flightsHTML);
+
+                            $("#comfirm_order_dialog").modal();
+                        }
                     });
                 }
             );

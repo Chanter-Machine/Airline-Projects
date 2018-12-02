@@ -1,15 +1,19 @@
 package com.airline.handlers;
 
+import com.airline.bean.Flightandorder;
 import com.airline.bean.Order;
 import com.airline.bean.Passenger;
 import com.airline.bean.Paymentrecord;
+import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightandorderMapper;
 import com.airline.services.order.IOrderService;
 import com.airline.services.payment.IPaymentService;
+import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,62 +31,79 @@ public class OrderController {
     @Autowired
     private FlightandorderMapper flightandorderMapper;
 
+    @Autowired
+    private FlightMapper flightMapper;
+
     @RequestMapping("/create_order.do")
-    public ModelAndView createOrder(HttpServletRequest request, HttpSession session, Double amount, Date takeoffDate, @RequestParam(value = "flights_id") int[] flights_id) {
+    @ResponseBody
+    public Msg createOrder(HttpServletRequest request, HttpSession session, Double amount, Date takeoffDate, @RequestParam(value = "flights_id") int[] flights_id) {
         //get the necessary data
-        Passenger passenger = (Passenger) session.getAttribute("passenger");
+        //todo get the real passenger
+//        Passenger passenger = (Passenger) session.getAttribute("passenger");
+        Passenger passenger = new Passenger();
+        passenger.setPassengerid(1);
         Order order = new Order();
-
-        Paymentrecord payment = (Paymentrecord) session.getAttribute("payment");
-//todo        List<Flight> flightList = (List<Flight>) session.getAttribute("flights");
-
+        Paymentrecord payment = new Paymentrecord();
+        payment.setAmount(amount.toString());
         //start to process
         Order orderCreated = orderService.createOrder(order, passenger, payment);
-        //todo flightdandorder table insert
-//        Flightandorder flightandorder = new Flightandorder();
-//        flightandorder.setOrderid(orderCreated.getOrderid());
-//        for (Flight f :
-//                flightList) {
-//            //todo seatnum and seat type
-//            flightandorder.setFlightid(f.getFlightid());
-////            flightandorder.setSeatnum();
-////            flightandorder.setSeattype();
-////            flightandorder.setFlightid();
-////            flightandorder.setTakeoffdate();
-//            flightandorderMapper.insert(flightandorder);
-//        }
-        //todo seat table insert
-        ModelAndView modelAndView = new ModelAndView();
-        if (request != null) {
-            modelAndView.addObject("order", orderCreated);
-//            modelAndView.addObject("flights", flightList);
-            modelAndView.setViewName("checkOrder.jsp");
-            //todo get flights of the order and add them to modelandview ,then forward to a checkOrder page
 
-        } else {
-            //todo fail to create order and forward to orderCreationFailed page
+        // flightdandorder table insert
+        Flightandorder flightandorder = new Flightandorder();
+        flightandorder.setOrderid(orderCreated.getOrderid());
+        for (int i :
+                flights_id) {
+            flightandorder.setFlightid(i);
+            flightandorder.setOrderid(order.getOrderid());
+            flightandorder.setSeatnum(7);
+            flightandorder.setSeattype("Economic");
+            flightandorder.setTakeoffdate(takeoffDate);
+            flightandorderMapper.insert(flightandorder);
         }
-        return modelAndView;
+        return Msg.success().add("order", order);
     }
 
     @RequestMapping("/pay_order.do")
-    public ModelAndView payOrder(Order order) {
+    public ModelAndView payOrder(@RequestParam(value = "orderid") String orderid,
+                                 @RequestParam(value = "passagerid") String passagerid,
+                                 @RequestParam(value = "paymentid") String paymentid,
+                                 @RequestParam(value = "status") String status,
+                                 @RequestParam(value = "date") String date
+    ) {
+        Order order = new Order();
+        order.setOrderid(Integer.parseInt(orderid.trim()));
+        order.setPassagerid(Integer.parseInt(passagerid.trim()));
+        order.setPaymentid(Integer.parseInt(paymentid.trim()));
+        order.setStatus(status.trim());
+        order.setDate(new Date(Long.parseLong(date.trim())));
         ModelAndView modelAndView = new ModelAndView();
         Paymentrecord paymentrecord = paymentService.queryPayment(order.getPaymentid());
         modelAndView.addObject("order", order);
         modelAndView.addObject("payment", paymentrecord);
+        modelAndView.addObject("date", order.getDate().getTime());
         modelAndView.setViewName("payOrder.jsp"); //todo code payOrder.jsp
         return modelAndView;
     }
 
     @RequestMapping("/order_is_paid.do")
-    public ModelAndView orderIsPaid(Order order) {
+    public ModelAndView orderIsPaid(@RequestParam(value = "orderid") String orderid,
+                                    @RequestParam(value = "passagerid") String passagerid,
+                                    @RequestParam(value = "paymentid") String paymentid,
+                                    @RequestParam(value = "status") String status,
+                                    @RequestParam(value = "date") String date) {
+        Order order = new Order();
+        order.setOrderid(Integer.parseInt(orderid.trim()));
+        order.setPassagerid(Integer.parseInt(passagerid.trim()));
+        order.setPaymentid(Integer.parseInt(paymentid.trim()));
+        order.setStatus(status.trim());
+        order.setDate(new Date(Long.parseLong(date.trim())));
         ModelAndView modelAndView = new ModelAndView();
-        orderService.orderIsPaid(order);
+        order = orderService.orderIsPaid(order);
         Paymentrecord paymentrecord = paymentService.queryPayment(order.getPaymentid());
+        paymentrecord = paymentService.paymentIsPaid(paymentrecord);
         modelAndView.addObject("order", order);
         modelAndView.addObject("payment", paymentrecord);
-        modelAndView.setViewName("/WEB-INF/view/payment_success.jsp"); //todo code payment_success.jsp
+        modelAndView.setViewName("success.jsp");
         return modelAndView;
     }
 
@@ -93,10 +114,10 @@ public class OrderController {
         modelAndView.addObject("order", order);
         if (result) {
 
-            modelAndView.setViewName("/WEB-INF/view/cancel_order_success.jsp");
+            modelAndView.setViewName("cancel_order_success.jsp");
             //todo success-> cancel success page
         } else {
-            modelAndView.setViewName("/WEB-INF/view/cancel_order_failed.jsp");
+            modelAndView.setViewName("cancel_order_failed.jsp");
             //todo success-> cancel success page
         }
         return modelAndView;

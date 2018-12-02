@@ -6,6 +6,8 @@ import com.airline.bean.Passenger;
 import com.airline.bean.Paymentrecord;
 import com.airline.dao.OrderMapper;
 import com.airline.dao.PaymentrecordMapper;
+import com.airline.utils.DBHelper;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class OrderServiceImp implements IOrderService {
     OrderMapper orderMapper;
     @Autowired
     PaymentrecordMapper paymentrecordMapper;
+
+    @Autowired
+    private DBHelper dbHelper;
 
     @Override
     public boolean addOrderAndGetId(Order o) {
@@ -66,10 +71,21 @@ public class OrderServiceImp implements IOrderService {
         order.setDate(new Date());
         order.setPassagerid(passenger.getPassengerid());
         paymentrecord.setStatus(Paymentrecord.PendingStatus);
-        paymentrecordMapper.insertAndGetId(paymentrecord);
+        paymentrecord.setDate(new Date());
+        //use sqlsession to insert and then commit. after commit, get id immediately
+        SqlSession sqlsession = dbHelper.getSqlsession();
+        PaymentrecordMapper mapper = sqlsession.getMapper(PaymentrecordMapper.class);
+        mapper.insertAndGetId(paymentrecord);
+        sqlsession.commit();
+        sqlsession.close();
         order.setPaymentid(paymentrecord.getPaymentid());
         orderMapper.insertAndGetId(order);
         return order;
+    }
+
+    public Paymentrecord insertPaymentrecord(Paymentrecord p) {
+        paymentrecordMapper.insertAndGetId(p);
+        return p;
     }
 
     public Order orderIsPaid(Order order) {

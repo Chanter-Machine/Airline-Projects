@@ -5,8 +5,8 @@
     <id column="orderId" jdbcType="INTEGER" property="orderid" />
     <result column="passagerId" jdbcType="INTEGER" property="passagerid" />
     <result column="paymentId" jdbcType="INTEGER" property="paymentid" />
-    <result column="status" jdbcType="VARCHAR" property="status"/>
-    <result column="date" jdbcType="TIMESTAMP" property="date"/>
+      <result column="status" jdbcType="VARCHAR" property="status"/>
+      <result column="date" jdbcType="TIMESTAMP" property="date"/>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -175,9 +175,9 @@
     update orders
     set orderId = #{record.orderid,jdbcType=INTEGER},
       passagerId = #{record.passagerid,jdbcType=INTEGER},
-    paymentId = #{record.paymentid,jdbcType=INTEGER},
-    status = #{record.status,jdbcType=VARCHAR},
-    date = #{record.date,jdbcType=TIMESTAMP}
+      paymentId = #{record.paymentid,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
