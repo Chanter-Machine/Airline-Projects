@@ -25,7 +25,6 @@ public class PaymentController {
     public void pay(HttpServletRequest request, HttpServletResponse response,
                     @RequestParam("payment_method") Integer paymentMethod) {
         Order order = new Order();
-        String orderid = request.getParameter("orderid");
         order.setOrderid(Integer.valueOf(request.getParameter("orderid")));
         order.setPassagerid(Integer.valueOf(request.getParameter("passagerid")));
         order.setPaymentid(Integer.valueOf(request.getParameter("paymentid")));

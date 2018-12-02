@@ -110,7 +110,7 @@
                             <ul class="list-group mb-3">
                                 <li class="list-group-item d-flex justify-content-between">
                                     <strong class="text-dark">Total (EUR)</strong>
-                                    <strong class="text-dark" id="amount">&euro;${payment.amount}</strong>
+                                    <strong class="text-dark" id="total_amount">&euro;${payment.amount}</strong>
                                 </li>
                             </ul>
                         </div>
@@ -313,8 +313,8 @@
 
             // Set up the payment here
             // 1. call your server side method or api to intiate the paymnets
-            var amount = $("#amount").val();
-            amount = amount.replace("€", "");
+            var amount = $("#total_amount").text();
+            amount = amount.replace("€", "").trim();
             var data = {
                 "description": "test",
                 "shipping": "0",
@@ -331,6 +331,7 @@
                 "insurance": "0",
                 "customFlag": "false"
             }
+            console.log(data);
             //return paypal.request.post('/api/create-payments')
             var url = '${APP_PATH}/payment/pay.do?payment_method=paypal&step_of_payment=create_payment';
 

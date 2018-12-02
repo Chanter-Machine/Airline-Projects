@@ -74,6 +74,7 @@ public class PaymentServiceImp implements IPaymentService {
             paymentrecord.setStatus(Paymentrecord.PaidStatus);
             paymentrecord.setPaymenttype(paymentMethod);
             paymentrecord.setThirtypartypaymentid(result);
+            paymentrecordMapper.updateByPrimaryKey(paymentrecord);
             isSuccessful = true;
         }
         return isSuccessful;
@@ -81,6 +82,7 @@ public class PaymentServiceImp implements IPaymentService {
 
     public Paymentrecord paymentIsPaid(Paymentrecord p) {
         p.setStatus(Paymentrecord.PaidStatus);
+
         paymentrecordMapper.updateByPrimaryKey(p);
         return p;
     }
