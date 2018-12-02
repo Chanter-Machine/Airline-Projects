@@ -2,8 +2,9 @@ package com.airline.dao;
 
 import com.airline.bean.Order;
 import com.airline.bean.OrderExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderMapper {
     long countByExample(OrderExample example);
@@ -11,6 +12,8 @@ public interface OrderMapper {
     int deleteByExample(OrderExample example);
 
     int deleteByPrimaryKey(Integer orderid);
+
+    int insertAndGetId(Order record);
 
     int insert(Order record);
 

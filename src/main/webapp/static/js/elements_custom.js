@@ -16,8 +16,7 @@
 
  ******************************/
 
-$(document).ready(function()
-{
+$(document).ready(function () {
     "use strict";
 
     /*
@@ -34,13 +33,11 @@ $(document).ready(function()
 
     setHeader();
 
-    $(window).on('resize', function()
-    {
+    $(window).on('resize', function () {
         setHeader();
     });
 
-    $(document).on('scroll', function()
-    {
+    $(document).on('scroll', function () {
         setHeader();
     });
 
@@ -57,32 +54,24 @@ $(document).ready(function()
 
     */
 
-    function setHeader()
-    {
-        if(window.innerWidth < 992)
-        {
-            if($(window).scrollTop() > 100)
-            {
+    function setHeader() {
+        if (window.innerWidth < 992) {
+            if ($(window).scrollTop() > 100) {
                 header.addClass('scrolled');
             }
-            else
-            {
+            else {
                 header.removeClass('scrolled');
             }
         }
-        else
-        {
-            if($(window).scrollTop() > 100)
-            {
+        else {
+            if ($(window).scrollTop() > 100) {
                 header.addClass('scrolled');
             }
-            else
-            {
+            else {
                 header.removeClass('scrolled');
             }
         }
-        if(window.innerWidth > 991 && menuActive)
-        {
+        if (window.innerWidth > 991 && menuActive) {
             closeMenu();
         }
     }
@@ -93,47 +82,37 @@ $(document).ready(function()
 
     */
 
-    function initMenu()
-    {
-        if($('.hamburger').length && $('.menu').length)
-        {
+    function initMenu() {
+        if ($('.hamburger').length && $('.menu').length) {
             var hamb = $('.hamburger');
             var close = $('.menu_close_container');
 
-            hamb.on('click', function()
-            {
-                if(!menuActive)
-                {
+            hamb.on('click', function () {
+                if (!menuActive) {
                     openMenu();
                 }
-                else
-                {
+                else {
                     closeMenu();
                 }
             });
 
-            close.on('click', function()
-            {
-                if(!menuActive)
-                {
+            close.on('click', function () {
+                if (!menuActive) {
                     openMenu();
                 }
-                else
-                {
+                else {
                     closeMenu();
                 }
             });
         }
     }
 
-    function openMenu()
-    {
+    function openMenu() {
         menu.addClass('active');
         menuActive = true;
     }
 
-    function closeMenu()
-    {
+    function closeMenu() {
         menu.removeClass('active');
         menuActive = false;
     }
@@ -144,29 +123,24 @@ $(document).ready(function()
 
     */
 
-    function initProgressBars()
-    {
-        if($('.skill_bars').length)
-        {
+    function initProgressBars() {
+        if ($('.skill_bars').length) {
             var bars = $('.skill_bars');
 
-            bars.each(function()
-            {
+            bars.each(function () {
                 var ele = $(this);
                 var elePerc = ele.data('perc');
                 var eleName = '#' + ele.attr('id');
                 var color = "#fa9e1b";
-                if(ele.attr('data-color'))
-                {
+                if (ele.attr('data-color')) {
                     color = ele.attr('data-color');
                 }
                 var statsScene = new ScrollMagic.Scene({
                     triggerElement: this,
                     triggerHook: 'onEnter',
-                    reverse:false
+                    reverse: false
                 })
-                    .on('start', function()
-                    {
+                    .on('start', function () {
                         var pbar = new ProgressBar.Line(eleName,
                             {
                                 strokeWidth: 1,
@@ -194,7 +168,7 @@ $(document).ready(function()
                                     },
                                     autoStyleContainer: false
                                 },
-                                step: function(state, bar) {
+                                step: function (state, bar) {
                                     bar.setText('+' + Math.round(bar.value() * 100) + ' %');
                                 }
                             });
@@ -210,96 +184,108 @@ $(document).ready(function()
     5. Init Accordions
 
     */
-    
-    $('.search_btn').click(function() {
-    	setTimeout(function(){
-    		initAccordions();
-    		$('.choose_flight').on('click', function() {
-	        	var money = $(this).parent().prev().children().html();;
-	        	money = money.replace("€", "");
-	      		var date = $('.travel_date').val();
-	        	var flightId = [];
-	        	$(this).parent().parent().next().children().find("tr").each(function(){ 
-	        		if($(this).attr("value") !== undefined) {
-	        			flightId.push($(this).attr("value")); 
-	        		}
-	        	});
-	        	var order = {
-	        		'money' : money,
-	        		'date' : date,
-	        		'flightid': flightId
-	        	}
-	        	console.log(order);
-	        	}
-    		);
-    	}, 1000);
+
+    $('.search_btn').click(function () {
+        setTimeout(function () {
+            initAccordions();
+            $('.choose_flight').on('click', function () {
+                    var amount = $(this).parent().prev().children().html();
+                    ;
+                    amount = amount.replace("€", "");
+                    var date = $('.travel_date').val();
+                    var flightId = new Array();
+                    $(this).parent().parent().next().children().find("tr").each(function () {
+                        if ($(this).attr("value") !== undefined) {
+                            flightId.push($(this).attr("value"));
+                        }
+                    });
+                var flightsHTML = $(this).parent().parent().next().children().last().prop("outerHTML");
+                    var data = {
+                        amount: amount,
+                        takeoffDate: date,
+                        flights_id: flightId
+                    }
+                    console.log(data);
+                    var url = "create_order.do";
+                    $.ajax({
+                        traditional: true,
+                        type: "post",
+                        data: data,
+                        url: url,
+                        success: function (response) {
+                            console.log(response);
+                            var order = response.data.order;
+
+                            $("#orderid").val(order.orderid);
+                            $("#passagerid").val(order.passagerid);
+                            $("#paymentid").val(order.paymentid);
+                            $("#status").val(order.status);
+                            $("#date").val(order.date);
+
+                            var div_in_body_in_modal = $(".modal-body .row.justify-content-center .col-8");
+                            div_in_body_in_modal.append(flightsHTML);
+                            console.log(flightsHTML);
+
+                            $("#comfirm_order_dialog").modal();
+                        }
+                    });
+                }
+            );
+        }, 1000);
     });
 
-    function initAccordions()
-    {
-        if($('.accordion').length)
-        {
+    function initAccordions() {
+        if ($('.accordion').length) {
             var accs = $('.accordion');
-            accs.each(function()
-            {
+            accs.each(function () {
                 var acc = $(this);
 
-                if(acc.hasClass('active'))
-                {
+                if (acc.hasClass('active')) {
                     var panel = $(acc.next());
                     var panelH = panel.prop('scrollHeight') + "px";
 
-                    if(panel.css('max-height') == "0px")
-                    {
+                    if (panel.css('max-height') == "0px") {
                         panel.css('max-height', panel.prop('scrollHeight') + "px");
                     }
-                    else
-                    {
+                    else {
                         panel.css('max-height', "0px");
                     }
                 }
 
-                acc.on('click', function()
-                {
+                acc.on('click', function () {
                     if (!acc.hasClass('accordion-lg')) closeAllAccordions();
 
-                    if(acc.hasClass('active'))
-                    {
+                    if (acc.hasClass('active')) {
                         acc.removeClass('active');
                         var panel = $(acc.next());
                         var panelH = panel.prop('scrollHeight') + "px";
 
-                        if(panel.css('max-height') == "0px")
-                        {
+                        if (panel.css('max-height') == "0px") {
                             panel.css('max-height', panel.prop('scrollHeight') + "px");
                         }
-                        else
-                        {
+                        else {
                             panel.css('max-height', "0px");
                         }
                     }
-                    else
-                    {
+                    else {
                         acc.addClass('active');
                         var panel = $(acc.next());
                         var panelH = panel.prop('scrollHeight') + "px";
 
-                        if(panel.css('max-height') == "0px")
-                        {
+                        if (panel.css('max-height') == "0px") {
                             panel.css('max-height', panel.prop('scrollHeight') + "px");
                         }
-                        else
-                        {
+                        else {
                             panel.css('max-height', "0px");
                         }
                     }
                 });
             });
 
-            function closeAllAccordions(){
+            function closeAllAccordions() {
                 var accs = $('.accordion');
-                accs.each(function() {
-                    var acc=$(this);
+                accs.each(function () {
+                    var acc = $(this);
                     acc.removeClass('active');
                     var panel = $(acc.next());
                     panel.css('max-height', "0px");
@@ -315,14 +301,11 @@ $(document).ready(function()
 
     */
 
-    function initMilestones()
-    {
-        if($('.milestone_counter').length)
-        {
+    function initMilestones() {
+        if ($('.milestone_counter').length) {
             var milestoneItems = $('.milestone_counter');
 
-            milestoneItems.each(function(i)
-            {
+            milestoneItems.each(function (i) {
                 var ele = $(this);
                 var endValue = ele.data('end-value');
                 var eleValue = ele.text();
@@ -332,31 +315,27 @@ $(document).ready(function()
                 var signBefore = "";
                 var signAfter = "";
 
-                if(ele.attr('data-sign-before'))
-                {
+                if (ele.attr('data-sign-before')) {
                     signBefore = ele.attr('data-sign-before');
                 }
 
-                if(ele.attr('data-sign-after'))
-                {
+                if (ele.attr('data-sign-after')) {
                     signAfter = ele.attr('data-sign-after');
                 }
 
                 var milestoneScene = new ScrollMagic.Scene({
                     triggerElement: this,
                     triggerHook: 'onEnter',
-                    reverse:false
+                    reverse: false
                 })
-                    .on('start', function()
-                    {
-                        var counter = {value:eleValue};
+                    .on('start', function () {
+                        var counter = {value: eleValue};
                         var counterTween = TweenMax.to(counter, 4,
                             {
                                 value: endValue,
-                                roundProps:"value",
+                                roundProps: "value",
                                 ease: Circ.easeOut,
-                                onUpdate:function()
-                                {
+                                onUpdate: function () {
                                     document.getElementsByClassName('milestone_counter')[i].innerHTML = signBefore + counter.value + signAfter;
                                 }
                             });
@@ -372,32 +351,27 @@ $(document).ready(function()
 
     */
 
-    function initLoaders()
-    {
-        if($('.loader').length)
-        {
+    function initLoaders() {
+        if ($('.loader').length) {
             var loaders = $('.circle');
 
-            loaders.each(function()
-            {
+            loaders.each(function () {
                 var loader = $(this);
                 var endValue = $(loader).data('perc');
 
                 var loaderScene = new ScrollMagic.Scene({
                     triggerElement: this,
                     triggerHook: 'onEnter',
-                    reverse:false
+                    reverse: false
                 })
-                    .on('start', function()
-                    {
+                    .on('start', function () {
                         loader.circleProgress({
                             startAngle: 4.66,
                             thickness: 3,
                             size: 176,
-                            emptyFill:"transparent",
-                            fill: {gradient:["#fa9e1b", "#8d4fff"]},
-                        }).on('circle-animation-progress', function(event, progress, stepValue)
-                        {
+                            emptyFill: "transparent",
+                            fill: {gradient: ["#fa9e1b", "#8d4fff"]},
+                        }).on('circle-animation-progress', function (event, progress, stepValue) {
                             $(this).find('strong').text(Math.round(stepValue * 100) + "%");
                         });
                     })
@@ -412,38 +386,30 @@ $(document).ready(function()
 
     */
 
-    function initSearchForm()
-    {
-        if($('.search_form').length)
-        {
+    function initSearchForm() {
+        if ($('.search_form').length) {
             var searchForm = $('.search_form');
             var searchInput = $('.search_content_input');
             var searchButton = $('.content_search');
 
-            searchButton.on('click', function(event)
-            {
+            searchButton.on('click', function (event) {
                 event.stopPropagation();
 
-                if(!searchActive)
-                {
+                if (!searchActive) {
                     searchForm.addClass('active');
                     searchActive = true;
 
-                    $(document).one('click', function closeForm(e)
-                    {
-                        if($(e.target).hasClass('search_content_input'))
-                        {
+                    $(document).one('click', function closeForm(e) {
+                        if ($(e.target).hasClass('search_content_input')) {
                             $(document).one('click', closeForm);
                         }
-                        else
-                        {
+                        else {
                             searchForm.removeClass('active');
                             searchActive = false;
                         }
                     });
                 }
-                else
-                {
+                else {
                     searchForm.removeClass('active');
                     searchActive = false;
                 }

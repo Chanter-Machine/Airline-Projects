@@ -4,41 +4,19 @@ package com.airline.services;
  * @author Chaofan
  * 
  */
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import com.airline.bean.Flight;
-import com.airline.bean.FlightExample;
-import com.airline.bean.SearchData;
-import com.airline.bean.SeatRecord;
-import com.airline.bean.SeatRecordExample;
-import com.airline.bean.FlightExample.Criteria;
-import com.airline.bean.FlightRecord;
-import com.airline.bean.FlightRecordExample;
+import com.airline.bean.*;
 import com.airline.dao.FlightMapper;
 import com.airline.dao.FlightRecordMapper;
 import com.airline.dao.SeatRecordMapper;
-import com.airline.services.decorator.PriceDecorator.EconomyClassPrice;
-import com.airline.services.decorator.PriceDecorator.IFlightPrice;
-import com.airline.services.decorator.PriceDecorator.InsuranceDecorator;
-import com.airline.services.decorator.PriceDecorator.PriceDecorator;
-import com.airline.services.decorator.PriceDecorator.SeatClassFactory;
-import com.airline.services.decorator.PriceDecorator.TaxDecorator;
-import com.airline.services.interceptors.search.FlightRecordFilter;
-import com.airline.services.interceptors.search.IPathFilter;
+import com.airline.services.decorator.PriceDecorator.*;
 import com.airline.services.interceptors.search.Path;
-import com.airline.services.interceptors.search.SeatRecordFilter;
-import com.airline.services.strategy.sorting.SortingFactory;
 import com.airline.utils.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.Map.Entry;
 @Service
 public class FlightServiceImp implements IFlightService {
 

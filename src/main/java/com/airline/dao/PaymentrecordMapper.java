@@ -2,8 +2,9 @@ package com.airline.dao;
 
 import com.airline.bean.Paymentrecord;
 import com.airline.bean.PaymentrecordExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PaymentrecordMapper {
     long countByExample(PaymentrecordExample example);
@@ -13,6 +14,8 @@ public interface PaymentrecordMapper {
     int deleteByPrimaryKey(Integer paymentid);
 
     int insert(Paymentrecord record);
+
+    int insertAndGetId(Paymentrecord record);
 
     int insertSelective(Paymentrecord record);
 
