@@ -5,7 +5,7 @@
     <id column="paymentId" jdbcType="INTEGER" property="paymentid" />
     <result column="amount" jdbcType="VARCHAR" property="amount" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-      <result column="date" jdbcType="DATE" property="date"/>
+      <result column="date" jdbcType="TIMESTAMP" property="date"/>
       <result column="paymentType" jdbcType="INTEGER" property="paymenttype"/>
       <result column="thirtyPartyPaymentId" jdbcType="VARCHAR" property="thirtypartypaymentid"/>
   </resultMap>
@@ -105,7 +105,7 @@
       date, paymentType, thirtyPartyPaymentId
       )
     values (#{paymentid,jdbcType=INTEGER}, #{amount,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{date,jdbcType=DATE}, #{paymenttype,jdbcType=INTEGER}, #{thirtypartypaymentid,jdbcType=VARCHAR}
+      #{date,jdbcType=TIMESTAMP}, #{paymenttype,jdbcType=INTEGER}, #{thirtypartypaymentid,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.airline.bean.Paymentrecord">
@@ -141,7 +141,7 @@
         #{status,jdbcType=VARCHAR},
       </if>
         <if test="date != null">
-            #{date,jdbcType=DATE},
+            #{date,jdbcType=TIMESTAMP},
         </if>
         <if test="paymenttype != null">
             #{paymenttype,jdbcType=INTEGER},
@@ -170,7 +170,7 @@
         status = #{record.status,jdbcType=VARCHAR},
       </if>
         <if test="record.date != null">
-            date = #{record.date,jdbcType=DATE},
+            date = #{record.date,jdbcType=TIMESTAMP},
         </if>
         <if test="record.paymenttype != null">
             paymentType = #{record.paymenttype,jdbcType=INTEGER},
@@ -188,7 +188,7 @@
     set paymentId = #{record.paymentid,jdbcType=INTEGER},
       amount = #{record.amount,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=VARCHAR},
-      date = #{record.date,jdbcType=DATE},
+      date = #{record.date,jdbcType=TIMESTAMP},
       paymentType = #{record.paymenttype,jdbcType=INTEGER},
       thirtyPartyPaymentId = #{record.thirtypartypaymentid,jdbcType=VARCHAR}
     <if test="_parameter != null">
@@ -205,7 +205,7 @@
         status = #{status,jdbcType=VARCHAR},
       </if>
         <if test="date != null">
-            date = #{date,jdbcType=DATE},
+            date = #{date,jdbcType=TIMESTAMP},
         </if>
         <if test="paymenttype != null">
             paymentType = #{paymenttype,jdbcType=INTEGER},
@@ -220,7 +220,7 @@
     update paymentrecord
     set amount = #{amount,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      date = #{date,jdbcType=DATE},
+      date = #{date,jdbcType=TIMESTAMP},
       paymentType = #{paymenttype,jdbcType=INTEGER},
       thirtyPartyPaymentId = #{thirtypartypaymentid,jdbcType=VARCHAR}
     where paymentId = #{paymentid,jdbcType=INTEGER}

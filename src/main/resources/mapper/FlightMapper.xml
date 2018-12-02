@@ -30,6 +30,33 @@
     	<result column="dstAirportCode" property="airportcode"/>
     </association>
   </resultMap>
+  <resultMap id="ResultMapWithEverything" type="com.airline.bean.Flight">
+    <id column="flightId" jdbcType="INTEGER" property="flightid" />
+    <result column="ori" jdbcType="INTEGER" property="ori" />
+    <result column="dst" jdbcType="INTEGER" property="dst" />
+    <result column="planeId" jdbcType="INTEGER" property="planeid" />
+    <result column="takeOffTIme" jdbcType="TIME" property="takeofftime" />
+    <result column="arriveTIme" jdbcType="TIME" property="arrivetime" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <association property="oriCity" javaType="com.airline.bean.City">
+    	<id column="oriId" property="cityid"/>
+    	<result column="oriName" property="cityname"/>
+    	<result column="oriAirportCode" property="airportcode"/>
+    </association>
+    <association property="dstCity" javaType="com.airline.bean.City">
+    	<id column="dstId" property="cityid"/>
+    	<result column="dstName" property="cityname"/>
+    	<result column="dstAirportCode" property="airportcode"/>
+    </association>
+    <association property="plane" javaType="com.airline.bean.Plane">
+    	<id column="planeId" property="planeid"/>
+    	<result column="manufacturer" property="manufacturer"/>
+    	<result column="model" property="model"/>
+    	<result column="numOfClass" property="numofclass"/>
+    	<result column="numOfBusiness" property="numofbusiness"/>
+    	<result column="numOfFirst" property="numoffirst"/>
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -113,6 +140,16 @@
     c1.cityId oriId, c1.cityName oriName, c1.airportCode oriAirportCode,c2.cityId dstId, 
     c2.cityName dstName, c2.airportCode dstAirportCode
     FROM flight f LEFT JOIN city c1 ON f.ori = c1.cityId LEFT JOIN city c2 ON f.dst = c2.cityId
+  </select>
+  
+  <select id="selectWIthEverything" resultMap="ResultMapWithEverything">
+   
+ SELECT 
+    f.flightId, f.ori, f.dst, f.planeId, f.takeOffTime, f.arriveTime, f.price,
+    c1.cityId oriId, c1.cityName oriName, c1.airportCode oriAirportCode,c2.cityId dstId, 
+    c2.cityName dstName, c2.airportCode dstAirportCode,
+    p.planeId, p.manufacturer, p.model, p.numOfFirstClass, p.numOfBusinessClass, p.numOfEconomyClass
+    FROM flight f LEFT JOIN city c1 ON f.ori = c1.cityId LEFT JOIN city c2 ON f.dst = c2.cityId LEFT JOIN plane p ON f.planeId = p.planeId
   </select>
   
   

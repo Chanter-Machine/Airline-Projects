@@ -23,8 +23,6 @@ import java.io.PrintWriter;
 @Component("PayByPayPal")
 public class PayByPayPal implements IPaymentMethod {
 
-    private String paymentType = "PayPal";
-
     @Autowired
     private PayPalMapper payPalMapper;
 
@@ -36,6 +34,7 @@ public class PayByPayPal implements IPaymentMethod {
         if ("create_payment".equals(request.getParameter("step_of_payment"))) {
             try {
                 JSONObject jsonObject = CreatePayment(ac, request);
+                System.out.println(jsonObject);
                 paymentId = jsonObject.getString("id");
                 response.setContentType("application/json");
                 response.setStatus(200);

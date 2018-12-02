@@ -3,79 +3,89 @@ package com.airline.bean;
 import java.util.Date;
 
 public class Flight {
-    private Integer flightid;
+	private Integer flightid;
 
-    private Integer ori;
+	private Integer ori;
 
-    private Integer dst;
+	private Integer dst;
 
-    private Integer planeid;
+	private Integer planeid;
 
-    private Date takeofftime;
+	private Date takeofftime;
 
-    private Date arrivetime;
+	private Date arrivetime;
 
-    private Integer price;
-    
-    private City oriCity;
-    
-    private City dstCity;
+	private Integer price;
 
-    public Integer getFlightid() {
-        return flightid;
-    }
+	private City oriCity;
 
-    public void setFlightid(Integer flightid) {
-        this.flightid = flightid;
-    }
+	private City dstCity;
 
-    public Integer getOri() {
-        return ori;
-    }
+	private Plane plane;
 
-    public void setOri(Integer ori) {
-        this.ori = ori;
-    }
+	public Plane getPlane() {
+		return plane;
+	}
 
-    public Integer getDst() {
-        return dst;
-    }
+	public void setPlane(Plane plane) {
+		this.plane = plane;
+	}
 
-    public void setDst(Integer dst) {
-        this.dst = dst;
-    }
+	public Integer getFlightid() {
+		return flightid;
+	}
 
-    public Integer getPlaneid() {
-        return planeid;
-    }
+	public void setFlightid(Integer flightid) {
+		this.flightid = flightid;
+	}
 
-    public void setPlaneid(Integer planeid) {
-        this.planeid = planeid;
-    }
+	public Integer getOri() {
+		return ori;
+	}
 
-    public Date getTakeofftime() {
-        return takeofftime;
-    }
+	public void setOri(Integer ori) {
+		this.ori = ori;
+	}
 
-    public void setTakeofftime(Date takeofftime) {
-        this.takeofftime = takeofftime;
-    }
+	public Integer getDst() {
+		return dst;
+	}
 
-    public Date getArrivetime() {
-        return arrivetime;
-    }
+	public void setDst(Integer dst) {
+		this.dst = dst;
+	}
 
-    public void setArrivetime(Date arrivetime) {
-        this.arrivetime = arrivetime;
-    }
+	public Integer getPlaneid() {
+		return planeid;
+	}
 
-    public Integer getPrice() {
-        return price;
-    }
+	public void setPlaneid(Integer planeid) {
+		this.planeid = planeid;
+	}
 
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
+	public Date getTakeofftime() {
+		return takeofftime;
+	}
+
+	public void setTakeofftime(Date takeofftime) {
+		this.takeofftime = takeofftime;
+	}
+
+	public Date getArrivetime() {
+		return arrivetime;
+	}
+
+	public void setArrivetime(Date arrivetime) {
+		this.arrivetime = arrivetime;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
 
 	public City getOriCity() {
 		return oriCity;
@@ -92,6 +102,5 @@ public class Flight {
 	public void setDstCity(City dstCity) {
 		this.dstCity = dstCity;
 	}
-    
-    
+
 }
