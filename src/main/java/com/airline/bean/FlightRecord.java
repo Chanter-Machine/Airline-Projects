@@ -1,6 +1,10 @@
 package com.airline.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.airline.services.oberver.cancelflight.Observer;
 
 public class FlightRecord {
     private Integer fligthrecord;
@@ -12,6 +16,8 @@ public class FlightRecord {
     private Date date;
 
     private String description;
+    
+    private List<Observer> list = new ArrayList<Observer>();
 
     public Integer getFligthrecord() {
         return fligthrecord;
@@ -52,4 +58,30 @@ public class FlightRecord {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+	@Override
+	public String toString() {
+		return "FlightRecord [fligthrecord=" + fligthrecord + ", flightid=" + flightid + ", status=" + status
+				+ ", date=" + date + ", description=" + description + "]";
+	}
+	
+	public void attach(Observer observer) {
+		list.add(observer);
+	}
+
+	public void detach(Observer observer) {
+		list.remove(observer);
+	}
+
+	public void notifyObservers() {
+		for (Observer observer : list) {
+			observer.update(this);
+		}
+	}
+
+    public void cancel(){
+    	setStatus("canceled");
+        notifyObservers();
+    }
+    
 }

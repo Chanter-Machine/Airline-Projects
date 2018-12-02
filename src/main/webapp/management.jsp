@@ -28,7 +28,7 @@
 		<!-- Button -->
 		<div class="row">
 			 <div class="col-md-4 col-md-offset-8">
-			 	<button class="btn btn-primary" id="emp_add_modal_btn">Add new flight</button>
+			 	<button class="btn btn-primary" id="flight_add_modal_btn">Add new flight</button>
 			 	<button class="btn btn-danger">Cancel Flight</button>
 			 </div>
 		</div>
@@ -57,9 +57,77 @@
 		
 	</div>
 	
+	<!-- Model dialog for insert a new flight -->
+	<div class="modal fade" id="flightAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Add a new flight</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" id="add_flight_form">
+			  <div class="form-group">
+			    <label for="flight_ori_add_input" class="col-sm-2 control-label">Origin</label>
+			    <div class="col-sm-8">
+			      <select class="form-control" name="ori" id="flight_ori_select">
+				  </select>
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="flight_ori_add_input" class="col-sm-2 control-label">Destination</label>
+			    <div class="col-sm-8">
+			      <select class="form-control" name="dst" id="flight_dst_select">
+				  </select>
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="flight_takeofftime_input" class="col-sm-2 control-label">Take off time</label>
+			    <div class="col-sm-8">
+			      <input type="text" name="takeofftime" class="form-control" id="flight_takeofftime_input" placeholder="takeoff time HH:mm:ss">
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="flight_arrivetime_input" class="col-sm-2 control-label">Arrive time</label>
+			    <div class="col-sm-8">
+			      <input type="text" name="arrivetime" class="form-control" id="flight_arrivetime_input" placeholder="arrive time HH:mm:ss">
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="flight_plane_select" class="col-sm-2 control-label">Plane Select</label>
+			    <div class="col-sm-8">
+			      <select class="form-control" name="planeid" id="flight_plane_select">
+				  </select>
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="flight_price_input" class="col-sm-2 control-label">Price</label>
+			    <div class="col-sm-8">
+			      <input type="text" name="price" class="form-control" id="flight_price_input" placeholder="Price">
+			     <span class="help-block"></span>
+			    </div>
+			  </div>
+			  
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" id="flight_add_confirm_btn">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
-	
-	<!-- 员工修改的模态框 -->
+	<!-- A model for cancel flight -->
 	<div class="modal fade" id="cancel_flight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -114,9 +182,8 @@
 				success:function(result){
 					console.log(result);
 					build_flight_table(result);
-				}
-				
-			});
+				}	
+		});
 		
 		
 		function build_flight_table(result){
@@ -155,64 +222,100 @@
 			});
 		}
 		
-		function get_flight_data(){
-			
-		}
-		
-		
-		function build_emps_table(result){
-			
-		}
-		
-		
-		
 		/* ================== 员工添加部分 ================= */
 		
-		//表单重置方法
 		function form_reset(ele){
-			//重置表单内容
 			$(ele)[0].reset();
-			//清空表单样式
 			$(ele).find("*").removeClass("has-error has-success");
 			$(ele).find(".help-block").text("");
 		}
 		
 		
-		/* 点击新增按钮就弹出模态框 */
-		$("#emp_add_modal_btn").click(function(){
-			$("#flight_cancel").modal({
+		$("#flight_add_modal_btn").click(function(){
+			$("#flightAdd").modal({
 				backdrop:"static"
 			});
+			
+			getCities("#flight_ori_select");
+			getCities("#flight_dst_select");
+			getPlane("#flight_plane_select");
 		});
 		
 		/* 查询出所有的部分信息,并显示在下拉里列表当中 */
-		function getDepts(ele){
-			
+		function getCities(ele){
+			$(ele).empty();
+			$.ajax({
+				url:"${APP_PATH}/getCities.do",
+				type:"POST",
+				success:function(result){
+					/* console.log(result); */
+					
+					$.each(result.data.cities,function(){
+						var optionEle = $("<option></option>").attr("value", this.cityid).append(this.cityname);
+						optionEle.appendTo(ele);
+					}) 
+				}
+			});
 		}
 		
-		/* 绑定单击事件，点击以后将数据传给控制器| */
+		function getPlane(ele){
+			$(ele).empty();
+			$.ajax({
+				url:"${APP_PATH}/getPlanes.do",
+				type:"POST",
+				success:function(result){
+					 /* console.log(result);  */
+					 $.each(result.data.planes,function(){
+						var optionEle = $("<option></option>").attr("value", this.planeid).append(this.model);
+						optionEle.appendTo(ele);
+					})  
+				}
+			});
+		}
+		
+		
+		/* Bind a event for cancel flight button */
 		$("#flight_cancel_confirm_btn").click(function(){
 			$.ajax({
 				url:"${APP_PATH}/cancelFlight.do",
 				type:"POST",
 				data:$("#cancel_flight_form").serialize(),
 				success:function(result){
-					
-					
+					console.log(result)	;
+					alert("Add success");
+					if(result.msg==success){
+						$('#cancel_flight').modal('hide')
+					}
 				}
 			});
 		});
 		
+		$("#flight_add_confirm_btn").click(function(){
+			$.ajax({
+				url:"${APP_PATH}/addFlight.do",
+				type:"POST",
+				data:$("#add_flight_form").serialize(),
+				success:function(result){
+					console.log(result)	;	
+					if(result.state==1){
+						alert("Add success");
+						$('#flightAdd').modal('hide')
+					}
+				}
+			});
+		});
 		
-		/* ================= 编辑按钮 =============================== */
-		//为编辑按钮绑定点击事件
+
+		
+		
+		//Bind a event for cancel flight
 		$(document).on("click", ".delete_btn", function(){
 			var flightId = $(this).parent().parent().attr("value");
 			document.getElementById("cancel_flight_id").value = flightId;
 			$("#cancel_flight").modal({
 				backdrop:"static"
 			});
-		});
+		}); 
 	</script>
 </body>
 </html>
