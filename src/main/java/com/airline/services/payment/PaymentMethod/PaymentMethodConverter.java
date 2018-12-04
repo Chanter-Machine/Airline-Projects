@@ -1,5 +1,6 @@
 package com.airline.services.payment.PaymentMethod;
 
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.convert.converter.Converter;
 
 public class PaymentMethodConverter implements Converter<String, Integer> {
@@ -11,7 +12,10 @@ public class PaymentMethodConverter implements Converter<String, Integer> {
             return PaymentMethodFactory.ByAlipay;
         } else if ("currencyfair".equals(source)) {
             return PaymentMethodFactory.ByCurrencyFair;
+        } else {
+            throw new TypeMismatchException(source, Integer.class);
         }
-        return null;
     }
+
+
 }

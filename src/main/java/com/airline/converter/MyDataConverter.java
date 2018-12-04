@@ -1,13 +1,13 @@
 package com.airline.converter;
 
 
+import org.springframework.beans.TypeMismatchException;
+import org.springframework.core.convert.converter.Converter;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
-
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.core.convert.converter.Converter;
 
 
 public class MyDataConverter implements Converter<String, Date> {
@@ -24,7 +24,7 @@ public class MyDataConverter implements Converter<String, Date> {
 	}
 
 	private SimpleDateFormat getDateFormat(String source) {
-		SimpleDateFormat sdf = new SimpleDateFormat();
+        SimpleDateFormat sdf = null;
 		if(Pattern.matches("^\\d{4}-\\d{2}-\\d{2}$", source)) {
 			sdf =new SimpleDateFormat("yyyy-MM-dd");
 		}

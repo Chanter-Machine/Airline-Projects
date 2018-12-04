@@ -105,7 +105,6 @@
                         <div class="col-md-4 order-md-2 mb-4">
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-muted">Your Order</span>
-                                <span class="badge badge-secondary badge-pill">2</span>
                             </h4>
                             <ul class="list-group mb-3">
                                 <li class="list-group-item d-flex justify-content-between">
@@ -168,7 +167,7 @@
                                             <div class="col-8">
                                                 <div id="Alipay"><a href="#"><img
                                                         style="width:126px; height: 54px; "
-                                                        src="/static/images/alipay.png"
+                                                        src="static/images/alipay.png"
                                                         alt=""></a></div>
                                             </div>
                                         </div>
@@ -179,7 +178,7 @@
                                             <div class="col-8">
                                                 <div id="CurrencyFair"><a href="#"><img
                                                         style="width:126px; height: 54px; "
-                                                        src="/static/images/currencyfair.png"
+                                                        src="static/images/currencyfair.png"
                                                         alt=""></a></div>
                                             </div>
                                         </div>
@@ -280,7 +279,8 @@
     </div>
 
     <!--payment success jump-->
-    <form method="post" id="jump_to_order_is_paid" action="${APP_PATH}/order_is_paid.do" hidden="true">
+    <form method="post" id="jump_to_order_is_paid" action="<%=request.getContextPath()%>/order_is_paid.do"
+          hidden="true">
         <input name="orderid" type="text" id="orderid" value="${order.orderid}">
         <input name="passagerid" type="text" id="passagerid" value="${order.passagerid}">
         <input name="paymentid" type="text" id="paymentid" value="${order.paymentid}">
@@ -333,7 +333,7 @@
             }
             console.log(data);
             //return paypal.request.post('/api/create-payments')
-            var url = '${APP_PATH}/payment/pay.do?payment_method=paypal&step_of_payment=create_payment';
+            var url = '<%=request.getContextPath()%>/payment/pay.do?payment_method=paypal&step_of_payment=create_payment';
 
             url += "&orderid=" + $("#orderid").val();
             url += "&passagerid=" + $("#passagerid").val();
@@ -356,7 +356,7 @@
         onAuthorize: function (data, actions) {
 
             // Set up a url on your server to execute the payment
-            var EXECUTE_URL = '${APP_PATH}/payment/pay.do?payment_method=paypal&step_of_payment=execute_payment';
+            var EXECUTE_URL = '<%=request.getContextPath()%>/payment/pay.do?payment_method=paypal&step_of_payment=execute_payment';
 
             EXECUTE_URL += "&orderid=" + $("#orderid").val();
             EXECUTE_URL += "&passagerid=" + $("#passagerid").val();
