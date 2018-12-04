@@ -1,20 +1,16 @@
 package com.airline.services;
 
-import java.util.List;
-
-import com.airline.bean.Login;
-import com.airline.security.AccountAccessValidation;
+import com.airline.bean.User;
+import com.airline.bean.UserExample;
+import com.airline.bean.UserExample.Criteria;
+import com.airline.dao.UserMapper;
 import com.airline.security.Encryption;
 import com.airline.security.LoginValidationChain;
-import com.airline.security.LoginValidationFactory;
 import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.airline.bean.User;
-import com.airline.bean.UserExample;
-import com.airline.dao.UserMapper;
-import com.airline.bean.UserExample.Criteria;
+import java.util.List;
 
 @Service
 public class UserServiceImp implements IUserService {
@@ -72,7 +68,7 @@ public class UserServiceImp implements IUserService {
 		List<User> users = getUsers(user.getEmail());
 		if (users.size()==0) {
 
-			userMapper.insert(user);
+            userMapper.insertSelective(user);
 		}
 	}
 
