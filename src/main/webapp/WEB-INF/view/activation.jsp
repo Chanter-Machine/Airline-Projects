@@ -130,6 +130,8 @@
 <script src="static/plugins/parallax-js-master/parallax.min.js"></script>
 <script src="static/js/elements_custom.js"></script>
 <script>
+    console.log('Code: ${result.code}');
+
     $('#form_submit_button').click(function(){
         $.ajax({
             url:"${APP_PATH}/validate.do?code="+$('#code').val(),
@@ -140,7 +142,7 @@
             success:function(data, textStatus, jQxhr){
                 if(data.successful){
                     alert("Your account has now been activated! You will be redirected to begin your flight search.");
-                    location.href="${APP_PATH}/search.do";
+                    location.href="${APP_PATH}/loggedOn.do";
                 }
                 else{
                     alert("Validation failed: "+data.msg+".\nPlease check your code and try again!");

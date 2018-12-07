@@ -2,6 +2,7 @@ package com.airline.services;
 import com.airline.bean.Passenger;
 import com.airline.bean.User;
 import com.airline.enums.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,7 +21,10 @@ public class UserFactory {
             case PASSENGER:
                 //get Passenger details
                 Passenger passenger = passengerService.getPassengerByUserID(userID);
-                passenger.setEmail(user.getEmail());
+                BeanUtils.copyProperties(user, passenger);
+                //security: do not return password in user session
+                passenger.setPassword(null);
+
                 return passenger;
             case AIRLINE:
                 //get Airline details

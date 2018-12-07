@@ -28,18 +28,18 @@ public class AccountAccessValidation implements ILoginValidation {
         // set default error message
         result=new Msg();
         result.setSuccessful(false);
-        result.setMsg("2. There's an error with your account or it does not exist, please contact the administrator to assist.");
+        result.setMsg("There's an error with your account or it does not exist, please contact the administrator to assist.");
+        try
+        {
         if (userCollection.size()==1 && (attemptingUser.getEmail().equals(userCollection.get(0).getEmail()))){
             setUser(userCollection.get(0));
             loginAttempts = user.getLoginattempts();
 
-            System.out.println("In here");
             //lock account if attempts exceed allowed amount
             if (loginAttempts <= MAXATTEMPTS){
                 //check if the correct password was provided
                 if (!encryptPassword(attemptingUser.getPassword()).equals(user.getPassword())){
 
-                    System.out.println("In here too");
                     //increase login attempts
                     result.setSuccessful (false);
                     String msg="Incorrect username or password provided, please check that you have provided the correct details. " + logFailedAttempt();
@@ -47,6 +47,7 @@ public class AccountAccessValidation implements ILoginValidation {
 
                 } else {
                     result.setSuccessful(true);
+                    result.setMsg("");
                     AccountLockValidation accountLockValidation = new AccountLockValidation(user);
                     setUser(accountLockValidation.unlockAccount());
 
@@ -63,6 +64,9 @@ public class AccountAccessValidation implements ILoginValidation {
                     accountLockValidation.lockAccount();
                 }
             }
+
+        }}
+        catch(NullPointerException ex) {
 
         }
         return result;

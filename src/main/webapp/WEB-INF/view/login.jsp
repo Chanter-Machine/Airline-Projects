@@ -2,10 +2,15 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.airline.bean.User" %>
 <%@ page import="java.util.stream.Collectors" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%	
 	pageContext.setAttribute("APP_PATH",request.getContextPath());
+	if (session.getAttribute("user")==null) {
+	    response.sendRedirect("index.jsp");
+	    return;
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -49,7 +54,7 @@
 						</div>
 						<div class="user_box ml-auto">
 							<div class="user_box_login user_box_link"><a href="#">${user.email}</a></div>
-							<div class="user_box_register user_box_link"><a href="#">logout</a></div>
+							<div class="user_box_register user_box_link"><a href="/logout.do">logout</a></div>
 						</div>
 					</div>
 				</div>
@@ -114,7 +119,7 @@
 									<hr size=1 />
 									<p>Please provide details of your flight and let us find the best options for you.</p>
 									<div class="search_panel">
-										<form action="result.html" method="post" id="search_form_1" class="form-group">
+										<form id="search_form_1" class="form-group">
 											<div class="search_item">
 												<div class="btn-group btn-group-toggle" data-toggle="buttons">
 													<label class="btn btn-agile active">
@@ -142,7 +147,7 @@
 												<div><i class="fa fa-map-marker"></i> Origin</div>
 												<!--								<input type="text" class="form-control" required="required">-->
 
-												<select name="origin" id="origin" class="form-control custom-select custom-select-lg mb-3">
+												<select name="origin" id="origin_city" class="form-control custom-select custom-select-lg mb-3">
 													<c:if test="${not empty cities}">
 															<c:forEach var="city" items="${cities}">
 																<option value="${city.cityid}">${city.cityname}</option>
@@ -153,7 +158,7 @@
 											<div class="search_item">
 												<div><i class="fa fa-map-marker"></i> Destination</div>
 
-												<select name="destination" id="destination" class="form-control custom-select custom-select-lg mb-3">
+												<select name="destination" id="destination_city" class="form-control custom-select custom-select-lg mb-3">
 													<c:if test="${not empty cities}">
 														<c:forEach var="city" items="${cities}">
 															<option value="${city.cityid}">${city.cityname}</option>
@@ -162,19 +167,28 @@
 												</select>
 												<!--								<input type="text" class="form-control" required="required">-->
 											</div>
-                                            <div class="search_item">
-                                                <div><i class="fa fa-calendar"></i> Travel Date</div>
-                                                <input name="traveldate" class="form-control contact_form_name date form_date" size="16" type="text" value="" placeholder="yyyy/mm/dd">
-                                            </div>
+											<div class="search_item">
+												<div><i class="fa fa-calendar"></i> Travel Date</div>
+												<input name="traveldate" class="travel_date form-control contact_form_name date form_date" size="16" type="text" value="" placeholder="yyyy/mm/dd">
+											</div>
 											<div class="search_item">
 												<div>Seat Preference</div>
-												<select name="origin" id="origin" class="form-control custom-select custom-select-lg mb-3">
-													<option>Economy Class</option>
-													<option>Business Class</option>
+												<select name="seat" id="seat_preference" class="form-control custom-select custom-select-lg mb-3">
+													<option value="economy">Economy Class</option>
+													<option value="business">Business Class</option>
+													<option value="first">First Class</option>
+												</select>
+											</div>
+											<div class="search_item">
+												<div>Seat Preference</div>
+												<select name="sorting" class="form-control custom-select custom-select-lg mb-3">
+													<option value="1">Show me based on lowest cost</option>
+													<option value="2">Show me based on shortest flight duration</option>
+													<option value="3">Show me based on shortest wait time</option>
 												</select>
 											</div>
 											<p>&nbsp;</p>
-											<button type="submit" class="button button_color_1 trans_200"><a href="#">search<span></span><span></span><span></span></a></button>
+											<button id="btn_submit" type="button" class="button button_color_1 trans_200"><a href="#">search<span></span><span></span><span></span></a></button>
 										</form>
 
 									</div>
@@ -190,104 +204,64 @@
 					<p>&nbsp;</p>
 					<!-- Accordions -->
 					<div class="elements_accordions">
-
+						<%
+							List<UserFlight> orders = (List<UserFlight>) request.getAttribute("orders");
+							List<Integer> uniqueOrders = (List<Integer>) request.getAttribute("uniqueOrders");
+						%>
+						<%
+							int i=0;
+							for (Integer uniqueID: uniqueOrders) {
+							List<UserFlight> thisOrder = orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList());
+							String origin = thisOrder.get(0).getFlightOrigin();
+							String destination = thisOrder.get(thisOrder.size()-1).getFlightDestination();
+								String fromDate =  new SimpleDateFormat("dd-MMM-yy").format(thisOrder.get(0).getFlightDate());
+						%>
 						<div class="accordion_container">
-							<div class="accordion d-flex flex-row align-items-center active"><div>Trip: Limerick to Dublin (October 20, 2018) </div></div>
+							<div class="accordion d-flex flex-row align-items-center <%= i==0?"active":"" %>"><div><%=origin%> to <%=destination%> (<%=fromDate%>)</div></div>
 							<div class="accordion_panel">
 								<p>Your itenary for this trip:</p>
 								<div class="table-responsive">
 									<table class="table table-striped table-sm">
-										<thead>
-										<tr>
-											<th>#</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-											<th>Header</th>
-										</tr>
-										</thead>
 										<tbody>
+										<% for (UserFlight orderFlight: orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList())) { %>
 										<tr>
-											<td>1,001</td>
-											<td>Lorem</td>
-											<td>ipsum</td>
-											<td>dolor</td>
-											<td>sit</td>
+											<td><%= orderFlight.getFlightOrigin() %></td>
+											<td><%= orderFlight.getFlightDestination() %></td>
+											<td><%= orderFlight.getSeatType() %></td>
+											<td><%= orderFlight.getPaymentStatus() %></td>
+											<td><%=   new SimpleDateFormat("dd-MMM-yy").format(orderFlight.getFlightDate()) %></td>
+											<td><%=  new SimpleDateFormat("HH:mm").format(orderFlight.getFlightTime()) %></td>
 										</tr>
-										<tr>
-											<td>1,002</td>
-											<td>amet</td>
-											<td>consectetur</td>
-											<td>adipiscing</td>
-											<td>elit</td>
-										</tr>
-										<tr>
-											<td>1,003</td>
-											<td>Integer</td>
-											<td>nec</td>
-											<td>odio</td>
-											<td>Praesent</td>
-										</tr>
-										<tr>
-											<td>1,003</td>
-											<td>libero</td>
-											<td>Sed</td>
-											<td>cursus</td>
-											<td>ante</td>
-										</tr>
+										<% } %>
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
-						<c:if test="${not empty orders}">
-							<%
-								List<UserFlight> orders = (List<UserFlight>) request.getAttribute("orders");
-								List<Integer> uniqueOrders = (List<Integer>) request.getAttribute("orderIDs");
-							%>
-							<% for (Integer uniqueID: uniqueOrders) {
-								List<UserFlight> thisOrder = orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList());
-								String origin = thisOrder.get(0).toString();
-								String destination = thisOrder.get(thisOrder.size()-1).getFlightDestination();
-							%>
-								<div class="accordion_container">
-									<div class="accordion d-flex flex-row align-items-center"><div><%=origin%> to <%destination%> (<%=uniqueID%>)</div></div>
-									<div class="accordion_panel">
-										<p>Your itenary for this trip:</p>
-										<div class="table-responsive">
-											<table class="table table-striped table-sm">
-												<tbody>
-												<% for (UserFlight orderFlight: orders.stream().filter(o->o.getOrderID()==uniqueID).collect(Collectors.toList())) { %>
-												<tr>
-													<td><%= orderFlight.getFlightOrigin() %></td>
-													<td><%= orderFlight.getFlightDestination() %></td>
-													<td><%= orderFlight.getSeatType() %></td>
-													<td><%= orderFlight.getPaymentStatus() %></td>
-													<td><%= orderFlight.getFlightDate() %></td>
-													<td><%= orderFlight.getFlightTime() %></td>
-												</tr>
-												<% } %>
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							<%}%>
-						</c:if>
-
-
-						<div class="accordion_container">
-							<div class="accordion d-flex flex-row align-items-center"><div>Other Information</div></div>
-							<div class="accordion_panel">
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu convallis tortor. Suspendisse potenti. In faucibus massa arcu, vitae cursus mi hendrerit nec. Proin bibendum, augue faucibus.</p>
-							</div>
-						</div>
+						<% i++; }%>
 
 					</div>
+					<%= i==0?"<em>You don't have any booked flight record yet</em>":"" %>
+				</div>
+			</div>
+		</div>
+		<!-- result body-->
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 result-flight">
+					<!-- ====================== result ==================================-->
+
+					<!-- Accordions -->
+
 				</div>
 			</div>
 		</div>
 	</div>
+	</div>
+
+
+
 	<!-- Copyright -->
 
 	<div class="copyright">
@@ -330,6 +304,91 @@
         forceParse: 0,
         format: 'yyyy/mm/dd'
     });
+
+    $("#btn_submit").click(function() {
+
+        $.ajax({
+            url: "${APP_PATH}/search2.do",
+            type: "POST",
+            data: $("#search_form_1").serialize(),
+            success: function(result) {
+                console.log(result);
+                build_result_body(result);
+            }
+        });
+        /* alert($("#add_emp_form").serialize()); */
+    });
+
+    function timeConverter(UNIX_timestamp) {
+        var a = new Date(UNIX_timestamp * 1000);
+        //var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        //var year = a.getFullYear();
+        //var month = months[a.getMonth()];
+        //var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        //var sec = a.getSeconds();
+        var time = hour + ':' + min;
+        return time;
+    }
+
+    function build_result_body(result){
+        var data = result.data;
+        var insuranceList=data.insuranceList;
+        var pathList=data.pathList;
+        var priceList=data.priceList;
+        var taxList=data.taxList;
+        var num_paths = insuranceList.length;
+
+        $(".result-flight").html("");
+
+        var from = $("#origin_city").find("option:selected").text();;
+        var to = $("#destination_city").find("option:selected").text();;
+
+        $result_body = $("<div id='result_body' class='elements_accordions2' data-multitabs='true'></div>");
+
+        for (var i = 0; i<num_paths; i++){
+
+            $accordion = $("<div class='accordion_container col-md-12 order-md-1'></div>");
+            $accordion_parrent = $("<div class='accordion accordion-lg d-flex flex-row align-items-center'></div>")
+            $city = $("<div class='col-md-5'><h3 class='my-0'>" + from + " to " + to +"</h3><small class='text-muted'>Multiple stops [click to see breakdown]</small></div>");
+            $money = $("<div class='col-md-2'><span class='text-muted pull-right h3'>&euro;" + priceList[i] + "</span></div><div class='col-md-2'><a class='btn btn-warning choose_flight'>Choose Flight</a></div>")
+
+            $accordion_parrent.append($city);
+            $accordion_parrent.append($money);
+            $accordion.append($accordion_parrent);
+
+            $parentDiv = $("<table class='table table-striped table-sm'></table>");
+            $thead = $("<thead><tr><th></th><th>Depart From</th><th>Arrive At</th><th>Flight Time</th><th>Waiting Time</th><tr></thead>")
+            $tbody = $("<tbody></tbody>");
+            $parentDiv.append($thead);
+
+            var pathLength = pathList[i].length;
+
+            for(var j = 0; j < pathLength; j++) {
+                var path = pathList[i][j];
+                var fromCity = path.oriCity.cityname;
+                var toCity = path.dstCity.cityname;
+                var fromTime = timeConverter(path.takeofftime);
+                var toTime = timeConverter(path.arrivetime);
+                var flightId = path.flightid;
+                $td = $("<tr value="+ flightId +"><td><i class='fa fa-plane'></i></td>" +
+                    "<td>" + fromCity + "</td>" +
+                    "<td>" + toCity + "</td>" +
+                    "<td>" + fromTime + "-" + toTime + "</td>" +
+                    "<td>--</td></tr>");
+                $tbody.append($td);
+            }
+
+            $parentDiv.append($tbody);
+            $accordion_panel = $("<div class='accordion_panel'><div class='table-responsive flight-table'></div></div>")
+            $accordion_panel.append($parentDiv);
+
+            $accordion.append($accordion_panel)
+            $result_body.append($accordion);
+        }
+        $(".result-flight").append($result_body);
+    }
 
 
 </script>
