@@ -48,7 +48,9 @@ public class UserServiceImp implements IUserService {
 			updateUser(user);
 
 			if (result.isSuccessful()) {
+				//System.out.println(user.getActivated());
 				User producedUser = userFactory.produce(user);
+				//System.out.println(producedUser.getClass().getName() +": "+producedUser.getActivated());
 				return producedUser;
 			} else {
 				return null;
@@ -110,14 +112,13 @@ public class UserServiceImp implements IUserService {
 
 		User user = getUsers(userid).get(0);
 		user.setActivated(true);
-
-		userMapper.updateByExample(user, userExample);
+ 		updateUser(user);
 
 	}
 
 	@Override
 	public void updateUser(User user) {
-		userMapper.updateByPrimaryKey(user);
+		userMapper.updateByPrimaryKeySelective(user);
 	}
 
 	public Msg getResult() {

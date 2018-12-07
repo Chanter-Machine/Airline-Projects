@@ -80,7 +80,7 @@
   </sql>
   <select id="selectOrderByPassengerID" parameterType="java.lang.Integer" resultMap="ExtendedResultMap">
     select a.orderId as orderID , a.status as paymentStatus, d.cityName as flightOrigin, e.cityName as flightDestination, b.seatType as seatType, b.takeoffDate as flightDate, c.takeOffTIme as flightTime from orders as a left join flightandorder as b on a.orderId=b.orderId left join flight as c on b.flightId=c.flightId
-left join city as d on c.ori=d.cityId left join city as e on c.dst=e.cityId where a.passagerId=#{passengerid, jdbcType=INTEGER}
+left join city as d on c.ori=d.cityId left join city as e on c.dst=e.cityId where a.passagerId=#{passengerid, jdbcType=INTEGER} and NOT ISNULL(d.cityName)  order by flightDate asc, flightTime asc
   </select>
   <select id="selectByExample" parameterType="com.airline.bean.OrderExample" resultMap="BaseResultMap">
     select

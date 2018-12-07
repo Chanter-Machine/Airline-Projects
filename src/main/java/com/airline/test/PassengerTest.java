@@ -63,5 +63,24 @@ public class PassengerTest {
     }
 
 
+    @Test
+    public void validateObject(){
+        Passenger p = new Passenger();
+        p.setPassengername("New Validator");
+        p.setAddress("Vo<script>ids");
+        try {
+            p.setDob(new SimpleDateFormat("yyyy-MM-dd").parse("2015-12-06"));
+        } catch (ParseException ex) { }
+        p.setPassengername("Winter@Bottom");
+        p.setPhone("00000000");
+
+        Validator validator = new Validator(p);
+
+        System.out.println("Data is invalid: " + validator.validate()+"\n");
+
+    }
+
+
+
 
 }
