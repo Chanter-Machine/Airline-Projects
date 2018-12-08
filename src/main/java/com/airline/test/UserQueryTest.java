@@ -33,10 +33,10 @@ public class UserQueryTest {
 		login.setPassword("exquisite");
 		User user=userService.validateUser(login);
 		if(user!=null) {
-			System.out.println("login successful");
+			System.out.println("login was successful");
 		}
 		else {
-			System.out.println("login failed");
+			System.out.println("login just failed");
 		}
 
 		System.out.println((userService.getResult().getMsg()));

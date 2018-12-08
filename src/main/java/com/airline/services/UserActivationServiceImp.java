@@ -55,4 +55,13 @@ public class UserActivationServiceImp implements IUserActivationService {
         else
             return false;
     }
+
+    @Override
+    public int returnActivationCode(int userid) {
+        UserActivationExample userActivationExample = new UserActivationExample();
+        Criteria criteria = userActivationExample.createCriteria();
+        criteria.andUseridEqualTo(userid);
+        UserActivation userActivation = userActivationMapper.selectByExample(userActivationExample).get(0);
+        return userActivation.getActivationcode();
+    }
 }

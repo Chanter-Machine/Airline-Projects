@@ -39,6 +39,29 @@ public class PassengerController {
 	@Autowired
 	IOrderService orderService;
 
+	@RequestMapping("/loggedOn.do")
+	public ModelAndView loggedOn(HttpServletRequest request) {
+
+		ModelAndView mv = new ModelAndView();
+		User user = (User) request.getSession().getAttribute("user");
+		if (user !=null) {
+			request.getSession().setAttribute("user", user);
+			mv = loggedOnUser(user);
+			mv.addObject("user", user);
+		} else {
+			mv.setViewName("index.jsp");
+		}
+		return mv;
+	}
+
+	@RequestMapping("/logout.do")
+	public ModelAndView logout(HttpServletRequest request) {
+		request.getSession().invalidate();
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("index.jsp");
+		return mv;
+	}
+
 
 	@RequestMapping("/login.do")
 	public ModelAndView loginCheck(HttpServletRequest request, User loginuser) {
@@ -56,7 +79,6 @@ public class PassengerController {
 
 			User user = userService.validateUser(loginuser);
 			Msg result = userService.getResult();
-			System.out.println(user.getActivated());
 			if (user != null) {
 				if (user.getActivated() == null || user.getActivated() == false) {
 					request.getSession().setAttribute("temp_no", user.getUserid());
@@ -114,6 +136,7 @@ public class PassengerController {
 
                 result.success();
                 result.setMsg("Your details have been submitted successfully. We have sent you an activation code to complete your account creation, please check your mailbox for a mail from us and use it in the form below.");
+                result.setCode(userActivationService.returnActivationCode(userid));
             } else {
                 //result
                 result.fail();
@@ -165,16 +188,19 @@ public class PassengerController {
 	public ModelAndView loggedOnUser(User user){
 
 		ModelAndView mv = new ModelAndView();
-		List<City> cities = cityService.findAllCityies();
-
-		Passenger p = (Passenger) user;
-		List<UserFlight> allorders = orderService.orderWithFlightByPassenger(p.getPassengerid());
-		List<Integer> orderIDs = allorders.stream().map(o->o.getOrderID()).distinct().collect(Collectors.toList());
-		mv.addObject("cities", cities);
-		mv.addObject("uniqueOrders", orderIDs);
-		mv.addObject("orders", allorders);
-		mv.setViewName("/WEB-INF/view/login.jsp");
-
+		if (user.getRole()==1) {
+			List<City> cities = cityService.findAllCityies();
+			Passenger p = (Passenger) user;
+			List<UserFlight> allorders = orderService.orderWithFlightByPassenger(p.getPassengerid());
+			List<Integer> orderIDs = allorders.stream().map(o -> o.getOrderID()).distinct().collect(Collectors.toList());
+			mv.addObject("cities", cities);
+			mv.addObject("uniqueOrders", orderIDs);
+			mv.addObject("orders", allorders);
+			mv.setViewName("/WEB-INF/view/login.jsp");
+		} else {
+			//admin view
+			mv.setViewName("/WEB-INF/view/login2.jsp");
+		}
 		return mv;
 	}
 
