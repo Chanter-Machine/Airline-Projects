@@ -36,9 +36,8 @@ public class OrderController {
     public Msg createOrder(HttpServletRequest request, HttpSession session, Double amount, Date takeoffDate, @RequestParam(value = "flights_id") int[] flights_id) {
         //get the necessary data
         //todo get the real passenger
-//        Passenger passenger = (Passenger) session.getAttribute("passenger");
-        Passenger passenger = new Passenger();
-        passenger.setPassengerid(1);
+        Passenger passenger = (Passenger) session.getAttribute("user");
+
         Order order = new Order();
         Paymentrecord payment = new Paymentrecord();
         payment.setAmount(amount.toString());

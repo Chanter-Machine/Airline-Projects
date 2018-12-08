@@ -70,7 +70,7 @@ public class UserServiceImp implements IUserService {
 		List<User> users = getUsers(user.getEmail());
 		if (users.size()==0) {
 
-            userMapper.insertSelective(user);
+            userMapper.insert(user);
 		}
 	}
 
