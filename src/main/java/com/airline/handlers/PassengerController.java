@@ -1,21 +1,22 @@
 package com.airline.handlers;
 
-import com.airline.bean.*;
+import com.airline.bean.City;
+import com.airline.bean.Passenger;
+import com.airline.bean.User;
+import com.airline.bean.UserFlight;
 import com.airline.security.Validator;
 import com.airline.services.ICityService;
 import com.airline.services.IPassengerService;
 import com.airline.services.IUserActivationService;
+import com.airline.services.IUserService;
 import com.airline.services.order.IOrderService;
+import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.airline.services.IUserService;
-import com.airline.utils.Msg;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -196,7 +197,7 @@ public class PassengerController {
 			mv.addObject("cities", cities);
 			mv.addObject("uniqueOrders", orderIDs);
 			mv.addObject("orders", allorders);
-			mv.setViewName("/WEB-INF/view/login.jsp");
+            mv.setViewName("loggedOn.jsp");
 		} else {
 			//admin view
 			mv.setViewName("/WEB-INF/view/login2.jsp");

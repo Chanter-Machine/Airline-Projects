@@ -40,7 +40,7 @@ public class UserServiceImp implements IUserService {
 		validationChain.run();
 		result = validationChain.getResult();
 		userList = (List<User>) result.getData().get("user");
-
+        System.out.println(userList);
 
 		if (userList.size() == 1) {
 			user = userList.get(0);

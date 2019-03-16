@@ -11,18 +11,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
+    <link rel="icon" href="favicon.ico">
 
     <title>AGILE AIR</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="../../static/styles/bootstrap4/bootstrap.min.css">
-    <link href="../../static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="../../static/styles/elements_styles.css">
-    <link rel="stylesheet" type="text/css" href="../../static/styles/elements_responsive.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/bootstrap4/bootstrap.min.css">
+    <link href="static/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="static/styles/elements_styles.css">
+    <link rel="stylesheet" type="text/css" href="static/styles/elements_responsive.css">
 
     <!-- Custom styles for this template -->
-    <link href="../../static/styles/dashboard.css" rel="stylesheet">
+    <link href="static/styles/dashboard.css" rel="stylesheet">
 </head>
 
 <body>
@@ -50,13 +50,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="management.jsp" target="adminFrame">
                             <span class="fa fa-file"></span>
-                            Add Flights
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" target="adminFrame">
-                            <span class="fa fa-times"></span>
-                            Cancel Flights
+                            Manage Flights
                         </a>
                     </li>
                     <li class="nav-item">
@@ -132,7 +126,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="../../static/js/jquery-3.2.1.min.js"></script>
+<script src="static/js/jquery-3.2.1.min.js"></script>
 
 </body>
 </html>

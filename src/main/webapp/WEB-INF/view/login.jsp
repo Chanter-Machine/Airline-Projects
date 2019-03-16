@@ -209,7 +209,7 @@
                                             </div>
                                             <p>&nbsp;</p>
                                             <button id="btn_submit" type="button"
-                                                    class="button button_color_1 trans_200"><a
+                                                    class="search_btn button button_color_1 trans_200"><a
                                                     href="#">search<span></span><span></span><span></span></a></button>
                                         </form>
 
@@ -321,7 +321,41 @@
     </div>
 </div>
 
+
+<%--===========modal for comfirm order=================--%>
+<div class="modal fade" id="comfirm_order_dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Order</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row justify-content-center">
+                    <div class="col-8">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <form id="confirm_form" action="${APP_PATH}/pay_order.do" method="post">
+                        <input name="orderid" type="text" id="orderid" hidden="true">
+                        <input name="passagerid" type="text" id="passagerid" hidden="true">
+                        <input name="paymentid" type="text" id="paymentid" hidden="true">
+                        <input name="status" type="text" id="status" hidden="true">
+                        <input name="date" type="text" id="date" hidden="true">
+
+                        <input type="button" style="margin-top:10px" id="payNowButton"
+                               alt="Proceed to Pay"
+                               class="btn btn-primary btn-large" value="Pay Now" data-dismiss="modal">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script src="static/js/jquery-3.2.1.min.js"></script>
 <script src="static/styles/bootstrap4/popper.js"></script>
@@ -435,6 +469,12 @@
         $(".result-flight").append($result_body);
     }
 
+    $("#payNowButton").click(function () {
+
+        var confirmForm = $("#confirm_form");
+
+        confirmForm.submit();
+    });
 
 </script>
 </body>

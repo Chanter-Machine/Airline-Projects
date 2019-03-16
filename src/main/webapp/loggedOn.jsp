@@ -201,130 +201,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-5">
-                    <h4>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="feather feather-file-text">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>&nbsp;My Previous Bookings
-                    </h4>
-                    <p>&nbsp;</p>
-                    <!-- Accordions -->
-                    <div class="elements_accordions">
-
-                        <div class="accordion_container">
-                            <div class="accordion d-flex flex-row align-items-center active">
-                                <div>Trip: Limerick to Dublin (October 20, 2018)</div>
-                            </div>
-                            <div class="accordion_panel">
-                                <p>Your itenary for this trip:</p>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1,001</td>
-                                            <td>Lorem</td>
-                                            <td>ipsum</td>
-                                            <td>dolor</td>
-                                            <td>sit</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1,002</td>
-                                            <td>amet</td>
-                                            <td>consectetur</td>
-                                            <td>adipiscing</td>
-                                            <td>elit</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1,003</td>
-                                            <td>Integer</td>
-                                            <td>nec</td>
-                                            <td>odio</td>
-                                            <td>Praesent</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1,003</td>
-                                            <td>libero</td>
-                                            <td>Sed</td>
-                                            <td>cursus</td>
-                                            <td>ante</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion_container">
-                            <div class="accordion d-flex flex-row align-items-center">
-                                <div>Dublin to Galway (October 10, 2018)</div>
-                            </div>
-                            <div class="accordion_panel">
-                                <p>Your itenary for this trip:</p>
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-sm">
-                                        <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                            <th>Header</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>1,001</td>
-                                            <td>Lorem</td>
-                                            <td>ipsum</td>
-                                            <td>dolor</td>
-                                            <td>sit</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1,002</td>
-                                            <td>amet</td>
-                                            <td>consectetur</td>
-                                            <td>adipiscing</td>
-                                            <td>elit</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion_container">
-                            <div class="accordion d-flex flex-row align-items-center">
-                                <div>Other Information</div>
-                            </div>
-                            <div class="accordion_panel">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu convallis tortor.
-                                    Suspendisse potenti. In faucibus massa arcu, vitae cursus mi hendrerit nec. Proin
-                                    bibendum, augue faucibus.</p>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 result-flight">
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -501,7 +377,7 @@
 
         for (var i = 0; i < num_paths; i++) {
 
-            $accordion = $("<div class='accordion_container col-md-8 order-md-1'></div>");
+            $accordion = $("<div class='accordion_container col-md-12 order-md-1'></div>");
             $accordion_parrent = $("<div class='accordion accordion-lg d-flex flex-row align-items-center'></div>")
             $city = $("<div class='col-md-5'><h3 class='my-0'>" + from + " to " + to + "</h3><small class='text-muted'>Multiple stops [click to see breakdown]</small></div>");
             $money = $("<div class='col-md-2'><span class='text-muted pull-right h3'>&euro;" + priceList[i] + "</span></div><div class='col-md-2'><a class='btn btn-warning choose_flight'>Choose Flight</a></div>")
