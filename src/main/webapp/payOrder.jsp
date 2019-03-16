@@ -301,7 +301,7 @@
 <script src="static/plugins/jquery-circle-progress-1.2.2/circle-progress.js"></script>
 <script src="static/plugins/parallax-js-master/parallax.min.js"></script>
 <script src="static/js/elements_custom.js"></script>
-<script src="http://www.paypalobjects.com/api/checkout.js"></script>
+<script src="static/js/paypal_api_checkout.js"></script>
 <script type="text/javascript">
     paypal.Button.render({
 
