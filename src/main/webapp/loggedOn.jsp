@@ -416,6 +416,7 @@
             $result_body.append($accordion);
         }
         $(".result-flight").append($result_body);
+        set_delegate_on_ele();
     }
 
     $("#payNowButton").click(function () {

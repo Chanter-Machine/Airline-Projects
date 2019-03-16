@@ -185,54 +185,6 @@ $(document).ready(function () {
 
     */
 
-    $('.search_btn').click(function () {
-        setTimeout(function () {
-            initAccordions();
-            $('.choose_flight').on('click', function () {
-                    var amount = $(this).parent().prev().children().html();
-                    ;
-                    amount = amount.replace("€", "");
-                    var date = $('.travel_date').val();
-                    var flightId = new Array();
-                    $(this).parent().parent().next().children().find("tr").each(function () {
-                        if ($(this).attr("value") !== undefined) {
-                            flightId.push($(this).attr("value"));
-                        }
-                    });
-                var flightsHTML = $(this).parent().parent().next().children().last().prop("outerHTML");
-                    var data = {
-                        amount: amount,
-                        takeoffDate: date,
-                        flights_id: flightId
-                    }
-                    console.log(data);
-                    var url = "create_order.do";
-                    $.ajax({
-                        traditional: true,
-                        type: "post",
-                        data: data,
-                        url: url,
-                        success: function (response) {
-                            console.log(response);
-                            var order = response.data.order;
-
-                            $("#orderid").val(order.orderid);
-                            $("#passagerid").val(order.passagerid);
-                            $("#paymentid").val(order.paymentid);
-                            $("#status").val(order.status);
-                            $("#date").val(order.date);
-
-                            var div_in_body_in_modal = $(".modal-body .row.justify-content-center .col-8");
-                            div_in_body_in_modal.append(flightsHTML);
-                            console.log(flightsHTML);
-
-                            $("#comfirm_order_dialog").modal();
-                        }
-                    });
-                }
-            );
-        }, 1000);
-    });
 
     function initAccordions() {
         if ($('.accordion').length) {
@@ -417,3 +369,115 @@ $(document).ready(function () {
         }
     }
 });
+
+
+function initAccordions() {
+    if ($('.accordion').length) {
+        var accs = $('.accordion');
+        accs.each(function () {
+            var acc = $(this);
+
+            if (acc.hasClass('active')) {
+                var panel = $(acc.next());
+                var panelH = panel.prop('scrollHeight') + "px";
+
+                if (panel.css('max-height') == "0px") {
+                    panel.css('max-height', panel.prop('scrollHeight') + "px");
+                }
+                else {
+                    panel.css('max-height', "0px");
+                }
+            }
+
+            acc.on('click', function () {
+                if (!acc.hasClass('accordion-lg')) closeAllAccordions();
+
+                if (acc.hasClass('active')) {
+                    acc.removeClass('active');
+                    var panel = $(acc.next());
+                    var panelH = panel.prop('scrollHeight') + "px";
+
+                    if (panel.css('max-height') == "0px") {
+                        panel.css('max-height', panel.prop('scrollHeight') + "px");
+                    }
+                    else {
+                        panel.css('max-height', "0px");
+                    }
+                }
+                else {
+                    acc.addClass('active');
+                    var panel = $(acc.next());
+                    var panelH = panel.prop('scrollHeight') + "px";
+
+                    if (panel.css('max-height') == "0px") {
+                        panel.css('max-height', panel.prop('scrollHeight') + "px");
+                    }
+                    else {
+                        panel.css('max-height', "0px");
+                    }
+                }
+            });
+        });
+
+        function closeAllAccordions() {
+            var accs = $('.accordion');
+            accs.each(function () {
+                var acc = $(this);
+                acc.removeClass('active');
+                var panel = $(acc.next());
+                panel.css('max-height', "0px");
+
+            });
+        };
+    }
+}
+
+
+function set_delegate_on_ele() {
+    setTimeout(function () {
+        initAccordions();
+        $('.choose_flight').on('click', function () {
+                var amount = $(this).parent().prev().children().html();
+                ;
+                amount = amount.replace("€", "");
+                var date = $('.travel_date').val();
+                var flightId = new Array();
+                $(this).parent().parent().next().children().find("tr").each(function () {
+                    if ($(this).attr("value") !== undefined) {
+                        flightId.push($(this).attr("value"));
+                    }
+                });
+                var flightsHTML = $(this).parent().parent().next().children().last().prop("outerHTML");
+                var data = {
+                    amount: amount,
+                    takeoffDate: date,
+                    flights_id: flightId
+                }
+                console.log(data);
+                var url = "create_order.do";
+                $.ajax({
+                    traditional: true,
+                    type: "post",
+                    data: data,
+                    url: url,
+                    success: function (response) {
+                        console.log(response);
+                        var order = response.data.order;
+
+                        $("#orderid").val(order.orderid);
+                        $("#passagerid").val(order.passagerid);
+                        $("#paymentid").val(order.paymentid);
+                        $("#status").val(order.status);
+                        $("#date").val(order.date);
+
+                        var div_in_body_in_modal = $(".modal-body .row.justify-content-center .col-8");
+                        div_in_body_in_modal.append(flightsHTML);
+                        console.log(flightsHTML);
+
+                        $("#comfirm_order_dialog").modal();
+                    }
+                });
+            }
+        );
+    }, 1000);
+};
