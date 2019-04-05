@@ -110,12 +110,6 @@ public class FlightServiceImp implements IFlightService {
 		return searchResult;
 	}
 	
-	public void injectFinalResult() {
-		for(int i=0;i<pathCollection.getPathList().size();i++){
-			
-		}
-	}
-	
 	public void getFinalPriceofSearch(String seatRequirement) {
 		priceCollection.cleanData();
 		for(List<Flight> list : pathCollection.getPathList()) {

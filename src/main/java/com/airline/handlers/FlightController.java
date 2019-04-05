@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.airline.bean.Flight;
@@ -27,7 +28,7 @@ public class FlightController {
 	public void search(SearchData searchData) {
 		System.out.println(searchData);
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("今天的日期："+df.format(searchData.getTraveldate()));
+		System.out.println("Today's date："+df.format(searchData.getTraveldate()));
 		
 //		List<Flight> flights = flightService.getFlightsByDate(searchData.getTraveldate().toString());
 	}
@@ -36,25 +37,25 @@ public class FlightController {
 	@RequestMapping("/search2.do")
 	public Msg search2(SearchData searchData) {
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println(searchData);
+//		System.out.println(searchData);
 //		searchData.setSorting("1");
 		searchResult = flightService.searchFlights(searchData);
-		for(List<Flight> list : searchResult.getPathCollection().getPathList()) {
-			for(Flight flight: list) {
-				System.out.print(flight.getFlightid()+" ");
-			}
-			System.out.println("");
-		}
-		System.out.println(searchResult.getPathCollection().getTakeoffDate());
-		for(int insurance: searchResult.getPriceCollection().getInsuranceList()) {
-			System.out.println("insurance: "+insurance);
-		}
-		for(int tax: searchResult.getPriceCollection().getTaxList()) {
-			System.out.println("tax: "+tax);
-		}
-		for(int price: searchResult.getPriceCollection().getPriceList()) {
-			System.out.println("Total price: "+ price);
-		}
+//		for(List<Flight> list : searchResult.getPathCollection().getPathList()) {
+//			for(Flight flight: list) {
+//				System.out.print(flight.getFlightid()+" ");
+//			}
+//			System.out.println("");
+//		}
+//		System.out.println(searchResult.getPathCollection().getTakeoffDate());
+//		for(int insurance: searchResult.getPriceCollection().getInsuranceList()) {
+//			System.out.println("insurance: "+insurance);
+//		}
+//		for(int tax: searchResult.getPriceCollection().getTaxList()) {
+//			System.out.println("tax: "+tax);
+//		}
+//		for(int price: searchResult.getPriceCollection().getPriceList()) {
+//			System.out.println("Total price: "+ price);
+//		}
 		
 		return Msg.success().add("insuranceList", searchResult.getPriceCollection().getInsuranceList())
 							.add("taxList", searchResult.getPriceCollection().getTaxList())
