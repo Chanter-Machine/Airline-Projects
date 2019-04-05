@@ -209,7 +209,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Address :</td>
-                                                                    <td><span id="line1"</span><span id="line2"></span>
+                                                                    <td><span id="line1"></span><span id="line2"></span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
