@@ -63,13 +63,20 @@
 	</bean>
 	
 	<!-- Open annotation-based transaction, xml-base is also available-->
+	
+	 <aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	
 	<aop:config>
 		<!-- pointcut expression: To decide which pointcut need advice; First double dots means service package with 
-		its subpackages are applied and Second double points means parameters are arbitrary-->
+		its subpackages are applied and Second double points means parameters are arbitrary -->
 		<aop:pointcut expression="execution(* com.airline.services..*(..))" id="txPoint"/>
 		<!-- Enhancement of transaction -->
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
-	</aop:config>
+	</aop:config> 
+	
+	
+	
 	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<!-- Decide what will be cut-in -->
@@ -77,7 +84,6 @@
 			<!-- * means all cut-in methods are about transactions' methods -->
 			<tx:method name="*" read-only="false"/>
 			<!-- all cut-in methods start with "get" -->
-			<!-- <tx:method name="get*" read-only="true"/> -->
 		</tx:attributes>
 	</tx:advice>
 	 
