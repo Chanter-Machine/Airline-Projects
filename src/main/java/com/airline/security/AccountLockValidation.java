@@ -31,7 +31,8 @@ public class AccountLockValidation implements ILoginValidation {
         result=new Msg();
         // set default error message
         result.setSuccessful(false);
-        result.setMsg("There's an error with your account or it does not exist, please contact the administrator to assist.");
+        result.setMsg("2. There's an error with your account or it does not exist, please contact the administrator to assist.");
+        if (userCollection!=null)
         if ((userCollection.size()==1) && (attemptingUser.getEmail().equals(userCollection.get(0).getEmail()))){
             //check if account is locked and for how long
             setUser(userCollection.get(0));
@@ -43,6 +44,7 @@ public class AccountLockValidation implements ILoginValidation {
                 userCollection.clear();
                 userCollection.add(user);
                 result.add("user", userCollection);
+
                 }
                 else {
 
@@ -57,6 +59,7 @@ public class AccountLockValidation implements ILoginValidation {
 
             }
         }
+
         return result;
     }
 

@@ -41,11 +41,15 @@
                     <bean class="com.airline.services.payment.PaymentMethod.PaymentMethodConverter"></bean>
                 </list>
             </property>
- 		</bean>
+    </bean>
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/management"/>
             <bean class="com.airline.interceptors.PermessionInterceptor"/>
         </mvc:interceptor>
+       <!-- <mvc:interceptor>
+            <mvc:mapping path="/*"/>
+            <bean class="com.airline.interceptors.SecurityInterceptor"/>
+        </mvc:interceptor> -->
     </mvc:interceptors>
 </beans>

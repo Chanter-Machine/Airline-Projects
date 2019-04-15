@@ -28,7 +28,7 @@ public class AccountAccessValidation implements ILoginValidation {
         // set default error message
         result=new Msg();
         result.setSuccessful(false);
-        result.setMsg("There's an error with your account or it does not exist, please contact the administrator to assist.");
+        result.setMsg("3. There's an error with your account or it does not exist, please contact the administrator to assist.");
         try
         {
         if (userCollection.size()==1 && (attemptingUser.getEmail().equals(userCollection.get(0).getEmail()))){
@@ -44,7 +44,6 @@ public class AccountAccessValidation implements ILoginValidation {
                     result.setSuccessful (false);
                     String msg="Incorrect username or password provided, please check that you have provided the correct details. " + logFailedAttempt();
                     result.setMsg(msg);
-
                 } else {
                     result.setSuccessful(true);
                     result.setMsg("");
@@ -54,6 +53,7 @@ public class AccountAccessValidation implements ILoginValidation {
                     userCollection.clear();
                     userCollection.add(user);
                     result.add("user", userCollection);
+
 
                 }
             } else {
