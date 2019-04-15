@@ -11,7 +11,7 @@
 	</commentGenerator>
   	<!-- config db connection -->
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                    connectionURL="jdbc:mysql://localhost:3306/airline1"
+                    connectionURL="jdbc:mysql://localhost:3306/airline?useSSL=false"
                     userId="root"
                     password="123456">
     </jdbcConnection>
@@ -54,7 +54,7 @@
         <table tableName="dealage" domainObjectName="DealAge"/>
         <table tableName="dealdate" domainObjectName="Dealdate"/>
         <table tableName="deal" domainObjectName="Deal"/>-->
-      <table tableName="dealtype" domainObjectName="Dealtype"/>
+      <table tableName="userpreferences" domainObjectName="userpreferences"/>
 
 
       <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >

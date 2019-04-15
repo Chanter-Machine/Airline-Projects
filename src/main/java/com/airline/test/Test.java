@@ -146,7 +146,7 @@ public class Test {
         System.out.println(jsonObject);
         String state = (String) jsonObject.get("state");
         System.out.println(state.getClass());
-        System.out.println((Str ing) state);
+        System.out.println((String) state);
         System.out.println("\n\n\n\n");
     }
 
