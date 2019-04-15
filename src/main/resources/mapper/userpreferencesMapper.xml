@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.airline.dao.userpreferencesMapper">
+  <resultMap id="BaseResultMap" type="com.airline.bean.userpreferences">
+    <id column="preferenceID" jdbcType="INTEGER" property="preferenceid" />
+    <result column="userID" jdbcType="INTEGER" property="userid" />
+    <result column="seatingClass" jdbcType="VARCHAR" property="seatingclass" />
+    <result column="seatPreference" jdbcType="VARCHAR" property="seatpreference" />
+    <result column="wifiAvailable" jdbcType="INTEGER" property="wifiavailable" />
+    <result column="airportPickup" jdbcType="INTEGER" property="airportpickup" />
+    <result column="accomodationSuggestions" jdbcType="INTEGER" property="accomodationsuggestions" />
+    <result column="budgetLimit" jdbcType="DECIMAL" property="budgetlimit" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    preferenceID, userID, seatingClass, seatPreference, wifiAvailable, airportPickup, 
+    accomodationSuggestions, budgetLimit
+  </sql>
+  <select id="selectByExample" parameterType="com.airline.bean.userpreferencesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from userpreferences
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from userpreferences
+    where preferenceID = #{preferenceid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from userpreferences
+    where preferenceID = #{preferenceid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.airline.bean.userpreferencesExample">
+    delete from userpreferences
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.airline.bean.userpreferences">
+    insert into userpreferences (preferenceID, userID, seatingClass, 
+      seatPreference, wifiAvailable, airportPickup, 
+      accomodationSuggestions, budgetLimit)
+    values (#{preferenceid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{seatingclass,jdbcType=VARCHAR}, 
+      #{seatpreference,jdbcType=VARCHAR}, #{wifiavailable,jdbcType=INTEGER}, #{airportpickup,jdbcType=INTEGER}, 
+      #{accomodationsuggestions,jdbcType=INTEGER}, #{budgetlimit,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.airline.bean.userpreferences">
+    insert into userpreferences
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="preferenceid != null">
+        preferenceID,
+      </if>
+      <if test="userid != null">
+        userID,
+      </if>
+      <if test="seatingclass != null">
+        seatingClass,
+      </if>
+      <if test="seatpreference != null">
+        seatPreference,
+      </if>
+      <if test="wifiavailable != null">
+        wifiAvailable,
+      </if>
+      <if test="airportpickup != null">
+        airportPickup,
+      </if>
+      <if test="accomodationsuggestions != null">
+        accomodationSuggestions,
+      </if>
+      <if test="budgetlimit != null">
+        budgetLimit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="preferenceid != null">
+        #{preferenceid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="seatingclass != null">
+        #{seatingclass,jdbcType=VARCHAR},
+      </if>
+      <if test="seatpreference != null">
+        #{seatpreference,jdbcType=VARCHAR},
+      </if>
+      <if test="wifiavailable != null">
+        #{wifiavailable,jdbcType=INTEGER},
+      </if>
+      <if test="airportpickup != null">
+        #{airportpickup,jdbcType=INTEGER},
+      </if>
+      <if test="accomodationsuggestions != null">
+        #{accomodationsuggestions,jdbcType=INTEGER},
+      </if>
+      <if test="budgetlimit != null">
+        #{budgetlimit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.airline.bean.userpreferencesExample" resultType="java.lang.Long">
+    select count(*) from userpreferences
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update userpreferences
+    <set>
+      <if test="record.preferenceid != null">
+        preferenceID = #{record.preferenceid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null">
+        userID = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.seatingclass != null">
+        seatingClass = #{record.seatingclass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seatpreference != null">
+        seatPreference = #{record.seatpreference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wifiavailable != null">
+        wifiAvailable = #{record.wifiavailable,jdbcType=INTEGER},
+      </if>
+      <if test="record.airportpickup != null">
+        airportPickup = #{record.airportpickup,jdbcType=INTEGER},
+      </if>
+      <if test="record.accomodationsuggestions != null">
+        accomodationSuggestions = #{record.accomodationsuggestions,jdbcType=INTEGER},
+      </if>
+      <if test="record.budgetlimit != null">
+        budgetLimit = #{record.budgetlimit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update userpreferences
+    set preferenceID = #{record.preferenceid,jdbcType=INTEGER},
+      userID = #{record.userid,jdbcType=INTEGER},
+      seatingClass = #{record.seatingclass,jdbcType=VARCHAR},
+      seatPreference = #{record.seatpreference,jdbcType=VARCHAR},
+      wifiAvailable = #{record.wifiavailable,jdbcType=INTEGER},
+      airportPickup = #{record.airportpickup,jdbcType=INTEGER},
+      accomodationSuggestions = #{record.accomodationsuggestions,jdbcType=INTEGER},
+      budgetLimit = #{record.budgetlimit,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.airline.bean.userpreferences">
+    update userpreferences
+    <set>
+      <if test="userid != null">
+        userID = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="seatingclass != null">
+        seatingClass = #{seatingclass,jdbcType=VARCHAR},
+      </if>
+      <if test="seatpreference != null">
+        seatPreference = #{seatpreference,jdbcType=VARCHAR},
+      </if>
+      <if test="wifiavailable != null">
+        wifiAvailable = #{wifiavailable,jdbcType=INTEGER},
+      </if>
+      <if test="airportpickup != null">
+        airportPickup = #{airportpickup,jdbcType=INTEGER},
+      </if>
+      <if test="accomodationsuggestions != null">
+        accomodationSuggestions = #{accomodationsuggestions,jdbcType=INTEGER},
+      </if>
+      <if test="budgetlimit != null">
+        budgetLimit = #{budgetlimit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where preferenceID = #{preferenceid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.airline.bean.userpreferences">
+    update userpreferences
+    set userID = #{userid,jdbcType=INTEGER},
+      seatingClass = #{seatingclass,jdbcType=VARCHAR},
+      seatPreference = #{seatpreference,jdbcType=VARCHAR},
+      wifiAvailable = #{wifiavailable,jdbcType=INTEGER},
+      airportPickup = #{airportpickup,jdbcType=INTEGER},
+      accomodationSuggestions = #{accomodationsuggestions,jdbcType=INTEGER},
+      budgetLimit = #{budgetlimit,jdbcType=DECIMAL}
+    where preferenceID = #{preferenceid,jdbcType=INTEGER}
+  </update>
+</mapper>
