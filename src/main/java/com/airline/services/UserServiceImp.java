@@ -5,6 +5,7 @@ import com.airline.bean.UserExample;
 import com.airline.bean.UserExample.Criteria;
 import com.airline.dao.UserMapper;
 import com.airline.security.Encryption;
+import com.airline.security.Facade;
 import com.airline.security.LoginValidationChain;
 import com.airline.utils.Msg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,26 @@ public class UserServiceImp implements IUserService {
 	public User validateUser(User attemptingUser) {
 
 		List<User> userList = getUsers(attemptingUser.getEmail());
+		User user;
 
 		//accountAccessValidation.begin(login);
-		LoginValidationChain validationChain = new LoginValidationChain(attemptingUser, userList);
+		/*LoginValidationChain validationChain = new LoginValidationChain(attemptingUser, userList);
 		User user;
 
 		validationChain.run();
 		result = validationChain.getResult();
 		userList = (List<User>) result.getData().get("user");
-        System.out.println(userList);
+        System.out.println(userList);*/
 
+
+		Facade authentication = new Facade(attemptingUser, userList);
+		authentication.completeUserAuthentication();
+		result=authentication.getResult();
+		userList = (List<User>) result.getData().get("user");
+
+		System.out.println(authentication.getResult().getMsg());
+
+		//if (userList!=null)
 		if (userList.size() == 1) {
 			user = userList.get(0);
 			//log attempt details

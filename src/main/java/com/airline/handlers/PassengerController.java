@@ -40,6 +40,7 @@ public class PassengerController {
 	@Autowired
 	IOrderService orderService;
 
+
 	@RequestMapping("/loggedOn.do")
 	public ModelAndView loggedOn(HttpServletRequest request) {
 
@@ -102,7 +103,7 @@ public class PassengerController {
 			mv.addObject("result", result);
 		}
 		else {
-			mv.addObject("error", "Data contains invalid characters and can therefore not be used to complete your registration.");
+			mv.addObject("error", "Data contains invalid characters and can therefore not be used to complete your request.");
 			mv.setViewName("index.jsp");
 		}
 

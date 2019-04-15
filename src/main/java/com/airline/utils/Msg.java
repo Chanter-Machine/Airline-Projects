@@ -17,7 +17,7 @@ public class Msg {
 	private Map<String, Object> data = new HashMap<String, Object>();
 
 //  boolean success status
-	private boolean isSuccessful;
+	private boolean successful;
 	
 	public static Msg success() {
 		Msg result = new Msg();
@@ -53,11 +53,11 @@ public class Msg {
 	}
 
 	public boolean isSuccessful() {
-		return isSuccessful;
+		return successful;
 	}
 
 	public void setSuccessful(boolean successful) {
-		isSuccessful = successful;
+		this.successful = successful;
 	}
 
 	public Msg add(String key, Object value) {
