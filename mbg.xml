@@ -54,7 +54,9 @@
         <table tableName="dealage" domainObjectName="DealAge"/>
         <table tableName="dealdate" domainObjectName="Dealdate"/>
         <table tableName="deal" domainObjectName="Deal"/>-->
-      <table tableName="userpreferences" domainObjectName="userpreferences"/>
+      <table tableName="continent" domainObjectName="continent"/>
+      <table tableName="placesofinterestcategory" domainObjectName="placesofinterestcategory"/>
+      <table tableName="placesofinterestsuggestion" domainObjectName="placesofinterestsuggestion"/>
 
 
       <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
