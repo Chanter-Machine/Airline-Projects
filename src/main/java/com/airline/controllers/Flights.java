@@ -16,8 +16,8 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/flight")
-public class Flight {
+@RequestMapping("/flights")
+public class Flights {
 
     @Autowired
     private ICityService cityService;
@@ -29,13 +29,13 @@ public class Flight {
     private IFlightService flightService;
 
 
-    @ApiOperation(value = "Get airline's flight destination cities", tags = "getCities")
+    @ApiOperation(value = "Get airline's flight destination cities")
     @RequestMapping(value = "/getCities", method=RequestMethod.GET)
     public List<City> getCities() {
         return cityService.findAllCityies();
     }
 
-    @ApiOperation(value = "Search for available flights", tags="getFlights")
+    @ApiOperation(value = "Search for available flights")
     @RequestMapping(value = "/getFlights", method = RequestMethod.POST)
     public SearchResult getFlights(SearchData searchData){
         searchResult = flightService.searchFlights(searchData);
