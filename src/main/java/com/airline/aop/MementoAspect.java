@@ -1,6 +1,5 @@
 package com.airline.aop;
 
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +24,7 @@ public class MementoAspect {
 	
 	@Before(value ="execution(* com.airline.handlers..*(..))")
 	public void log() {
-//        System.out.println("---模拟记录Controller日志");
+//        System.out.println("Controller log");
         
 	}
 	
@@ -52,6 +51,5 @@ public class MementoAspect {
 	
 	@Before(value ="execution(* com.airline.services..*(..))")
 	public void logOnService() {
-//        System.out.println("---模拟记录Service日志");
 	}
 }

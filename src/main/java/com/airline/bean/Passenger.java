@@ -2,6 +2,8 @@ package com.airline.bean;
 
 import java.util.Date;
 
+import com.airline.services.MessageManagement.Mediator;
+
 public class Passenger extends User {
     private Integer passengerid;
 
@@ -61,5 +63,14 @@ public class Passenger extends User {
 
     public void setDob(Date dob) {
         this.dob = dob;
+    }
+    
+    @Override
+    public void sendMessage(String sessionId, Message message) {
+    	super.mediator.sendMessage(sessionId, message);
+    }
+    
+    public void receiveMsg(Message message, User sender) {
+    	System.out.println("Some send you a message");
     }
 }

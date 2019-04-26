@@ -12,6 +12,17 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context.xsd">
+       
+       
+    <import resource="classpath:spring-redis.xml"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:redis.properties</value>
+                <value>classpath:jdbcConfig.properties</value>
+            </list>
+        </property>
+    </bean>
 
 	<!-- configration of spring -->
 	
@@ -23,7 +34,7 @@
 	
 	
 	<!-- ===============================2.Data source|Transaction configuration|==========================================-->
-	<context:property-placeholder location="classpath:jdbcConfig.properties"/>
+	<!-- <context:property-placeholder location="classpath:jdbcConfig.properties"/> -->
 	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
 		<property name="driverClass" value="${jdbc.driverClass}"/>
