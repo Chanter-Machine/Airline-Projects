@@ -5,7 +5,7 @@ import java.util.Date;
 public class Paymentrecord {
     public static final String PendingStatus = "Pending";
     public static final String PaidStatus = "Paid";
-    public static final String RefundStatus = "Refund";
+    public static final String RefundStatus = "Refunded";
     private Integer paymentid;
 
     private String amount;

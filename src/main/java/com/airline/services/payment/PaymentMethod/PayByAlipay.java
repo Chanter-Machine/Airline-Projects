@@ -1,5 +1,6 @@
 package com.airline.services.payment.PaymentMethod;
 
+import com.airline.bean.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,9 @@ public class PayByAlipay implements IPaymentMethod {
     }
 
     @Override
-    public boolean refund(HttpServletRequest request, HttpServletResponse response) {
+    public boolean refund(HttpServletRequest request, HttpServletResponse response, Order order) {
         return false;
     }
+
+
 }

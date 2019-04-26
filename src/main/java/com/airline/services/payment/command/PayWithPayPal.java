@@ -1,24 +1,26 @@
-package com.airline.services.payment.PaymentMethod;
+package com.airline.services.payment.command;
 
+import com.airline.bean.*;
 import com.airline.bean.Order;
-import com.airline.bean.PayPal;
+import com.airline.dao.OrderMapper;
 import com.airline.dao.PayPalMapper;
+import com.airline.dao.PaymentrecordMapper;
 import com.airline.dto.ApplicationConfiguration;
 import com.airline.dto.CreatePaymentDto;
 import com.airline.dto.TransactionAmountDto;
 import com.airline.dto.TransactionDetailsDto;
+import com.airline.services.payment.PaymentMethod.PaymentMethodFactory;
 import com.airline.utils.PayPalHelper;
 import com.airline.utils.RestClient;
-import com.paypal.api.payments.Amount;
-import com.paypal.api.payments.Refund;
-import com.paypal.api.payments.Sale;
+import com.paypal.api.payments.*;
 import com.paypal.base.Constants;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
-import org.aspectj.weaver.ast.Or;
+import com.paypal.orders.PaymentMethod;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,12 +29,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Date;
 
-@Component("PayByPayPal")
-public class PayByPayPal implements IPaymentMethod {
+@Component("PayWithPayPal")
+public class PayWithPayPal implements PaymentCommand {
+
 
     @Autowired
-    private PayPalMapper payPalMapper;
+    OrderMapper orderMapper;
+
+    @Autowired
+    PaymentrecordMapper paymentrecordMapper;
+
+    @Autowired
+    PayPalMapper payPalMapper;
 
     public String pay(HttpServletRequest request, HttpServletResponse response) {
         //obtain the paypal config
@@ -95,31 +107,6 @@ public class PayByPayPal implements IPaymentMethod {
         }
     }
 
-    @Override
-    public boolean refund(HttpServletRequest request, HttpServletResponse response, Order order) {
-        ApplicationConfiguration ac = (ApplicationConfiguration) request.getServletContext().getAttribute("config");
-
-
-        // 1. set up a Refund object
-        Refund refund = new Refund();
-        Amount amount = new Amount();
-        amount.setTotal("1.31");
-        amount.setCurrency("EUR");
-        refund.setAmount(amount);
-
-        // 2. get sale with id
-        Sale sale = new Sale();
-        sale.setId("1KH25376R0966643J");
-
-//        try {
-//            sale.refund(apiContext, refund);
-//        } catch (PayPalRESTException e) {
-//            System.err.println(e.getDetails());
-//        }
-
-
-        return false;
-    }
 
     public JSONObject CreatePayment(ApplicationConfiguration ac, HttpServletRequest request) throws IOException {
         CreatePaymentDto createPaymentDto = getCreatePaymentObject(request);
@@ -203,5 +190,70 @@ public class PayByPayPal implements IPaymentMethod {
         dataToSend.put("amount", jsonAmountAsString);
         return dataToSend;
 
+    }
+
+    public String getPaymentDetails(String paymentId, String accessToken, String clientId, String secret) {
+        String PAYMENT_DETAIL = "https://api.sandbox.paypal.com/v1/payments/payment/";
+
+        try {
+            URL url = new URL(PAYMENT_DETAIL + paymentId);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");// 提交模式
+            //设置请求头header
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+            // conn.setConnectTimeout(10000);//连接超时 单位毫秒
+            // conn.setReadTimeout(2000);//读取超时 单位毫秒
+            InputStreamReader inStream = new InputStreamReader(conn.getInputStream());
+            BufferedReader reader = new BufferedReader(inStream);
+            StringBuilder result = new StringBuilder();
+            String lineTxt = null;
+            while ((lineTxt = reader.readLine()) != null) {
+                result.append(lineTxt);
+            }
+            reader.close();
+            return result.toString();
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean execute(HttpServletRequest request, HttpServletResponse response) {
+        Integer orderId = (Integer) request.getAttribute("order_id");
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        Paymentrecord paymentrecord = paymentrecordMapper.selectByPrimaryKey(order.getPaymentid());
+
+        String result = pay(request, response);
+        if (result != null) {
+            paymentrecord.setDate(new Date());
+            paymentrecord.setStatus(Paymentrecord.PaidStatus);
+            paymentrecord.setPaymenttype(PaymentMethodFactory.ByPayPal);
+            paymentrecord.setThirtypartypaymentid(result);
+            paymentrecordMapper.updateByPrimaryKey(paymentrecord);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean undo(HttpServletRequest request, HttpServletResponse response) {
+        Integer orderId = (Integer) request.getAttribute("order_id");
+
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        order.setStatus(Order.PendingStatus);
+        int updatedOrderRows = orderMapper.updateByPrimaryKeySelective(order);
+
+        Paymentrecord paymentrecord = paymentrecordMapper.selectByPrimaryKey(order.getPaymentid());
+        paymentrecord.setStatus(Paymentrecord.PendingStatus);
+        int updatedPRRows = paymentrecordMapper.updateByPrimaryKeySelective(paymentrecord);
+
+        if (updatedOrderRows == 1 && updatedPRRows == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

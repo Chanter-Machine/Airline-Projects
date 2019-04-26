@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.airline.bean.Plane;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -131,13 +132,17 @@ public class PaypalCommonController {
     }
 
     public static void main(String[] args) {
-        PaypalCommonController payment = new PaypalCommonController();
-        boolean success = false;
-        try {
-            success = payment.verifyPayment("PAYID-LSTD4HA2WJ92254R39512112");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(success ? "支付完成" : "支付校验失败");
+//        PaypalCommonController payment = new PaypalCommonController();
+//        boolean success = false;
+//        try {
+//            success = payment.verifyPayment("PAYID-LSTD4HA2WJ92254R39512112");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(success ? "支付完成" : "支付校验失败");
+
+        PaypalCommonController paypalCommonController = new PaypalCommonController();
+        String details = paypalCommonController.getPaymentDetails("PAYID-LSTD4HA2WJ92254R39512112");
+        System.out.println(details);
     }
 }
