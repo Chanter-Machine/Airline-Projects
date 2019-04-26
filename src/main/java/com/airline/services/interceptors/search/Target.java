@@ -1,6 +1,5 @@
 package com.airline.services.interceptors.search;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;

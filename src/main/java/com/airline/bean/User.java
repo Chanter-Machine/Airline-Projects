@@ -1,6 +1,7 @@
 package com.airline.bean;
 
 import com.airline.deals.DealObserver;
+import com.airline.services.MessageManagement.Mediator;
 
 import java.util.Date;
 
@@ -22,6 +23,8 @@ public class User implements DealObserver {
     private Date lastlogin;
 
     private Boolean subscribed;
+    
+    public Mediator mediator;
 
     public Integer getUserid() {
         return userid;
@@ -94,7 +97,17 @@ public class User implements DealObserver {
     public void setSubscribed(Boolean subscribed) {
         this.subscribed = subscribed;
     }
+    
+    public Mediator getMediator() {
+		return mediator;
+	}
 
-    @Override
+	public void setMediator(Mediator mediator) {
+		this.mediator = mediator;
+	}
+	
+	public void sendMessage(String sessionId, Message message) {}
+
+	@Override
     public void update(String dealName, String passengerEmail){}
 }
