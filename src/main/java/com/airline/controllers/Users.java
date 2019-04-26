@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "Swagger2DemoRestController", description = "REST APIs related to Student Entity!!!!")
 @RestController
 @RequestMapping("/users")
 public class Users {
