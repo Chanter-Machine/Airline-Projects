@@ -33,7 +33,7 @@
 		<mvc:default-servlet-handler/>
 		<!-- TO support advanced configuration of spring MVC (JSR303 validation, ajax, mapping dynamic request) -->
     <!--<mvc:annotation-driven/>-->
-		<mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
             <property name="converters">
                 <list>
@@ -41,19 +41,18 @@
                     <bean class="com.airline.services.payment.PaymentMethod.PaymentMethodConverter"></bean>
                 </list>
             </property>
-    </bean>
-    <!--<mvc:interceptors>
+ 		</bean>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/management"/>
             <bean class="com.airline.interceptors.PermessionInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/**/api/**/"/>
-            <bean class="com.airline.interceptors.SecurityInterceptor"/>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login.do"/>
+            <mvc:exclude-mapping path="/"/>
+            <mvc:exclude-mapping path="/management"/>
+            <bean class="com.airline.interceptors.LoggingInterceptor"></bean>
         </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="**/api/**"/>
-            <bean class="com.airline.interceptors.SwaggerInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 </beans>

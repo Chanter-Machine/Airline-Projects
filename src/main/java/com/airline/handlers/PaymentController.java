@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,4 +43,12 @@ public class PaymentController {
     public List<Paymentrecord> getPaymentDetails(Passenger passenger) {
         return paymentService.queryPayments(passenger);
     }
+
+    @RequestMapping("/refund.do")
+    public boolean refund(HttpServletRequest request, HttpServletResponse response,
+                          @RequestParam("payment_method") Integer paymentMethod, Order order) {
+        request.setAttribute("order_id", order.getOrderid());
+        return paymentService.refund(request, response);
+    }
+
 }
