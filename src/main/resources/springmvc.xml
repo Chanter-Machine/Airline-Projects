@@ -42,14 +42,18 @@
                 </list>
             </property>
     </bean>
-    <mvc:interceptors>
+    <!--<mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/management"/>
             <bean class="com.airline.interceptors.PermessionInterceptor"/>
         </mvc:interceptor>
-       <!-- <mvc:interceptor>
-            <mvc:mapping path="/*"/>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/api/**/"/>
             <bean class="com.airline.interceptors.SecurityInterceptor"/>
-        </mvc:interceptor> -->
-    </mvc:interceptors>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="**/api/**"/>
+            <bean class="com.airline.interceptors.SwaggerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
 </beans>

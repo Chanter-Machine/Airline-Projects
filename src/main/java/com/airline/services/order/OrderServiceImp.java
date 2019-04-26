@@ -80,6 +80,23 @@ public class OrderServiceImp implements IOrderService {
         return order;
     }
 
+    public Order createOrder(Order order, int passengerid, Paymentrecord paymentrecord) {
+        order.setStatus(Order.PendingStatus);
+        order.setDate(new Date());
+        order.setPassagerid(passengerid);
+        paymentrecord.setStatus(Paymentrecord.PendingStatus);
+        paymentrecord.setDate(new Date());
+        //use sqlsession to insert and then commit. after commit, get id immediately
+        SqlSession sqlsession = dbHelper.getSqlsession();
+        PaymentrecordMapper mapper = sqlsession.getMapper(PaymentrecordMapper.class);
+        mapper.insertAndGetId(paymentrecord);
+        sqlsession.commit();
+        sqlsession.close();
+        order.setPaymentid(paymentrecord.getPaymentid());
+        orderMapper.insertAndGetId(order);
+        return order;
+    }
+
     public Paymentrecord insertPaymentrecord(Paymentrecord p) {
         paymentrecordMapper.insertAndGetId(p);
         return p;

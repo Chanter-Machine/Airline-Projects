@@ -17,6 +17,7 @@ public interface IOrderService {
     public List<Order> QueryOrdersByPassenger(Integer passengerId);
 
     public Order createOrder(Order order, Passenger passenger, Paymentrecord paymentrecord);
+    public Order createOrder(Order order, int passengerid, Paymentrecord paymentrecord);
 
     public Order orderIsPaid(Order order);
 

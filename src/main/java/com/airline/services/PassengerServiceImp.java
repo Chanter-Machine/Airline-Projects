@@ -42,7 +42,6 @@ public class PassengerServiceImp implements IPassengerService {
     }
 
     public void savePassengerInfo(Passenger passenger) {
-
         passengerMapper.insertVisitor(passenger);
     }
 
