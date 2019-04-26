@@ -11,9 +11,9 @@
 	</commentGenerator>
   	<!-- config db connection -->
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                    connectionURL="jdbc:mysql://localhost:3306/airline"
+                    connectionURL="jdbc:mysql://localhost:3306/airline?useSSL=false"
                     userId="root"
-                    password="">
+                    password="123456">
     </jdbcConnection>
 
 	<!-- java Type solution -->
@@ -48,13 +48,16 @@
       <table tableName="order" domainObjectName="Order"/>
       <table tableName="paymentrecord" domainObjectName="Paymentrecord"/>
       <table tableName="plane" domainObjectName="Plane"/>
+      <table tableName="seatrecord" domainObjectName="Seatrecord"/>
       <table tableName="user" domainObjectName="User"/>
 
         <table tableName="dealage" domainObjectName="DealAge"/>
         <table tableName="dealdate" domainObjectName="Dealdate"/>
         <table tableName="deal" domainObjectName="Deal"/>-->
-      <!--<table tableName="dealtype" domainObjectName="Dealtype"/>-->
-      <table tableName="userpreferences" domainObjectName="UserPreferences" />
+      <table tableName="continent" domainObjectName="continent"/>
+      <table tableName="placesofinterestcategory" domainObjectName="placesofinterestcategory"/>
+      <table tableName="placesofinterestsuggestion" domainObjectName="placesofinterestsuggestion"/>
+
 
       <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="DealsPassenger" >
         <property name="useActualColumnNames" value="true"/>

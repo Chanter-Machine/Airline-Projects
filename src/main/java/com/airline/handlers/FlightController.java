@@ -24,7 +24,7 @@ public class FlightController {
 	
 	@ResponseBody
 	@RequestMapping("/search.do")
-	public void search(SearchData searchData) {
+		public void search(SearchData searchData) {
 		System.out.println(searchData);
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
 		System.out.println("今天的日期："+df.format(searchData.getTraveldate()));
