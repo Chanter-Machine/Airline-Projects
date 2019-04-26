@@ -122,7 +122,7 @@
                                     <!-- Search Panel -->
                                     <hr size=1/>
                                     <p>Please provide details of your flight and let us find the best options for
-                                        you.</p>
+                                       you.</p>
                                     <div class="search_panel">
                                         <form id="search_form_1" class="form-group">
                                             <div class="search_item">
@@ -201,7 +201,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="row justify-content-end">
+                        <h4><i class="fa fa-plane" aria-hidden="true"></i>&nbsp;Menu
+                        </h4>
+                        <hr size="1">
+                    </div>
+                    <div class="row justify-content-end">
+                        <label class="btn btn-primary" id="order_management">Order Management</label>
+                    </div>
+
+                </div>
             </div>
+
         </div>
     </div>
 
@@ -425,6 +437,11 @@
 
         confirmForm.submit();
     });
+
+    $("#order_management").click(function () {
+        window.location.href="${APP_PATH}/orderManagement.do?user_id=${user.userid}"
+    });
+
 </script>
 
 </body>

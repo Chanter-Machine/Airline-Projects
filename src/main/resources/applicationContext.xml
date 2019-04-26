@@ -14,14 +14,14 @@
        http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- configration of spring -->
-	
+
 	<!-- ===================================1.Annotation Scanner================================== -->
 	<context:component-scan base-package="com.airline">
 		<!-- Exclude controller package while scaning packages -->
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
-	
+
+
 	<!-- ===============================2.Data source|Transaction configuration|==========================================-->
 	<context:property-placeholder location="classpath:jdbcConfig.properties"/>
 	<bean id="pooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -30,7 +30,7 @@
 		<property name="user" value="${jdbc.user}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
-	
+
 	<!--=============================3. Config mybatis================================ -->
 	<!-- Create sqlsessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -40,37 +40,38 @@
 		<!-- Designate file of configuration of mybatis-mapper -->
 		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
 	</bean>
-	
-	
+
+
 	<!-- Config scanner，add interface of mybatis to ioc -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<!-- Scan all implementations of Dao Interfaces, and add them to ioc container -->
 		<property name="basePackage" value="com.airline.dao"></property>
 	</bean>
-	
+
 	<!-- Config a executable sqlSession for Bulk Operations -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 		<constructor-arg name="executorType" value="BATCH"></constructor-arg>
 	</bean>
-	
-	
+
+
 	<!-- ====================================Configuration for transaction====================================== -->
-	
+
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<!-- Control data source with transaction manager -->
 		<property name="dataSource" ref="pooledDataSource"/>
 	</bean>
-	
+
 	<!-- Open annotation-based transaction, xml-base is also available-->
 	<aop:config>
-		<!-- pointcut expression: To decide which pointcut need advice; First double dots means service package with 
+		<!-- pointcut expression: To decide which pointcut need advice; First double dots means service package with
 		its subpackages are applied and Second double points means parameters are arbitrary-->
 		<aop:pointcut expression="execution(* com.airline.services..*(..))" id="txPoint"/>
+		<!--<aop:pointcut expression="execution(* com.airline.test..*(..))" id="txPoint"/>-->
 		<!-- Enhancement of transaction -->
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
 	</aop:config>
-	
+
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<!-- Decide what will be cut-in -->
 		<tx:attributes>
@@ -80,5 +81,5 @@
 			<!-- <tx:method name="get*" read-only="true"/> -->
 		</tx:attributes>
 	</tx:advice>
-	 
+
 </beans>
