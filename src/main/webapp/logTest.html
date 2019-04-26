@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+</script>
+</head>
+<body>
+	Email:<input type="text" name="email"/></br>
+	Password:<input type="password" name="password"/>
+	<button type="submit" id="btn1">submit</button><br>
+	<script>
+	$("#btn1").click(function(){
+		 $.ajax({
+	  			url:"getUser.do",
+	  			method:"POST",
+	  			success: function(result){
+	  				console.log(result);
+	  			}
+	  		}); 
+	});
+	</script>
+	
+</body>
+</html>
